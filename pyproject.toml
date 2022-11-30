@@ -35,7 +35,12 @@ text = "MIT"
 file = "LICENSE"
 
 [project.optional-dependencies]
-examples = ["notebook"]
+examples = [
+    "ipywidgets",
+    "jupyter_nbextensions_configurator",
+    "notebook",
+    "tqdm",
+]
 dev = [
     "black[jupyter]",
     "mypy",
