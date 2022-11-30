@@ -4,3 +4,4 @@
 **/*.jpg
 train/
 test/
+*-checkpoint.ipynb
