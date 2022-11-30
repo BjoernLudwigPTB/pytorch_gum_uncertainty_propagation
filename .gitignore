@@ -2,3 +2,5 @@
 .__atomic-write*
 **/*.txt
 **/*.jpg
+train/
+test/
