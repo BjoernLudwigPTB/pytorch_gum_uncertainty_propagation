@@ -45,6 +45,7 @@ dev = [
     "black[jupyter]",
     "mypy",
     "pytest",
+    "pytest-custom-exit-code",
 ]
 release = [
     "python-semantic-release",
@@ -56,7 +57,7 @@ license-files = ["LICENSE"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
-addopts = "--strict-markers"
+addopts = "--strict-markers --suppress-no-test-exit-code"
 filterwarnings = "error"
 
 [tool.mypy]
