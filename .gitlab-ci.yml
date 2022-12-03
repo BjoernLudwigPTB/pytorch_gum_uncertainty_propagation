@@ -9,8 +9,8 @@
 image: python:3.10
 
 variables:
-  HTTP_PROXY: "webproxy:8080"
-  HTTPS_PROXY: "webproxy:8080"
+  HTTP_PROXY: "http://webproxy:8080"
+  HTTPS_PROXY: "http://webproxy:8080"
 
 before_script:
   - python --version  # For debugging
