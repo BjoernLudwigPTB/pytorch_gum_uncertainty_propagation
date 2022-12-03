@@ -53,9 +53,6 @@ release = [
 [tool.setuptools]
 license-files = ["LICENSE"]
 
-[tool.setuptools.packages.find]
-include = ["GUM_compliant_neural_network_uncertainty_propagation*"]
-
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
