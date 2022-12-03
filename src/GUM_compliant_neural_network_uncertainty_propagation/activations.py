@@ -1,0 +1,1 @@
+"""Contains the custom activation function QuadLU for now"""

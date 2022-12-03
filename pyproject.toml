@@ -3,7 +3,7 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "GUM-compliant_neural-network_uncertainty-propagation"
+name = "GUM_compliant_neural_network_uncertainty_propagation"
 description = """
 This package accompanies my Master's thesis on GUM-compliant uncertainty propagation\
 and provides an implementation for fully-connected, feed-forward, deep neural networks\
@@ -22,7 +22,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Mathematics",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-dynamic = ["version"]
+version="0.1.0"
 dependencies = [
     "matplotlib",
     "pillow",
@@ -46,6 +46,9 @@ dev = [
     "mypy",
     "pytest",
 ]
+release = [
+    "python-semantic-release",
+]
 
 [tool.setuptools]
 license-files = ["LICENSE"]
@@ -67,3 +70,15 @@ enable_error_code = "ignore-without-code"
 strict = true
 # TODO: Remove this once pytest has annotations
 disallow_untyped_decorators = false
+
+[tool.semantic_release]
+branch = "main"
+version_toml = "pyproject.toml:project.version"
+major_on_zero = false
+changelog_sections = "feature,fix,breaking,documentation,performance"
+changelog_components = "semantic_release.changelog.changelog_headers,semantic_release.changelog.compare_url"
+upload_to_repository = false
+upload_to_release = true
+hvcs = "gitlab"
+hvcs_domain = "gitlab1.ptb.de"
+check_build_status = true
