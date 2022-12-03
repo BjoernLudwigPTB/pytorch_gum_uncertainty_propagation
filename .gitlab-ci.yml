@@ -8,6 +8,10 @@
 # https://hub.docker.com/r/library/python/tags/
 image: python:3.10
 
+variables:
+  HTTP_PROXY: "webproxy:8080"
+  HTTPS_PROXY: "webproxy:8080"
+
 before_script:
   - python --version  # For debugging
   - pip install --upgrade pip virtualenv
