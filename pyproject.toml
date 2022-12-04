@@ -47,6 +47,12 @@ dev = [
     "pytest",
     "pytest-custom-exit-code",
 ]
+docs = [
+    "nbsphinx",
+    "myst-parser",
+    "sphinx",
+    "sphinx-rtd-theme",
+]
 release = [
     "python-semantic-release",
 ]
