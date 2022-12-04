@@ -38,3 +38,11 @@ class QuadLU(Module):
         else:
             self._alpha = Parameter(tensor(alpha))
         self._alpha.requires_grad = True
+
+    def forward(self, x):
+        """Forward pass of QuadLU"""
+        if x <= - self._alpha :
+            return tensor(0.0)
+        if x >= self._alpha:
+            return 4.0 * self._alpha * x
+        return (x + self._alpha) ** 2
