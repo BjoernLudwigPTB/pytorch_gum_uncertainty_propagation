@@ -5,3 +5,7 @@
 train/
 test/
 *-checkpoint.ipynb
+**/.hypothesis
+docs/CHANGELOG.md
+docs/README.md
+docs/examples/*
