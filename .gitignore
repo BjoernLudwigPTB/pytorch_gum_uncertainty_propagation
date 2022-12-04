@@ -7,5 +7,7 @@ test/
 *-checkpoint.ipynb
 **/.hypothesis
 docs/CHANGELOG.md
+docs/INSTALL.md
 docs/README.md
 docs/examples/*
+docs/_build
