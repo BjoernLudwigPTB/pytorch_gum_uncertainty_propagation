@@ -24,6 +24,7 @@ classifiers = [
 ]
 version="0.1.0"
 dependencies = [
+    "h5py",
     "matplotlib",
     "pillow",
     "torch",
