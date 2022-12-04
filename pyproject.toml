@@ -43,7 +43,7 @@ examples = [
 ]
 dev = [
     "black[jupyter]",
-    "hypothesis",
+    "hypothesis[numpy]",
     "mypy",
     "pytest",
     "pytest-custom-exit-code",
