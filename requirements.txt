@@ -77,7 +77,7 @@ gitdb==4.0.10
     # via gitpython
 gitpython==3.1.29
     # via python-semantic-release
-hypothesis==6.60.0
+hypothesis[numpy]==6.60.0
     # via GUM-compliant-neural-network-uncertainty-propagation (pyproject.toml)
 idna==3.4
     # via requests
@@ -167,6 +167,7 @@ nest-asyncio==1.5.6
 numpy==1.23.5
     # via
     #   contourpy
+    #   hypothesis
     #   matplotlib
     #   torchvision
 packaging==21.3
