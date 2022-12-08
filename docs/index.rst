@@ -1,7 +1,7 @@
 :gitlab_url: https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation
 
-GUM-compliant uncertainy propagation
-====================================
+GUM-compliant uncertainty propagation
+=====================================
 
 .. toctree::
    :maxdepth: 2
@@ -26,7 +26,7 @@ GUM-compliant uncertainy propagation
    :maxdepth: 1
    :caption: Code Reference:
 
-   GUM_compliant_neural_network_uncertainty_propagation.activations
+   gum_compliant_neural_network_uncertainty_propagation.activations
 
 Indices and tables
 ==================

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# GUM_compliant_neural_network_uncertainty_propagation documentation build
+# gum_compliant_neural_network_uncertainty_propagation documentation build
 # configuration file, created by copying PyDynamic's on Sat Dec 04 16:30:35 2022.
 #
 # This file is execfile()d with the current directory set to its
@@ -85,7 +85,7 @@ for file_from_root in md_files_from_root_into_docs:
     )
 
 
-def assemble_path_dict_to_copy_files(source: str, destination: str) -> dict:
+def assemble_path_dict_to_copy_files(source: str, destination: str) -> dict[str, str]:
     # Function to construct the desired dict structure for the folders to copy.
     return {"source": source, "destination": destination}
 
@@ -96,7 +96,7 @@ tutorials_source = os.path.abspath(
         os.path.dirname(__file__),
         "..",
         "src",
-        "GUM_compliant_neural_network_uncertainty_propagation",
+        "gum_compliant_neural_network_uncertainty_propagation",
         "examples",
     )
 )
@@ -141,7 +141,7 @@ myst_heading_anchors = 4
 root_doc = "index"
 
 # General information about the project.
-project = "GUM_compliant_neural_network_uncertainty_propagation"
+project = "gum_compliant_neural_network_uncertainty_propagation"
 copyright = "2022, B. Ludwig (PTB)"
 author = "B. Ludwig"
 
@@ -232,7 +232,7 @@ html_theme = "sphinx_rtd_theme"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = []
+html_static_path: list[str] = []
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -295,7 +295,7 @@ html_static_path = []
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "GUM_compliant_neural_network_uncertainty_propagationdoc"
+htmlhelp_basename = "gum_compliant_neural_network_uncertainty_propagationdoc"
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -316,8 +316,8 @@ htmlhelp_basename = "GUM_compliant_neural_network_uncertainty_propagationdoc"
 latex_documents = [
     (
         root_doc,
-        "GUM_compliant_neural_network_uncertainty_propagation.tex",
-        "GUM_compliant_neural_network_uncertainty_propagation Documentation",
+        "gum_compliant_neural_network_uncertainty_propagation.tex",
+        "gum_compliant_neural_network_uncertainty_propagation Documentation",
         "B. Ludwig",
         "manual",
     ),
@@ -338,7 +338,7 @@ latex_show_pagerefs = False
 latex_show_urls = "footnote"
 
 # Documents to append as an appendix to all manuals.
-latex_appendices = []
+latex_appendices: list[str] = []
 
 # If false, no module index is generated.
 latex_domain_indices = True
@@ -351,8 +351,8 @@ latex_domain_indices = True
 man_pages = [
     (
         root_doc,
-        "GUM_compliant_neural_network_uncertainty_propagation",
-        "GUM_compliant_neural_network_uncertainty_propagation Documentation",
+        "gum_compliant_neural_network_uncertainty_propagation",
+        "gum_compliant_neural_network_uncertainty_propagation Documentation",
         [author],
         1,
     )
@@ -370,10 +370,10 @@ man_show_urls = False
 # texinfo_documents = [
 #     (
 #         root_doc,
-#         "GUM_compliant_neural_network_uncertainty_propagation",
-#         "GUM_compliant_neural_network_uncertainty_propagation Documentation",
+#         "gum_compliant_neural_network_uncertainty_propagation",
+#         "gum_compliant_neural_network_uncertainty_propagation Documentation",
 #         author,
-#         "GUM_compliant_neural_network_uncertainty_propagation",
+#         "gum_compliant_neural_network_uncertainty_propagation",
 #         "One line description of project.",
 #         "Miscellaneous",
 #     ),

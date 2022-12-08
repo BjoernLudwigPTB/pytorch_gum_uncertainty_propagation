@@ -15,17 +15,17 @@ pip install --user .
 ```
 
 This will install the current version into your local folder of third-party libraries. 
-Note that GUM_compliant_neural_network_uncertainty_propagation runs with **Python 
+Note that gum_compliant_neural_network_uncertainty_propagation runs with **Python 
 version 3.10**. Usage in any Python environment on your computer is then possible by
 
 ```python
-import GUM_compliant_neural_network_uncertainty_propagation
+import gum_compliant_neural_network_uncertainty_propagation
 ```
 
 or, for example, for the custom activation function QuadLU:
 
 ```python
-from GUM_compliant_neural_network_uncertainty_propagation.activations import QuadLU
+from gum_compliant_neural_network_uncertainty_propagation.activations import QuadLU
 ```
 
 ### Updating to the newest version
@@ -39,7 +39,7 @@ pip install --user .
 ## Proper Python setup with virtual environment  (**recommended**)
 
 The setup described above allows the quick and easy use of
-GUM_compliant_neural_network_uncertainty_propagation, but it also has its downsides. 
+gum_compliant_neural_network_uncertainty_propagation, but it also has its downsides. 
 When working with Python we should rather always work in so-called virtual 
 environments, in which our project specific dependencies are satisfied without 
 polluting or breaking other projects' dependencies and to avoid breaking all your 
@@ -52,7 +52,7 @@ If you are not familiar with [Python virtual environments
 motivation and an insight into the mechanism in the
 [official docs](https://docs.python.org/3/tutorial/venv.html).
 
-You have the option to set up GUM_compliant_neural_network_uncertainty_propagation 
+You have the option to set up gum_compliant_neural_network_uncertainty_propagation 
 using the Python built-in tool 
 `venv`. The commands differ slightly between [Windows
 ](#create-a-venv-python-environment-on-windows) and [Mac/Linux
@@ -65,8 +65,8 @@ a folder of your choice.
 
 ```shell
 PS C:> cd C:\LOCAL\PATH\TO\ENVS
-PS C:\LOCAL\PATH\TO\ENVS> py -3 -m venv GUM_compliant_nn_unc_prop_venv
-PS C:\LOCAL\PATH\TO\ENVS> GUM_compliant_nn_unc_prop_venv\Scripts\activate
+PS C:\LOCAL\PATH\TO\ENVS> py -3 -m venv gum_compliant_nn_unc_prop_venv
+PS C:\LOCAL\PATH\TO\ENVS> gum_compliant_nn_unc_prop_venv\Scripts\activate
 ```
 
 Proceed to [the next step
@@ -79,26 +79,26 @@ of your choice.
 
 ```shell
 $ cd /LOCAL/PATH/TO/ENVS
-$ python3 -m venv GUM_compliant_nn_unc_prop_venv
-$ source GUM_compliant_nn_unc_prop_venv/bin/activate
+$ python3 -m venv gum_compliant_nn_unc_prop_venv
+$ source gum_compliant_nn_unc_prop_venv/bin/activate
 ```
 
 Proceed to [the next step
 ](#install-gum_compliant_neural_network_uncertainty_propagation-via-pip).
 
-### Install GUM_compliant_neural_network_uncertainty_propagation via `pip`
+### Install gum_compliant_neural_network_uncertainty_propagation via `pip`
 
 Once you activated your virtual environment, you can install
-GUM_compliant_neural_network_uncertainty_propagation via:
+gum_compliant_neural_network_uncertainty_propagation via:
 
 ```shell
 pip install .
 ```
 
 ```shell
-Collecting GUM_compliant_neural_network_uncertainty_propagation
+Collecting gum_compliant_neural_network_uncertainty_propagation
 [...]
-Successfully installed GUM_compliant_neural_network_uncertainty_propagation-[...] [...]
+Successfully installed gum_compliant_neural_network_uncertainty_propagation-[...] [...]
 ```
 
 That's it!
@@ -108,32 +108,32 @@ That's it!
 If you are familiar with Jupyter Notebooks, you find some examples in the _src/examples_
 subfolder of the source code repository. To execute these you need additional 
 dependencies which you get by appending `[examples]` to
-GUM_compliant_neural_network_uncertainty_propagation in the above installation command, 
+gum_compliant_neural_network_uncertainty_propagation in the above installation command, 
 e.g.
 
 ```shell
-(GUM_compliant_nn_unc_prop_venv) $ pip install .[examples]
+(gum_compliant_nn_unc_prop_venv) $ pip install .[examples]
 ```
 
 ### Install known to work dependencies' versions
 
-In case errors arise within GUM_compliant_neural_network_uncertainty_propagation, 
+In case errors arise within gum_compliant_neural_network_uncertainty_propagation, 
 the first thing you can try is installing the known to work configuration of 
 dependencies against which we run our test suite. This you can easily achieve with 
 our requirements file. This is done with the following sequence of commands after 
 activating:
 
 ```shell
-(GUM_compliant_nn_unc_prop_venv) $ pip install --upgrade pip-tools
+(gum_compliant_nn_unc_prop_venv) $ pip install --upgrade pip-tools
 Collecting pip-tools
 [...]
 Successfully installed pip-tools-6.11.0
-(GUM_compliant_nn_unc_prop_venv) $ python --version
+(gum_compliant_nn_unc_prop_venv) $ python --version
 Python 3.10.7
-(GUM_compliant_nn_unc_prop_venv) $ python -m piptools sync requirements.txt 
+(gum_compliant_nn_unc_prop_venv) $ python -m piptools sync requirements.txt 
 requirements.txt
 Collecting [...]
 [...]
 Successfully installed [...]
-(GUM_compliant_nn_unc_prop_venv) $
+(gum_compliant_nn_unc_prop_venv) $
 ```
