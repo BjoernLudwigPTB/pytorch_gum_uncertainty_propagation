@@ -8,4 +8,5 @@ subject to constant change.
 
 ## Roadmap
 
-- implement first examples to get used to PyTorch
+- implement classes UncertainLinear and Uncertain<ActivationFunction> for Sigmoid, 
+  Softplus and QuadLU
