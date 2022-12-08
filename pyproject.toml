@@ -92,7 +92,6 @@ upload_to_repository = false
 upload_to_release = true
 hvcs = "gitlab"
 hvcs_domain = "gitlab1.ptb.de"
-check_build_status = true
 
 [tool.pylint.typecheck]
 # List of members which are set dynamically and missed by pylint inference
