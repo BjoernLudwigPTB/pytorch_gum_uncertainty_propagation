@@ -28,5 +28,5 @@ test:
 deploy:
   stage: deploy
   script:
-    - semantic-release publish
+    - semantic-release --verbosity=DEBUG publish
   environment: production
