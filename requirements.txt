@@ -17,7 +17,11 @@ argon2-cffi==21.3.0
     #   notebook
 argon2-cffi-bindings==21.2.0
     # via argon2-cffi
-asttokens==2.2.0
+arrow==1.2.3
+    # via isoduration
+astroid==2.12.13
+    # via pylint
+asttokens==2.2.1
     # via stack-data
 attrs==22.1.0
     # via
@@ -36,7 +40,7 @@ bleach==5.0.1
     # via
     #   nbconvert
     #   readme-renderer
-certifi==2022.9.24
+certifi==2022.12.7
     # via requests
 cffi==1.15.1
     # via
@@ -53,6 +57,8 @@ click-log==0.4.0
     # via python-semantic-release
 colorama==0.4.6
     # via twine
+comm==0.1.2
+    # via ipykernel
 contourpy==1.0.6
     # via matplotlib
 cryptography==38.0.4
@@ -65,6 +71,8 @@ decorator==5.1.1
     # via ipython
 defusedxml==0.7.1
     # via nbconvert
+dill==0.3.6
+    # via pylint
 docutils==0.17.1
     # via
     #   myst-parser
@@ -86,6 +94,8 @@ fastjsonschema==2.16.2
     # via nbformat
 fonttools==4.38.0
     # via matplotlib
+fqdn==1.5.1
+    # via jsonschema
 gitdb==4.0.10
     # via gitpython
 gitpython==3.1.29
@@ -97,6 +107,7 @@ hypothesis[numpy]==6.60.0
 idna==3.4
     # via
     #   anyio
+    #   jsonschema
     #   requests
 imagesize==1.4.1
     # via sphinx
@@ -108,7 +119,7 @@ iniconfig==1.1.1
     # via pytest
 invoke==1.7.3
     # via python-semantic-release
-ipykernel==6.17.1
+ipykernel==6.19.2
     # via
     #   ipywidgets
     #   nbclassic
@@ -122,8 +133,12 @@ ipython-genutils==0.2.0
     # via
     #   nbclassic
     #   notebook
-ipywidgets==8.0.2
-    # via GUM-compliant-neural-network-uncertainty-propagation (pyproject.toml)
+ipywidgets==8.0.3
+    # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
+isoduration==20.11.0
+    # via jsonschema
+isort==5.10.1
+    # via pylint
 jaraco-classes==3.2.3
     # via keyring
 jedi==0.18.2
@@ -141,9 +156,13 @@ jinja2==3.1.2
     #   nbsphinx
     #   notebook
     #   sphinx
-jsonschema==4.17.3
-    # via nbformat
-jupyter-client==7.4.7
+jsonpointer==2.3
+    # via jsonschema
+jsonschema[format-nongpl]==4.17.3
+    # via
+    #   jupyter-events
+    #   nbformat
+jupyter-client==7.4.8
     # via
     #   ipykernel
     #   jupyter-server
@@ -163,20 +182,26 @@ jupyter-core==5.1.0
     #   nbconvert
     #   nbformat
     #   notebook
+jupyter-events==0.5.0
+    # via jupyter-server
 jupyter-nbextensions-configurator==0.6.1
-    # via GUM-compliant-neural-network-uncertainty-propagation (pyproject.toml)
-jupyter-server==1.23.3
+    # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
+jupyter-server==2.0.1
     # via
     #   nbclassic
     #   notebook-shim
+jupyter-server-terminals==0.4.2
+    # via jupyter-server
 jupyterlab-pygments==0.2.2
     # via nbconvert
-jupyterlab-widgets==3.0.3
+jupyterlab-widgets==3.0.4
     # via ipywidgets
 keyring==23.11.0
     # via twine
 kiwisolver==1.4.4
     # via matplotlib
+lazy-object-proxy==1.8.0
+    # via astroid
 markdown-it-py==2.1.0
     # via
     #   mdit-py-plugins
@@ -191,7 +216,9 @@ matplotlib-inline==0.1.6
     # via
     #   ipykernel
     #   ipython
-mdit-py-plugins==0.3.1
+mccabe==0.7.0
+    # via pylint
+mdit-py-plugins==0.3.3
     # via myst-parser
 mdurl==0.1.2
     # via markdown-it-py
@@ -211,7 +238,7 @@ nbclassic==0.4.8
     # via notebook
 nbclient==0.7.2
     # via nbconvert
-nbconvert==7.2.5
+nbconvert==7.2.6
     # via
     #   jupyter-server
     #   nbclassic
@@ -247,7 +274,7 @@ numpy==1.23.5
     #   hypothesis
     #   matplotlib
     #   torchvision
-packaging==21.3
+packaging==22.0
     # via
     #   ipykernel
     #   jupyter-server
@@ -273,10 +300,11 @@ pillow==9.3.0
     #   torchvision
 pkginfo==1.9.2
     # via twine
-platformdirs==2.5.4
+platformdirs==2.6.0
     # via
     #   black
     #   jupyter-core
+    #   pylint
 pluggy==1.0.0
     # via pytest
 prometheus-client==0.15.0
@@ -284,7 +312,7 @@ prometheus-client==0.15.0
     #   jupyter-server
     #   nbclassic
     #   notebook
-prompt-toolkit==3.0.33
+prompt-toolkit==3.0.36
     # via ipython
 psutil==5.9.4
     # via ipykernel
@@ -302,10 +330,10 @@ pygments==2.13.0
     #   nbconvert
     #   readme-renderer
     #   sphinx
+pylint==2.15.8
+    # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
 pyparsing==3.0.9
-    # via
-    #   matplotlib
-    #   packaging
+    # via matplotlib
 pyrsistent==0.19.2
     # via jsonschema
 pytest==7.2.0
@@ -316,16 +344,20 @@ pytest-custom-exit-code==0.3.0
     # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
 python-dateutil==2.8.2
     # via
+    #   arrow
     #   jupyter-client
     #   matplotlib
 python-gitlab==3.12.0
     # via python-semantic-release
+python-json-logger==2.0.4
+    # via jupyter-events
 python-semantic-release==7.32.2
-    # via GUM-compliant-neural-network-uncertainty-propagation (pyproject.toml)
+    # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
 pytz==2022.6
     # via babel
 pyyaml==6.0
     # via
+    #   jupyter-events
     #   jupyter-nbextensions-configurator
     #   myst-parser
 pyzmq==24.0.1
@@ -349,8 +381,12 @@ requests-toolbelt==0.10.1
     # via
     #   python-gitlab
     #   twine
+rfc3339-validator==0.1.4
+    # via jsonschema
 rfc3986==2.0.0
     # via twine
+rfc3986-validator==0.1.1
+    # via jsonschema
 secretstorage==3.3.3
     # via keyring
 semver==2.13.0
@@ -365,6 +401,7 @@ six==1.16.0
     #   asttokens
     #   bleach
     #   python-dateutil
+    #   rfc3339-validator
 smmap==5.0.0
     # via gitdb
 sniffio==1.3.0
@@ -397,9 +434,10 @@ sphinxcontrib-serializinghtml==1.1.5
     # via sphinx
 stack-data==0.6.2
     # via ipython
-terminado==0.17.0
+terminado==0.17.1
     # via
     #   jupyter-server
+    #   jupyter-server-terminals
     #   nbclassic
     #   notebook
 tinycss2==1.2.1
@@ -410,9 +448,12 @@ tomli==2.0.1
     # via
     #   black
     #   mypy
+    #   pylint
     #   pytest
 tomlkit==0.11.6
-    # via python-semantic-release
+    # via
+    #   pylint
+    #   python-semantic-release
 torch==1.13.0+cpu
     # via
     #   gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
@@ -436,14 +477,16 @@ tqdm==4.64.1
     # via
     #   gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
     #   twine
-traitlets==5.6.0
+traitlets==5.7.0
     # via
+    #   comm
     #   ipykernel
     #   ipython
     #   ipywidgets
     #   jupyter-client
     #   jupyter-contrib-core
     #   jupyter-core
+    #   jupyter-events
     #   jupyter-nbextensions-configurator
     #   jupyter-server
     #   matplotlib-inline
@@ -461,12 +504,16 @@ typing-extensions==4.4.0
     #   myst-parser
     #   torch
     #   torchvision
+uri-template==1.2.0
+    # via jsonschema
 urllib3==1.26.13
     # via
     #   requests
     #   twine
 wcwidth==0.2.5
     # via prompt-toolkit
+webcolors==1.12
+    # via jsonschema
 webencodings==0.5.1
     # via
     #   bleach
@@ -475,8 +522,10 @@ websocket-client==1.4.2
     # via jupyter-server
 wheel==0.38.4
     # via python-semantic-release
-widgetsnbextension==4.0.3
+widgetsnbextension==4.0.4
     # via ipywidgets
+wrapt==1.14.1
+    # via astroid
 zipp==3.11.0
     # via importlib-metadata
 
