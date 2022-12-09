@@ -40,6 +40,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "myst_parser",
     "nbsphinx",
+    "IPython.sphinxext.ipython_console_highlighting",
 ]
 
 # ReadTheDocs Sphinx theme option taken from
