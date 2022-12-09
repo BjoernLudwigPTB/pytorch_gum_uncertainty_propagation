@@ -1,4 +1,4 @@
-from typing import cast
+from typing import cast, Optional
 
 from hypothesis import strategies as hst
 from hypothesis.extra import numpy as hnp
@@ -12,7 +12,7 @@ def alphas(
     draw: DrawFn,
     min_value: float = 0.0,
     exclude_min: bool = True,
-    max_value: float = 10,
+    max_value: float = 10.0,
 ) -> SearchStrategy[Parameter]:
     return cast(
         SearchStrategy[Parameter],
@@ -32,8 +32,27 @@ def alphas(
 
 @composite
 def tensors(
-    draw: DrawFn, elements_min=None, elements_max=None
+    draw: DrawFn,
+    elements_min: Optional[float] = None,
+    elements_max: Optional[float] = None,
 ) -> SearchStrategy[Tensor]:
+    """A search strategy for PyTorch tensors
+
+    Parameters
+    ----------
+    draw : DrawFn
+        special function, which can be used just within a test to draw from other
+        strategies
+    elements_min : optional, float
+        the parameter used to set min_value in the elements' float strategy
+    elements_max : optional,float
+        the parameter used to set max_value in the elements' float strategy
+
+    Returns
+    -------
+    SearchStrategy[Tensor]
+        the search strategy
+    """
     return cast(
         SearchStrategy[Tensor],
         tensor(
