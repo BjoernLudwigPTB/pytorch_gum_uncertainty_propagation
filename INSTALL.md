@@ -25,7 +25,7 @@ import gum_compliant_neural_network_uncertainty_propagation
 or, for example, for the custom activation function QuadLU:
 
 ```python
-from gum_compliant_neural_network_uncertainty_propagation.activations import QuadLU
+from gum_compliant_neural_network_uncertainty_propagation.modules import QuadLU
 ```
 
 ### Updating to the newest version

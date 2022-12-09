@@ -4,8 +4,8 @@ from numpy.testing import assert_allclose, assert_almost_equal, assert_equal
 from torch import tensor
 from torch.nn import Module
 
-from gum_compliant_neural_network_uncertainty_propagation import activations
-from gum_compliant_neural_network_uncertainty_propagation.activations import QuadLU
+from gum_compliant_neural_network_uncertainty_propagation import modules
+from gum_compliant_neural_network_uncertainty_propagation.modules import QuadLU
 
 
 @pytest.fixture()
@@ -13,8 +13,8 @@ def quadlu() -> QuadLU:
     return QuadLU()
 
 
-def test_activations_has_module_docstring() -> None:
-    assert activations.__doc__ is not None
+def test_modules_has_module_docstring() -> None:
+    assert modules.__doc__ is not None
 
 
 def test_init_quadlu(quadlu: QuadLU) -> None:
