@@ -12,6 +12,9 @@ variables:
   HTTP_PROXY: "http://webproxy:8080"
   HTTPS_PROXY: "http://webproxy:8080"
 
+.install-dev-deps: &install-dev-deps
+  - python -m piptools sync dev-requirements.txt
+
 before_script:
   - python --version  # For debugging
   - pip install --upgrade pip virtualenv
@@ -22,9 +25,19 @@ before_script:
 
 test:
   script:
-    - python -m piptools sync dev-requirements.txt
+    - *install-dev-deps
     - pip install .
     - pytest
+
+mypy:
+  script:
+    - *install-dev-deps
+    - mypy
+
+pylint:
+  script:
+    - *install-dev-deps
+    - pylint src/gum_compliant_neural_network_uncertainty_propagation
 
 deploy:
   stage: deploy
