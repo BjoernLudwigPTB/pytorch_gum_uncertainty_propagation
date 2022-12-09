@@ -32,7 +32,7 @@ test:
 mypy:
   script:
     - *install-dev-deps
-    - mypy
+    - mypy .
 
 pylint:
   script:
