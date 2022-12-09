@@ -22,11 +22,13 @@ before_script:
 
 test:
   script:
+    - python -m piptools sync dev-requirements.txt
     - pip install .
     - pytest
 
 deploy:
   stage: deploy
   script:
+    - python -m piptools sync release-requirements.txt
     - semantic-release publish
   environment: production
