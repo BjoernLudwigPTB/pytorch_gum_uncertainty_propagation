@@ -6,7 +6,7 @@ from typing import Optional
 
 import torch
 from torch import Tensor
-from torch.nn import Module, Sequential
+from torch.nn import Module, ModuleList, Sequential
 from torch.nn.parameter import Parameter
 
 from gum_compliant_neural_network_uncertainty_propagation.functionals import (
@@ -130,9 +130,7 @@ class QuadLUMLP(Sequential):
         # inplace: Optional[bool] = True,
         # bias: bool = True,
     ):
-        #         params = {} if inplace is None else {"inplace": inplace}
-        #
-        layers: list[Module] = []
+        layers = ModuleList()
         in_dimen = in_channels
         for out_dimen in out_features:
             layers.append(torch.nn.Linear(in_dimen, out_dimen, dtype=torch.double))
