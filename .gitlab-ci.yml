@@ -57,6 +57,11 @@ flake8:
     - *install-dev-deps
     - flake8 .
 
+black:
+  script:
+    - *install-dev-deps
+    - black --check .
+
 deploy:
   stage: deploy
   script:
