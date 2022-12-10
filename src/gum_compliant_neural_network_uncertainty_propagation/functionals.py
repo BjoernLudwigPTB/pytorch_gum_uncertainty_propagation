@@ -21,5 +21,5 @@ def quadlu(values: Tensor, alpha: Parameter = QUADLU_ALPHA_DEFAULT) -> Tensor:
     greater_or_equal_mask = values >= alpha
     result_tensor[greater_or_equal_mask] = 4.0 * alpha * values[greater_or_equal_mask]
     in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
-    result_tensor[in_between_mask] = (values[in_between_mask] + alpha) ** 2
+    result_tensor[in_between_mask] = torch.square(values[in_between_mask] + alpha)
     return result_tensor

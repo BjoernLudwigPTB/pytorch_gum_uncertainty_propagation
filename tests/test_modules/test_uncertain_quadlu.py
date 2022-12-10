@@ -1,7 +1,7 @@
 """Test the class UncertainQuadLU"""
 from hypothesis import given, strategies as hst
 from numpy.testing import assert_equal
-from torch import Tensor
+from torch import square, Tensor
 from torch.nn import Module
 from torch.nn.parameter import Parameter
 from torch.testing import assert_close  # type: ignore[attr-defined]
@@ -117,7 +117,7 @@ def test_uncertain_quadlu_with_default_alpha_forward_equals_x_plus_alpha_squared
 ) -> None:
     assert_close(
         UncertainQuadLU().forward(x)[0],
-        (x + UncertainQuadLU.QUADLU_ALPHA_DEFAULT) ** 2,
+        square(x + UncertainQuadLU.QUADLU_ALPHA_DEFAULT),
         rtol=2e-7,
         atol=4e-7,
     )
@@ -131,5 +131,6 @@ def test_uncertain_quadlu_with_default_alpha_forward_equals_x_plus_alpha_squared
 )
 def test_uncertain_quadlu_forward_equals_x_plus_alpha_squared_else(x: Tensor) -> None:
     assert_close(
-        UncertainQuadLU().forward(x)[0], (x + UncertainQuadLU.QUADLU_ALPHA_DEFAULT) ** 2
+        UncertainQuadLU().forward(x)[0],
+        square(x + UncertainQuadLU.QUADLU_ALPHA_DEFAULT),
     )

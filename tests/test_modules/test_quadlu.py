@@ -1,7 +1,7 @@
 """Test the class QuadLU"""
 from hypothesis import given
 from numpy.testing import assert_equal
-from torch import equal, tensor, Tensor
+from torch import equal, square, tensor, Tensor
 from torch.nn import Module
 from torch.nn.parameter import Parameter
 from torch.testing import assert_close  # type: ignore[attr-defined]
@@ -94,12 +94,12 @@ def test_quadlu_forward_is_correct_large_x(x: Tensor, alpha: Parameter) -> None:
     )
 )
 def test_default_quadlu_forward_equals_x_plus_alpha_squared_else(x: Tensor) -> None:
-    assert_close(QuadLU().forward(x), (x + QuadLU.QUADLU_ALPHA_DEFAULT) ** 2)
+    assert_close(QuadLU().forward(x), square(x + QuadLU.QUADLU_ALPHA_DEFAULT))
 
 
 @given(tensors(elements_min=-0.14, elements_max=0.14), alphas(min_value=0.14))
 def test_quadlu_forward_is_correct_else(x: Tensor, alpha: Parameter) -> None:
-    assert_close(QuadLU(alpha).forward(x), (x + alpha) ** 2)
+    assert_close(QuadLU(alpha).forward(x), square(x + alpha))
 
 
 @given(tensors())
@@ -111,7 +111,7 @@ def test_default_quadlu_forward_is_correct_for_random_input(values: Tensor) -> N
     assert_equal(result_tensor[less_or_equal_mask].data.numpy(), 0.0)
     assert_close(
         result_tensor[in_between_mask],
-        (values[in_between_mask] + QuadLU.QUADLU_ALPHA_DEFAULT) ** 2,
+        square(values[in_between_mask] + QuadLU.QUADLU_ALPHA_DEFAULT),
         equal_nan=True,
     )
     assert_close(result_tensor[greater_or_equal_mask], values[greater_or_equal_mask])
@@ -128,7 +128,7 @@ def test_quadlu_forward_is_correct_for_random_input(
     assert_equal(result_tensor[less_or_equal_mask].data.numpy(), 0.0)
     assert_close(
         result_tensor[in_between_mask],
-        (values[in_between_mask] + alpha) ** 2,
+        square(values[in_between_mask] + alpha),
         equal_nan=True,
     )
     assert_close(

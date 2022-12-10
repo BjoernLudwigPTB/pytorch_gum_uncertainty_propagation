@@ -90,7 +90,7 @@ def test_quadlu_forward_is_correct_for_bigs(values: Tensor, alpha: Parameter) ->
 def test_default_quadlu_forward_is_correct_for_mediums(values: Tensor) -> None:
     assert_equal(
         quadlu(values).data.numpy(),
-        (values + QUADLU_ALPHA_DEFAULT.data.item()) ** 2,
+        torch.square(values + QUADLU_ALPHA_DEFAULT.data.item()),
     )
 
 
@@ -114,7 +114,7 @@ def test_default_quadlu_forward_is_correct_for_sorted_input(
     assert_equal(quadlu(input_tensor)[: len(smalls)].data.numpy(), 0.0)
     assert_close(
         quadlu(input_tensor)[len(smalls) : len(smalls) + len(mediums)],
-        (mediums + QUADLU_ALPHA_DEFAULT) ** 2,
+        torch.square(mediums + QUADLU_ALPHA_DEFAULT),
     )
     assert_close(quadlu(input_tensor)[-len(bigs) :], bigs)
 
@@ -128,7 +128,7 @@ def test_default_quadlu_forward_is_correct_for_random_input(values: Tensor) -> N
     assert_equal(result_tensor[less_or_equal_mask].data.numpy(), 0.0)
     assert_close(
         result_tensor[in_between_mask],
-        (values[in_between_mask] + QUADLU_ALPHA_DEFAULT) ** 2,
+        torch.square(values[in_between_mask] + QUADLU_ALPHA_DEFAULT),
         equal_nan=True,
     )
     assert_close(result_tensor[greater_or_equal_mask], values[greater_or_equal_mask])
@@ -145,7 +145,7 @@ def test_quadlu_forward_is_correct_for_random_input(
     assert_equal(result_tensor[less_or_equal_mask].data.numpy(), 0.0)
     assert_close(
         result_tensor[in_between_mask],
-        (values[in_between_mask] + alpha) ** 2,
+        torch.square(values[in_between_mask] + alpha),
         equal_nan=True,
     )
     assert_close(
