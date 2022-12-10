@@ -2,6 +2,7 @@ train/
 test/
 build/
 docs/_build
+docs/examples/
 **/.hypothesis/
 **/.coverage/
 *.egg-info
@@ -14,4 +15,3 @@ junit.xml
 docs/CHANGELOG.md
 docs/INSTALL.md
 docs/README.md
-docs/examples/*
