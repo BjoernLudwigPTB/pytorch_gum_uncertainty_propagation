@@ -3,8 +3,11 @@ test/
 build/
 docs/_build
 **/.hypothesis/
+**/.coverage/
 *.egg-info
 .__atomic-write*
+coverage.xml
+junit.xml
 **/*.txt
 **/*.jpg
 *-checkpoint.ipynb
