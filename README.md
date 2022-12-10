@@ -1,5 +1,9 @@
 # GUM-compliant_neural-network_uncertainty-propagation
 
+[![pipeline status](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/badges/main/pipeline.svg)](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commits/main)
+[![coverage report](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/badges/main/coverage.svg)](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commits/main)
+[![Latest Release](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/badges/release.svg)](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/releases)
+
 This is the code written in conjunction with the first part of my Master's thesis on 
 GUM-compliant neural network robustness verification. The code was written for 
 _Python 3.10_.
