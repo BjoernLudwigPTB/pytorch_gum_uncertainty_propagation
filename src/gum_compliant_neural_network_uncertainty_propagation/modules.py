@@ -35,21 +35,24 @@ class QuadLU(Module):
         ----------
         alpha : float
             trainable, non-negative parameter of QuadLU activation function
+        inplace : bool
+            can optionally do the operation in-place. Default: ``False``
         """
 
     QUADLU_ALPHA_DEFAULT: Parameter = QUADLU_ALPHA_DEFAULT
 
-    def __init__(self, alpha: Optional[Parameter] = None):
+    def __init__(self, alpha: Optional[Parameter] = None, inplace: bool = False):
         """QuadLU activation function with parameter alpha"""
         super().__init__()
         if alpha is None:
             self._alpha = self.QUADLU_ALPHA_DEFAULT
         else:
             self._alpha = alpha
+        self._inplace = inplace
 
     def forward(self, values: Tensor) -> Tensor:
         """Forward pass of QuadLU"""
-        return quadlu(values, self._alpha)
+        return quadlu(values, self._alpha, self._inplace)
 
 
 class UncertainQuadLU(Module):
