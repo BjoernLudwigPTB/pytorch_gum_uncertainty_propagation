@@ -7,11 +7,11 @@ from gum_compliant_neural_network_uncertainty_propagation.modules import (
 )
 
 
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def quadlu() -> QuadLU:
     return QuadLU()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def uncertain_quadlu() -> UncertainQuadLU:
     return UncertainQuadLU()
