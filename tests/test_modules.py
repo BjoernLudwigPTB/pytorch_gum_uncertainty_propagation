@@ -200,7 +200,9 @@ def test_uncertain_quadlu_forward_provides_no_uncertainties_if_not_provided(
 
 
 @given(
-    tensors(elements_min=UncertainQuadLU.QUADLU_ALPHA_DEFAULT.data.item(), elements_max=1e30)
+    tensors(
+        elements_min=UncertainQuadLU.QUADLU_ALPHA_DEFAULT.data.item(), elements_max=1e30
+    )
 )
 def test_uncertain_quadlu_with_default_alpha_forward_equals_x_for_large_x(
     x: Tensor,
