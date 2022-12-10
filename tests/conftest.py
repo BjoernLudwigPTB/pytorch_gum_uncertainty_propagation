@@ -1,3 +1,4 @@
+"""Common strategies"""
 from typing import cast, Optional
 
 from hypothesis import strategies as hst
