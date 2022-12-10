@@ -1,3 +1,5 @@
+from inspect import signature
+
 import torch
 from hypothesis import given, strategies as hst
 from numpy.testing import assert_equal
@@ -8,6 +10,7 @@ from torch.testing import assert_close  # type: ignore[attr-defined]
 from gum_compliant_neural_network_uncertainty_propagation import functionals
 from gum_compliant_neural_network_uncertainty_propagation.functionals import (
     quadlu,
+    quadlu_,
     QUADLU_ALPHA_DEFAULT,
 )
 from .conftest import alphas, tensors
@@ -17,12 +20,20 @@ def test_functionals_has_default_alpha() -> None:
     assert hasattr(functionals, "QUADLU_ALPHA_DEFAULT")
 
 
+def test_quadlu_exists() -> None:
+    assert hasattr(functionals, quadlu.__name__)
+
+
 def test_functionals_has_module_docstring() -> None:
     assert functionals.__doc__ is not None
 
 
 def test_functionals_all_contains_quadlu() -> None:
     assert quadlu.__name__ in functionals.__all__
+
+
+def test_functionals_all_contains_quadlu_() -> None:
+    assert "quadlu_" in functionals.__all__
 
 
 @given(hst.floats())
@@ -153,3 +164,31 @@ def test_quadlu_forward_is_correct_for_random_input(
         4 * alpha * values[greater_or_equal_mask],
         equal_nan=True,
     )
+
+
+def test_quadlu_accepts_inplace() -> None:
+    assert "inplace" in signature(quadlu).parameters
+
+
+@given(tensors())
+def test_default_quadlu_inplace_is_inplace(values: Tensor) -> None:
+    assert_close(quadlu(values, inplace=True), values, equal_nan=True)
+
+
+@given(tensors(), alphas())
+def test_quadlu_inplace_is_inplace(values: Tensor, alpha: Parameter) -> None:
+    assert_close(quadlu(values, alpha, inplace=True), values, equal_nan=True)
+
+
+def test_inplace_quadlu_exists() -> None:
+    assert hasattr(functionals, "quadlu_")
+
+
+@given(tensors())
+def test_default_inplace_quadlu_equals_quadlu(values: Tensor) -> None:
+    assert_close(quadlu(values), quadlu_(values), equal_nan=True)
+
+
+@given(tensors(), alphas())
+def test_inplace_quadlu_equals_quadlu(values: Tensor, alpha: Parameter) -> None:
+    assert_close(quadlu(values, alpha), quadlu_(values, alpha), equal_nan=True)

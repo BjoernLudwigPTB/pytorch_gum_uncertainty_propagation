@@ -1,4 +1,6 @@
 """Test the class QuadLU"""
+from inspect import signature
+
 from hypothesis import given
 from numpy.testing import assert_equal
 from torch import equal, square, tensor, Tensor
@@ -17,6 +19,10 @@ def test_modules_all_contains_quadlu() -> None:
     assert QuadLU.__name__ in modules.__all__
 
 
+def test_modules_actually_contains_quadlu() -> None:
+    assert hasattr(modules, QuadLU.__name__)
+
+
 def test_quadlu_is_subclass_of_nn_module() -> None:
     assert issubclass(QuadLU, Module)
 
@@ -33,6 +39,8 @@ def test_init_quadlu_creates_parameter(quadlu_instance: QuadLU) -> None:
     assert hasattr(quadlu_instance, "_alpha")
 
 
+def test_init_quadlu_creates_attribute_inplace(quadlu_instance: QuadLU) -> None:
+    assert hasattr(quadlu_instance, "_inplace")
 
 
 def test_init_quadlu_alpha_requires_grad(quadlu_instance: QuadLU) -> None:
@@ -40,7 +48,7 @@ def test_init_quadlu_alpha_requires_grad(quadlu_instance: QuadLU) -> None:
 
 
 def test_init_quadlu_contains_constant_for_alphas_default(
-    quadlu_instance: QuadLU
+    quadlu_instance: QuadLU,
 ) -> None:
     assert hasattr(quadlu_instance, "QUADLU_ALPHA_DEFAULT")
 
@@ -134,5 +142,35 @@ def test_quadlu_forward_is_correct_for_random_input(
     assert_close(
         result_tensor[greater_or_equal_mask],
         4 * alpha * values[greater_or_equal_mask],
+        equal_nan=True,
+    )
+
+
+def test_quadlu_accepts_inplace() -> None:
+    assert "inplace" in signature(QuadLU).parameters
+
+
+@given(tensors())
+def test_default_quadlu_inplace_is_inplace(values: Tensor) -> None:
+    assert_close(QuadLU(inplace=True).forward(values), values, equal_nan=True)
+
+
+@given(tensors(), alphas())
+def test_quadlu_inplace_is_inplace(values: Tensor, alpha: Parameter) -> None:
+    assert_close(QuadLU(alpha, inplace=True).forward(values), values, equal_nan=True)
+
+
+@given(tensors())
+def test_default_inplace_quadlu_equals_quadlu(values: Tensor) -> None:
+    assert_close(
+        QuadLU().forward(values), QuadLU(inplace=True).forward(values), equal_nan=True
+    )
+
+
+@given(tensors(), alphas())
+def test_inplace_quadlu_equals_quadlu(values: Tensor, alpha: Parameter) -> None:
+    assert_close(
+        QuadLU(alpha).forward(values),
+        QuadLU(alpha, inplace=True).forward(values),
         equal_nan=True,
     )
