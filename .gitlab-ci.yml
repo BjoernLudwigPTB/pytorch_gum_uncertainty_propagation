@@ -39,6 +39,11 @@ pylint:
     - *install-dev-deps
     - pylint src/gum_compliant_neural_network_uncertainty_propagation
 
+flake8:
+  script:
+    - *install-dev-deps
+    - flake8 .
+
 deploy:
   stage: deploy
   script:
