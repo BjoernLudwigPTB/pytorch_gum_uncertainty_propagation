@@ -25,28 +25,32 @@ def test_quadlu_has_docstring() -> None:
     assert QuadLU.__doc__ is not None
 
 
-def test_init_quadlu(quadlu: QuadLU) -> None:
-    assert quadlu
+def test_init_quadlu(quadlu_instance: QuadLU) -> None:
+    assert quadlu_instance
 
 
-def test_init_quadlu_creates_parameter(quadlu: QuadLU) -> None:
-    assert hasattr(quadlu, "_alpha")
+def test_init_quadlu_creates_parameter(quadlu_instance: QuadLU) -> None:
+    assert hasattr(quadlu_instance, "_alpha")
 
 
-def test_init_quadlu_alpha_requires_grad(quadlu: QuadLU) -> None:
-    assert quadlu._alpha.requires_grad
 
 
-def test_init_quadlu_contains_constant_for_alphas_default(quadlu: QuadLU) -> None:
-    assert hasattr(quadlu, "QUADLU_ALPHA_DEFAULT")
+def test_init_quadlu_alpha_requires_grad(quadlu_instance: QuadLU) -> None:
+    assert quadlu_instance._alpha.requires_grad
 
 
-def test_init_quadlu_constant_for_alphas_default_value(quadlu: QuadLU) -> None:
-    assert_equal(quadlu.QUADLU_ALPHA_DEFAULT.data.item(), 0.25)
+def test_init_quadlu_contains_constant_for_alphas_default(
+    quadlu_instance: QuadLU
+) -> None:
+    assert hasattr(quadlu_instance, "QUADLU_ALPHA_DEFAULT")
 
 
-def test_init_quadlu_creates_alpha_equal_to_default(quadlu: QuadLU) -> None:
-    assert equal(quadlu._alpha, quadlu.QUADLU_ALPHA_DEFAULT)
+def test_init_quadlu_constant_for_alphas_default_value(quadlu_instance: QuadLU) -> None:
+    assert_equal(quadlu_instance.QUADLU_ALPHA_DEFAULT.data.item(), 0.25)
+
+
+def test_init_quadlu_creates_alpha_equal_to_default(quadlu_instance: QuadLU) -> None:
+    assert equal(quadlu_instance._alpha, quadlu_instance.QUADLU_ALPHA_DEFAULT)
 
 
 @given(alphas())
@@ -59,8 +63,8 @@ def test_init_quadlu_with_random_alpha(alpha: Parameter) -> None:
     assert_close(QuadLU(alpha)._alpha, alpha)
 
 
-def test_init_quadlu_contains_custom_forward(quadlu: QuadLU) -> None:
-    assert quadlu.forward(tensor([1.0]))
+def test_init_quadlu_contains_custom_forward(quadlu_instance: QuadLU) -> None:
+    assert quadlu_instance.forward(tensor([1.0]))
 
 
 @given(tensors(elements_max=-QuadLU.QUADLU_ALPHA_DEFAULT.data.item()))

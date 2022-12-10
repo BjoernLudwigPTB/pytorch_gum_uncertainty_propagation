@@ -8,7 +8,7 @@ from gum_compliant_neural_network_uncertainty_propagation.modules import (
 
 
 @pytest.fixture(scope="session")
-def quadlu() -> QuadLU:
+def quadlu_instance() -> QuadLU:
     return QuadLU()
 
 

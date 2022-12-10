@@ -41,9 +41,11 @@ def test_init_uncertain_quadlu_contains_constant_for_alphas_default(
 
 
 def test_init_uncertain_quadlu_constant_for_alphas_default_equals_one(
-    uncertain_quadlu: UncertainQuadLU, quadlu: QuadLU
+    uncertain_quadlu: UncertainQuadLU, quadlu_instance: QuadLU
 ) -> None:
-    assert_close(uncertain_quadlu.QUADLU_ALPHA_DEFAULT, quadlu.QUADLU_ALPHA_DEFAULT)
+    assert_close(
+        uncertain_quadlu.QUADLU_ALPHA_DEFAULT, quadlu_instance.QUADLU_ALPHA_DEFAULT
+    )
 
 
 def test_init_uncertain_quadlu_creates_alpha_equal_to_default(
