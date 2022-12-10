@@ -55,6 +55,7 @@ intersphinx_mapping = {
     "np": ("https://numpy.org/doc/stable/", None),
     "Python": ("https://docs.python.org/3", None),
     "torch": ("https://pytorch.org/docs/stable/", None),
+    "torchvision": ("https://pytorch.org/vision/stable/", None),
 }
 # We keep the objects.inv files in our docs folder to get hints on how to specify the
 # cross-references. More on the topic can be found here:
