@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.0 (2022-12-10)
+### Feature
+* **quadlu:** Introduce functional version of QuadLU ([`b91dd3c`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/b91dd3c06d8a0b999375611f52541bad35cfe9c6))
+
+### Documentation
+* **functionals:** Introduce functional version of QuadLU into docs ([`8ece184`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/8ece184ea67179c3416dae87184aaa3e6f3d9b08))
+* **Examples:** Introduce read_dataset into docs ([`49f752c`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/49f752cd451f49f2b97127157c8c195b8539801f))
+* **README:** Extend README with Documentation and Getting Started sections ([`f08fc19`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/f08fc19ea39a3b48620dab1f74f645ff6f39fba0))
+
 ## v0.2.0 (2022-12-09)
 ### Feature
 * **uncertainties:** Introduce module to process uncertainties with first function to construct cov ([`02e2859`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/02e2859055c7f8be4a4d30c7edf1cf49b4b958b8))

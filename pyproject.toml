@@ -22,7 +22,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Mathematics",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
     "h5py",
     "matplotlib",
@@ -47,6 +47,7 @@ dev = [
     "hypothesis[numpy]",
     "mypy",
     "pylint",
+    "pytest",
     "pytest",
     "pytest-custom-exit-code",
 ]
