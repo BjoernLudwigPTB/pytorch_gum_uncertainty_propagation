@@ -34,7 +34,7 @@ backcall==0.2.0
     # via ipython
 beautifulsoup4==4.11.1
     # via nbconvert
-black[jupyter]==22.10.0
+black[jupyter]==22.12.0
     # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
 bleach==5.0.1
     # via
@@ -61,6 +61,8 @@ comm==0.1.2
     # via ipykernel
 contourpy==1.0.6
     # via matplotlib
+coverage[toml]==6.5.0
+    # via pytest-cov
 cryptography==38.0.4
     # via secretstorage
 cycler==0.11.0
@@ -92,6 +94,12 @@ executing==1.2.0
     # via stack-data
 fastjsonschema==2.16.2
     # via nbformat
+flake8==6.0.0
+    # via
+    #   flake8-pyproject
+    #   gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
+flake8-pyproject==1.2.2
+    # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
 fonttools==4.38.0
     # via matplotlib
 fqdn==1.5.1
@@ -127,6 +135,7 @@ ipykernel==6.19.2
 ipython==8.7.0
     # via
     #   black
+    #   gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
     #   ipykernel
     #   ipywidgets
 ipython-genutils==0.2.0
@@ -217,7 +226,9 @@ matplotlib-inline==0.1.6
     #   ipykernel
     #   ipython
 mccabe==0.7.0
-    # via pylint
+    # via
+    #   flake8
+    #   pylint
 mdit-py-plugins==0.3.3
     # via myst-parser
 mdurl==0.1.2
@@ -287,7 +298,7 @@ pandocfilters==1.5.0
     # via nbconvert
 parso==0.8.3
     # via jedi
-pathspec==0.10.2
+pathspec==0.10.3
     # via black
 pexpect==4.8.0
     # via ipython
@@ -322,8 +333,12 @@ ptyprocess==0.7.0
     #   terminado
 pure-eval==0.2.2
     # via stack-data
+pycodestyle==2.10.0
+    # via flake8
 pycparser==2.21
     # via cffi
+pyflakes==3.0.1
+    # via flake8
 pygments==2.13.0
     # via
     #   ipython
@@ -339,7 +354,10 @@ pyrsistent==0.19.2
 pytest==7.2.0
     # via
     #   gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
+    #   pytest-cov
     #   pytest-custom-exit-code
+pytest-cov==4.0.0
+    # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
 pytest-custom-exit-code==0.3.0
     # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
 python-dateutil==2.8.2
@@ -447,6 +465,8 @@ tokenize-rt==5.0.0
 tomli==2.0.1
     # via
     #   black
+    #   coverage
+    #   flake8-pyproject
     #   mypy
     #   pylint
     #   pytest

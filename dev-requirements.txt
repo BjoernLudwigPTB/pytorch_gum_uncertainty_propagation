@@ -16,7 +16,7 @@ attrs==22.1.0
     #   pytest
 backcall==0.2.0
     # via ipython
-black[jupyter]==22.10.0
+black[jupyter]==22.12.0
     # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
 certifi==2022.12.7
     # via requests
@@ -26,6 +26,8 @@ click==8.1.3
     # via black
 contourpy==1.0.6
     # via matplotlib
+coverage[toml]==6.5.0
+    # via pytest-cov
 cycler==0.11.0
     # via matplotlib
 decorator==5.1.1
@@ -38,6 +40,12 @@ exceptiongroup==1.0.4
     #   pytest
 executing==1.2.0
     # via stack-data
+flake8==6.0.0
+    # via
+    #   flake8-pyproject
+    #   gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
+flake8-pyproject==1.2.2
+    # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
 fonttools==4.38.0
     # via matplotlib
 h5py==3.7.0
@@ -63,7 +71,9 @@ matplotlib==3.6.2
 matplotlib-inline==0.1.6
     # via ipython
 mccabe==0.7.0
-    # via pylint
+    # via
+    #   flake8
+    #   pylint
 mypy==0.991
     # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
 mypy-extensions==0.4.3
@@ -83,7 +93,7 @@ packaging==22.0
     #   pytest
 parso==0.8.3
     # via jedi
-pathspec==0.10.2
+pathspec==0.10.3
     # via black
 pexpect==4.8.0
     # via ipython
@@ -106,6 +116,10 @@ ptyprocess==0.7.0
     # via pexpect
 pure-eval==0.2.2
     # via stack-data
+pycodestyle==2.10.0
+    # via flake8
+pyflakes==3.0.1
+    # via flake8
 pygments==2.13.0
     # via ipython
 pylint==2.15.8
@@ -115,7 +129,10 @@ pyparsing==3.0.9
 pytest==7.2.0
     # via
     #   gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
+    #   pytest-cov
     #   pytest-custom-exit-code
+pytest-cov==4.0.0
+    # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
 pytest-custom-exit-code==0.3.0
     # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
 python-dateutil==2.8.2
@@ -135,6 +152,8 @@ tokenize-rt==5.0.0
 tomli==2.0.1
     # via
     #   black
+    #   coverage
+    #   flake8-pyproject
     #   mypy
     #   pylint
     #   pytest
