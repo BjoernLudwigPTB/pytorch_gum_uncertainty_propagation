@@ -27,9 +27,8 @@ test:
   script:
     - *install-dev-deps
     - pip install .
-    - pytest --cov=gum_compliant_neural_network_uncertainty_propagation \
-        --junitxml=junit.xml
-    - coverage report
+    - pytest --verbose --cov=gum_compliant_neural_network_uncertainty_propagation
+          --junitxml=junit.xml
     - coverage xml
   coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
   artifacts:
