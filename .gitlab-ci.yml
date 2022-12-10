@@ -66,5 +66,5 @@ deploy:
   stage: deploy
   script:
     - python -m piptools sync release-requirements.txt
-    - semantic-release publish
+    - semantic-release --verbosity=DEBUG publish
   environment: production
