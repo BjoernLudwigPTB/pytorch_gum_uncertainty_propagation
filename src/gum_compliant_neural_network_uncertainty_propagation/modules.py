@@ -1,11 +1,12 @@
 """Contains the custom activation functions based on QuadLU for now"""
 
-__all__ = ["QuadLU", "QUADLU_ALPHA_DEFAULT", "UncertainQuadLU"]
+__all__ = ["QuadLU", "QUADLU_ALPHA_DEFAULT", "QuadLUMLP", "UncertainQuadLU"]
 
 from typing import Optional
 
+import torch
 from torch import Tensor
-from torch.nn import Module
+from torch.nn import Module, Sequential
 from torch.nn.parameter import Parameter
 
 from gum_compliant_neural_network_uncertainty_propagation.functionals import (
@@ -101,3 +102,40 @@ class UncertainQuadLU(Module):
         """Forward pass of UncertainQuadLU"""
         values = self._quadlu.forward(values)
         return values, uncertainties
+
+
+class QuadLUMLP(Sequential):
+    """This block implements the multi-layer perceptron (MLP) with QuadLU activation
+
+    The implementation is heavily based on the module :class:`~torchvision.ops.MLP`.
+    For each specified output dimension a combination of a :class:`~torch.nn.Linear` and
+    the :class:`~gum_compliant_neural_network_uncertainty_propagation.modules.QuadLU`
+    activation function is added.
+
+    Parameters
+    ----------
+    in_channels : int
+        number of channels of the input
+    out_features : list[int]
+        the hidden and output layers' dimensions
+    inplace : bool
+        parameter for the activation layer, which can optionally do the operation
+        in-place. Default ``True``
+    """
+
+    def __init__(
+        self,
+        in_channels: int,
+        out_features: list[int],
+        # inplace: Optional[bool] = True,
+        # bias: bool = True,
+    ):
+        #         params = {} if inplace is None else {"inplace": inplace}
+        #
+        layers: list[Module] = []
+        in_dimen = in_channels
+        for out_dimen in out_features:
+            layers.append(torch.nn.Linear(in_dimen, out_dimen, dtype=torch.double))
+            layers.append(QuadLU())
+            in_dimen = out_dimen
+        super().__init__(*layers)
