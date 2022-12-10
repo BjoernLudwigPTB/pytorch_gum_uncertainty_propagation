@@ -6,7 +6,6 @@ from hypothesis.strategies import composite, DrawFn, SearchStrategy
 from numpy.testing import assert_equal
 from torch import Tensor
 from torch.nn import Sequential
-from torch.testing import assert_close  # type: ignore[attr-defined]
 
 from gum_compliant_neural_network_uncertainty_propagation import modules
 from gum_compliant_neural_network_uncertainty_propagation.modules import (
