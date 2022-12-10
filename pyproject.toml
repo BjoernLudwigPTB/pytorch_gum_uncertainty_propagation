@@ -101,6 +101,7 @@ hvcs_domain = "gitlab1.ptb.de"
 [tool.flake8]
 max-line-length = 88
 extend-ignore = "E203"
+exclude = "venv"
 
 [tool.pylint.format]
 # Maximum number of characters on a single line.
