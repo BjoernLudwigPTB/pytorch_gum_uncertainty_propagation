@@ -118,17 +118,12 @@ class QuadLUMLP(Sequential):
         number of channels of the input
     out_features : list[int]
         the hidden and output layers' dimensions
-    inplace : bool
-        parameter for the activation layer, which can optionally do the operation
-        in-place. Default ``True``
     """
 
     def __init__(
         self,
         in_channels: int,
         out_features: list[int],
-        # inplace: Optional[bool] = True,
-        # bias: bool = True,
     ):
         layers = ModuleList()
         in_dimen = in_channels
