@@ -79,8 +79,8 @@ def test_init_quadlu_with_random_alpha(alpha: Parameter) -> None:
     assert_close(QuadLU(alpha)._alpha, alpha)
 
 
-def test_init_quadlu_contains_custom_forward(quadlu_instance: QuadLU) -> None:
-    assert quadlu_instance.forward(tensor([1.0]))
+def test_quadlu_contains_callable_forward() -> None:
+    assert callable(QuadLU.forward)
 
 
 @given(tensors(elements_max=-QuadLU.QUADLU_ALPHA_DEFAULT.data.item()))
