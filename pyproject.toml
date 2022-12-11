@@ -97,6 +97,7 @@ upload_to_repository = false
 upload_to_release = true
 hvcs = "gitlab"
 hvcs_domain = "gitlab1.ptb.de"
+commit_author= "Björn Ludwig <bjoern.ludwig@ptb.de>"
 
 [tool.flake8]
 max-line-length = 88
