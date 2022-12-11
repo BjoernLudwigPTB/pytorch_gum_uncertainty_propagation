@@ -103,6 +103,10 @@ class UncertainQuadLU(Module):
         values = self._quadlu.forward(values)
         return values, uncertainties
 
+    @property
+    def _alpha(self) -> Parameter:
+        return self._quadlu._alpha  # it is still private, pylint: disable=W0212
+
 
 class QuadLUMLP(Sequential):
     """This block implements the multi-layer perceptron (MLP) with QuadLU activation
