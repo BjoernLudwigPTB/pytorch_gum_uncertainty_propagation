@@ -11,7 +11,6 @@ image: python:3.10
 variables:
   HTTP_PROXY: "http://webproxy:8080"
   HTTPS_PROXY: "http://webproxy:8080"
-  GIT_FETCH_EXTRA_FLAGS: --depth 1000
 
 .install-dev-deps: &install-dev-deps
   - python -m piptools sync dev-requirements.txt
