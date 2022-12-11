@@ -1,7 +1,9 @@
 """Test the class UncertainQuadLU"""
 from inspect import signature
+from typing import cast
 
-from hypothesis import given
+from hypothesis import given, settings
+from hypothesis.strategies import composite, DrawFn, SearchStrategy
 from numpy.testing import assert_equal
 from torch import square, Tensor
 from torch.nn import Module
@@ -13,7 +15,23 @@ from gum_compliant_neural_network_uncertainty_propagation.modules import (
     QuadLU,
     UncertainQuadLU,
 )
+from gum_compliant_neural_network_uncertainty_propagation.uncertainties import (
+    cov_matrix_from_std_uncertainties,
+)
 from ..conftest import alphas, tensors
+
+
+@composite
+def values_with_uncertainties(draw: DrawFn) -> SearchStrategy[dict[str, Tensor]]:
+    values = draw(tensors(elements_min=1e2, elements_max=1e4))
+    std_uncertainties = draw(
+        tensors(elements_min=0.1, elements_max=10, length=len(values))
+    )
+    cov_matrix = cov_matrix_from_std_uncertainties(std_uncertainties, 0.5, 0.5, 0.5)
+    return cast(
+        SearchStrategy[dict[str, Tensor]],
+        {"values": values, "std_uncertainties": cov_matrix},
+    )
 
 
 def test_modules_all_contains_uncertain_quadlu() -> None:
@@ -217,4 +235,15 @@ def test_inplace_uncertain_quadlu_equals_quadlu(
         UncertainQuadLU(alpha).forward(values),
         UncertainQuadLU(alpha, inplace=True).forward(values),
         equal_nan=True,
+    )
+
+
+@given(values_with_uncertainties())
+@settings(deadline=None)
+def test_default_uncertain_quadlu_forward_accepts_random_input(
+    values_and_uncertainties: dict[str, Tensor]
+) -> None:
+    assert UncertainQuadLU().forward(
+        values_and_uncertainties["values"],
+        values_and_uncertainties["std_uncertainties"],
     )
