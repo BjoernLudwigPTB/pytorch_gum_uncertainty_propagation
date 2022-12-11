@@ -17,25 +17,23 @@ from ..conftest import tensors
 @composite
 def quadlu_mlps(
     draw: DrawFn,
-    in_channels: Optional[int] = None,
+    in_dimen: Optional[int] = None,
     n_hidden_channels: Optional[int] = None,
     out_channels: Optional[int] = None,
 ) -> SearchStrategy[QuadLUMLP]:
     dimen_strategy = hst.integers(min_value=1, max_value=100)
-    if in_channels is None:
-        in_channels = draw(dimen_strategy)
+    if in_dimen is None:
+        in_dimen = draw(dimen_strategy)
     if n_hidden_channels is None:
         n_hidden_channels = draw(dimen_strategy)
-    hidden_channel_dimens = []
+    hidden_and_out_dimens = []
     for _ in range(n_hidden_channels - 1):
-        hidden_channel_dimens.append(draw(dimen_strategy))
+        hidden_and_out_dimens.append(draw(dimen_strategy))
     if out_channels is None:
-        hidden_channel_dimens.append(draw(dimen_strategy))
+        hidden_and_out_dimens.append(draw(dimen_strategy))
     else:
-        hidden_channel_dimens.append(out_channels)
-    return cast(
-        SearchStrategy[QuadLUMLP], QuadLUMLP(in_channels, hidden_channel_dimens)
-    )
+        hidden_and_out_dimens.append(out_channels)
+    return cast(SearchStrategy[QuadLUMLP], QuadLUMLP(in_dimen, hidden_and_out_dimens))
 
 
 def test_modules_all_contains_quadlu_mlp() -> None:
@@ -55,7 +53,7 @@ def test_init_quadlu_mlp(quadlu_mlp: QuadLUMLP) -> None:
     assert isinstance(quadlu_mlp, QuadLUMLP)
 
 
-@given(quadlu_mlps(in_channels=5))
+@given(quadlu_mlps(in_dimen=5))
 def test_init_quadlu_mlp_input_layer_as_specified(quadlu_mlp: QuadLUMLP) -> None:
     assert_equal(next(quadlu_mlp.children()).in_features, 5)
 
@@ -65,12 +63,12 @@ def test_init_quadlu_mlp_input_dimension_as_specified(quadlu_mlp: QuadLUMLP) -> 
     assert_equal(len(quadlu_mlp), 2 * 3)
 
 
-@given(tensors(length=8), quadlu_mlps(in_channels=8))
+@given(tensors(length=8), quadlu_mlps(in_dimen=8))
 def test_quadlu_mlp_outputs_tensor(values: Tensor, quadlu_mlp: QuadLUMLP) -> None:
     assert isinstance(quadlu_mlp(values), Tensor)
 
 
-@given(tensors(length=6), quadlu_mlps(in_channels=6, out_channels=3))
+@given(tensors(length=6), quadlu_mlps(in_dimen=6, out_channels=3))
 def test_quadlu_mlp_correct_output_dimension(
     values: Tensor, quadlu_mlp: QuadLUMLP
 ) -> None:
