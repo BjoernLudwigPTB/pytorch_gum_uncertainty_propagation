@@ -67,8 +67,8 @@ deploy:
   stage: deploy
   script:
     - git tag -d v0.4.0
-    - python -m piptools sync release-requirements.txt
-    - git config --global user.name "Björn Ludwig"
-    - git config --global user.email "bjoern.ludwig@ptb.de"
-    - semantic-release --verbosity=DEBUG publish
+#    - python -m piptools sync release-requirements.txt
+#    - git config --global user.name "Björn Ludwig"
+#    - git config --global user.email "bjoern.ludwig@ptb.de"
+#    - semantic-release --verbosity=DEBUG publish
   environment: production
