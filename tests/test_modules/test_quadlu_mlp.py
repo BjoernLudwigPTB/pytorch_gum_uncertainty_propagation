@@ -1,14 +1,17 @@
 """Test the class QuadLUMLP"""
 from typing import cast, Optional
 
+import torch
 from hypothesis import given, strategies as hst
 from hypothesis.strategies import composite, DrawFn, SearchStrategy
 from numpy.testing import assert_equal
 from torch import Tensor
 from torch.nn import Sequential
+from torch.testing import assert_close  # type: ignore[attr-defined]
 
 from gum_compliant_neural_network_uncertainty_propagation import modules
 from gum_compliant_neural_network_uncertainty_propagation.modules import (
+    QuadLU,
     QuadLUMLP,
 )
 from ..conftest import tensors
@@ -73,3 +76,19 @@ def test_quadlu_mlp_correct_output_dimension(
     values: Tensor, quadlu_mlp: QuadLUMLP
 ) -> None:
     assert_equal(len(quadlu_mlp(values)), 3)
+
+
+@given(
+    tensors(length=9),
+    quadlu_mlps(in_dimen=9, n_hidden_channels=1, out_channels=9),
+)
+def test_quadlu_mlp_is_correct_for_identity_matrix_product(
+    quadlu_instance: QuadLU, values: Tensor, quadlu_mlp: QuadLUMLP
+) -> None:
+    quadlu_mlp[0].weight.data.fill_(0.0)
+    quadlu_mlp[0].weight.data.fill_diagonal_(1.0)
+    assert_close(
+        quadlu_mlp(values),
+        quadlu_instance(values @ torch.eye(9, dtype=torch.double) + quadlu_mlp[0].bias),
+        equal_nan=True,
+    )
