@@ -66,6 +66,8 @@ deploy:
   stage: deploy
   script:
     - git log --oneline
+    - git fetch --verbose
+    - git log --oneline
     - python -m piptools sync release-requirements.txt
     - semantic-release --verbosity=DEBUG publish
   environment: production
