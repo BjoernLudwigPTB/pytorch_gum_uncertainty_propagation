@@ -67,5 +67,7 @@ deploy:
   stage: deploy
   script:
     - python -m piptools sync release-requirements.txt
+    - git config --global user.name "Björn Ludwig"
+    - git config --global user.email "bjoern.ludwig@ptb.de"
     - semantic-release --verbosity=DEBUG publish
   environment: production
