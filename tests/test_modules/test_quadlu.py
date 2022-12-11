@@ -3,7 +3,7 @@ from inspect import signature
 
 from hypothesis import given
 from numpy.testing import assert_equal
-from torch import equal, square, tensor, Tensor
+from torch import equal, square, Tensor
 from torch.nn import Module
 from torch.nn.parameter import Parameter
 from torch.testing import assert_close  # type: ignore[attr-defined]
@@ -70,7 +70,7 @@ def test_init_quadlu_creates_alpha_equal_to_default(quadlu_instance: QuadLU) -> 
 
 
 @given(alphas())
-def test_init_quadlu_creates_parameter_with_custom_value(alpha: Parameter) -> None:
+def test_init_quadlu_creates_parameter_alpha(alpha: Parameter) -> None:
     assert hasattr(QuadLU(alpha), "_alpha")
 
 
@@ -84,22 +84,22 @@ def test_quadlu_contains_callable_forward() -> None:
 
 
 @given(tensors(elements_max=-QuadLU.QUADLU_ALPHA_DEFAULT.data.item()))
-def test_default_quadlu_forward_is_correct_for_small_x(x: Tensor) -> None:
+def test_default_quadlu_forward_for_small_x(x: Tensor) -> None:
     assert_equal(QuadLU().forward(x).data.numpy(), 0.0)
 
 
 @given(tensors(elements_max=-0.16), alphas(max_value=0.16))
-def test_quadlu_forward_is_correct_for_small_x(x: Tensor, alpha: Parameter) -> None:
+def test_quadlu_forward_for_small_x(x: Tensor, alpha: Parameter) -> None:
     assert_equal(QuadLU(alpha).forward(x).data.numpy(), 0.0)
 
 
 @given(tensors(elements_min=QuadLU.QUADLU_ALPHA_DEFAULT.data.item()))
-def test_default_quadlu_forward_is_correct_for_large_x(x: Tensor) -> None:
-    assert_close(QuadLU().forward(x), x, equal_nan=True)
+def test_default_quadlu_forward_for_large_x(x: Tensor) -> None:
+    assert_close(QuadLU().forward(x), x)
 
 
 @given(tensors(elements_min=0.15), alphas(max_value=0.15))
-def test_quadlu_forward_is_correct_large_x(x: Tensor, alpha: Parameter) -> None:
+def test_quadlu_forward_large_x(x: Tensor, alpha: Parameter) -> None:
     assert_close(QuadLU(alpha).forward(x), 4 * alpha * x, equal_nan=True)
 
 
@@ -109,17 +109,17 @@ def test_quadlu_forward_is_correct_large_x(x: Tensor, alpha: Parameter) -> None:
         elements_max=QuadLU.QUADLU_ALPHA_DEFAULT.data.item(),
     )
 )
-def test_default_quadlu_forward_equals_x_plus_alpha_squared_else(x: Tensor) -> None:
+def test_default_quadlu_forward_near_zero(x: Tensor) -> None:
     assert_close(QuadLU().forward(x), square(x + QuadLU.QUADLU_ALPHA_DEFAULT))
 
 
 @given(tensors(elements_min=-0.14, elements_max=0.14), alphas(min_value=0.14))
-def test_quadlu_forward_is_correct_else(x: Tensor, alpha: Parameter) -> None:
+def test_quadlu_forward_near_zero(x: Tensor, alpha: Parameter) -> None:
     assert_close(QuadLU(alpha).forward(x), square(x + alpha))
 
 
 @given(tensors())
-def test_default_quadlu_forward_is_correct_for_random_input(values: Tensor) -> None:
+def test_default_quadlu_forward_for_random_input(values: Tensor) -> None:
     less_or_equal_mask = values <= -QuadLU.QUADLU_ALPHA_DEFAULT
     greater_or_equal_mask = values >= QuadLU.QUADLU_ALPHA_DEFAULT
     in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
@@ -134,9 +134,7 @@ def test_default_quadlu_forward_is_correct_for_random_input(values: Tensor) -> N
 
 
 @given(tensors(), alphas())
-def test_quadlu_forward_is_correct_for_random_input(
-    values: Tensor, alpha: Parameter
-) -> None:
+def test_quadlu_forward_for_random_input(values: Tensor, alpha: Parameter) -> None:
     less_or_equal_mask = values <= -alpha
     greater_or_equal_mask = values >= alpha
     in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
