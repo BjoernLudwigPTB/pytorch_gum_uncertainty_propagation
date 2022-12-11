@@ -22,13 +22,16 @@ from ..conftest import alphas, tensors
 
 
 @composite
-def values_with_uncertainties(draw: DrawFn) -> dict[str, Tensor]:
+def values_with_uncertainties(draw: DrawFn) -> SearchStrategy[dict[str, Tensor]]:
     values: Tensor = cast(Tensor, draw(tensors(elements_min=1e2, elements_max=1e4)))
     std_uncertainties = cast(
         Tensor, draw(tensors(elements_min=0.1, elements_max=10, length=len(values)))
     )
     cov_matrix = cov_matrix_from_std_uncertainties(std_uncertainties, 0.5, 0.5, 0.5)
-    return {"values": values, "std_uncertainties": cov_matrix}
+    return cast(
+        SearchStrategy[dict[str, Tensor]],
+        {"values": values, "std_uncertainties": cov_matrix},
+    )
 
 
 def test_modules_all_contains_uncertain_quadlu() -> None:
