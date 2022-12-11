@@ -86,15 +86,16 @@ class UncertainQuadLU(Module):
         ----------
         alpha : float
             trainable, non-negative parameter of QuadLU activation function
+        inplace : bool
+            can optionally do the operation in-place. Default: ``False``
         """
 
     QUADLU_ALPHA_DEFAULT: Parameter = QUADLU_ALPHA_DEFAULT
 
-    def __init__(self, alpha: Optional[Parameter] = None):
+    def __init__(self, alpha: Optional[Parameter] = None, inplace: bool = False):
         """Parametrized QuadLU activation function and uncertainty propagation"""
         super().__init__()
-        self._quadlu = QuadLU(alpha)
-        self._alpha = self._quadlu._alpha
+        self._quadlu = QuadLU(alpha, inplace)
 
     def forward(
         self, values: Tensor, uncertainties: Optional[Tensor] = None
@@ -106,6 +107,10 @@ class UncertainQuadLU(Module):
     @property
     def _alpha(self) -> Parameter:
         return self._quadlu._alpha  # it is still private, pylint: disable=W0212
+
+    @property
+    def _inplace(self) -> bool:
+        return self._quadlu._inplace  # it is still private, pylint: disable=W0212
 
 
 class QuadLUMLP(Sequential):
