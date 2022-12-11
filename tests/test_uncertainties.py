@@ -1,6 +1,7 @@
 from typing import Any, cast, Optional, Union
 
 import numpy as np
+import pytest
 import torch
 from hypothesis import assume, given, strategies as hst
 from hypothesis.extra import numpy as hnp
@@ -11,9 +12,9 @@ from numpy.linalg import eigvals
 from torch import diag, isnan, tensor, Tensor
 
 from gum_compliant_neural_network_uncertainty_propagation.uncertainties import (
-    _match_dimen_and_std_uncertainty_vec_len,
     _is_positive_semi_definite,
     _is_symmetric,
+    _match_dimen_and_std_uncertainty_vec_len,
     cov_matrix_from_std_uncertainties,
 )
 
@@ -212,3 +213,14 @@ def test_is_symmetric_true(symmetric_tensor: Tensor) -> None:
 @given(square_tensors(symmetric=False))
 def test_is_symmetric_false(non_symmetric_tensor: Tensor) -> None:
     assert not _is_symmetric(non_symmetric_tensor)
+
+
+@given(input_for_cov_matrix_from_std_uncertainties())
+def test_cov_matrix_from_std_uncertainties_raises_exception(
+    sigma_rho_phi_nu: tuple[Tensor, float, float, float]
+) -> None:
+    assume(bool(len(sigma_rho_phi_nu[0].shape) and len(sigma_rho_phi_nu[0]) >= 2))
+    with pytest.raises(AssertionError):
+        cov_matrix_from_std_uncertainties(
+            sigma_rho_phi_nu[0], 2.0, *sigma_rho_phi_nu[2:]
+        )
