@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v0.4.0 (2022-12-11)
+### Feature
+* **QuadLUMLP:** Introduce multi-layer perceptron with QuadLU activation ([`1122ad7`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/1122ad764ea9132563ad8afb9ee5ce2d2369a07c))
+* **quadlu:** Make quadlu inplace-able ([`92e0a73`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/92e0a73ad5573501b3fa230f9bb76e719425e3f7))
+
+### Documentation
+* **README:** Introduce badges ([`ac26493`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/ac264937c40fd25ad09342cc71b2846ad53dd05a))
+
 ## v0.3.0 (2022-12-10)
 ### Feature
 * **quadlu:** Introduce functional version of QuadLU ([`b91dd3c`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/b91dd3c06d8a0b999375611f52541bad35cfe9c6))
