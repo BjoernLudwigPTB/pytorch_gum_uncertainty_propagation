@@ -23,25 +23,25 @@ before_script:
   - pip install --upgrade pip pip-tools
   - python -m piptools sync
 
-#test:
-#  script:
-#    - *install-dev-deps
-#    - pip install .
-#    - pytest --verbose --cov=gum_compliant_neural_network_uncertainty_propagation
-#          --junitxml=junit.xml
-#    - coverage xml
-#  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
-#  artifacts:
-#    when: always
-#    paths:
-#      - junit.xml
-#      - coverage.xml
-#    reports:
-#      junit: junit.xml
-#      coverage_report:
-#        coverage_format: cobertura
-#        path: coverage.xml
-#
+test:
+  script:
+    - *install-dev-deps
+    - pip install .
+    - pytest --verbose --cov=gum_compliant_neural_network_uncertainty_propagation
+          --junitxml=junit.xml
+    - coverage xml
+  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+  artifacts:
+    when: always
+    paths:
+      - junit.xml
+      - coverage.xml
+    reports:
+      junit: junit.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
+
 #mypy:
 #  script:
 #    - *install-dev-deps
