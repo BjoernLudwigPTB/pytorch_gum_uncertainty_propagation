@@ -101,7 +101,7 @@ class UncertainQuadLU(Module):
         self, values: Tensor, uncertainties: Optional[Tensor] = None
     ) -> tuple[Tensor, Optional[Tensor]]:
         """Forward pass of UncertainQuadLU"""
-        values = self._quadlu.forward(values)
+        values = self._quadlu(values)
         return values, uncertainties
 
     @property
