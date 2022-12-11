@@ -29,34 +29,32 @@ def test_init_uncertain_quadlu_creates_parameter(
 
 
 def test_init_uncertain_quadlu_alpha_requires_grad(
-    uncertain_quadlu: UncertainQuadLU,
+    uncertain_quadlu_instance: UncertainQuadLU,
 ) -> None:
-    assert uncertain_quadlu._alpha.requires_grad
+    assert uncertain_quadlu_instance._alpha.requires_grad
 
 
 def test_init_uncertain_quadlu_contains_constant_for_alphas_default(
-    uncertain_quadlu: UncertainQuadLU,
+    uncertain_quadlu_instance: UncertainQuadLU,
 ) -> None:
-    assert hasattr(uncertain_quadlu, "QUADLU_ALPHA_DEFAULT")
+    assert hasattr(uncertain_quadlu_instance, "QUADLU_ALPHA_DEFAULT")
 
 
-def test_init_uncertain_quadlu_constant_for_alphas_default_equals_one(
-    uncertain_quadlu: UncertainQuadLU, quadlu_instance: QuadLU
+def test_init_default_uncertain_quadlu_and_quadlus_creates_same_alpha(
+    uncertain_quadlu_instance: UncertainQuadLU, quadlu_instance: QuadLU
 ) -> None:
     assert_close(
-        uncertain_quadlu.QUADLU_ALPHA_DEFAULT, quadlu_instance.QUADLU_ALPHA_DEFAULT
+        uncertain_quadlu_instance.QUADLU_ALPHA_DEFAULT,
+        quadlu_instance.QUADLU_ALPHA_DEFAULT,
     )
 
 
 def test_init_uncertain_quadlu_creates_alpha_equal_to_default(
-    uncertain_quadlu: UncertainQuadLU,
+    uncertain_quadlu_instance: UncertainQuadLU,
 ) -> None:
-    assert_close(uncertain_quadlu._alpha, uncertain_quadlu.QUADLU_ALPHA_DEFAULT)
-
-
-def test_init_uncertain_quadlu_creates_parameter_with_sensible_default() -> None:
-    assert hasattr(UncertainQuadLU(), "_alpha")
-
+    assert_close(
+        uncertain_quadlu_instance._alpha, uncertain_quadlu_instance.QUADLU_ALPHA_DEFAULT
+    )
 
 def test_uncertain_quadlu_is_subclass_of_nn_module() -> None:
     assert issubclass(UncertainQuadLU, Module)

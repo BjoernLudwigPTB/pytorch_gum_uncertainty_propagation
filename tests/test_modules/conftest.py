@@ -13,5 +13,5 @@ def quadlu_instance() -> QuadLU:
 
 
 @pytest.fixture(scope="session")
-def uncertain_quadlu() -> UncertainQuadLU:
+def uncertain_quadlu_instance() -> UncertainQuadLU:
     return UncertainQuadLU()
