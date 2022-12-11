@@ -39,6 +39,10 @@ def test_init_quadlu_creates_parameter(quadlu_instance: QuadLU) -> None:
     assert hasattr(quadlu_instance, "_alpha")
 
 
+def test_quadlu_has_parameter_inplace() -> None:
+    assert "inplace" in signature(QuadLU).parameters
+
+
 def test_init_quadlu_creates_attribute_inplace(quadlu_instance: QuadLU) -> None:
     assert hasattr(quadlu_instance, "_inplace")
 
@@ -144,10 +148,6 @@ def test_quadlu_forward_is_correct_for_random_input(
         4 * alpha * values[greater_or_equal_mask],
         equal_nan=True,
     )
-
-
-def test_quadlu_accepts_inplace() -> None:
-    assert "inplace" in signature(QuadLU).parameters
 
 
 @given(tensors())
