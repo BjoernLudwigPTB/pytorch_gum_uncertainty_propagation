@@ -66,8 +66,11 @@ deploy:
   stage: deploy
   script:
     - git log --oneline
-    - git fetch --verbose
-    - git log --oneline
+    - python -c """
+      from semantic_release.vcs_helpers import get_commit_log;
+      for commit in get_commit_log():;
+          print(commit)
+      """
     - python -m piptools sync release-requirements.txt
     - semantic-release --verbosity=DEBUG publish
   environment: production
