@@ -35,6 +35,10 @@ def test_init_quadlu(quadlu_instance: QuadLU) -> None:
     assert quadlu_instance
 
 
+def test_quadlu_has_parameter_alpha() -> None:
+    assert "alpha" in signature(QuadLU).parameters
+
+
 def test_init_quadlu_creates_parameter(quadlu_instance: QuadLU) -> None:
     assert hasattr(quadlu_instance, "_alpha")
 
