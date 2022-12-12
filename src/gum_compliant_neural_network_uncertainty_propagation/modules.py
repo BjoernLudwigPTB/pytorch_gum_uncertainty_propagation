@@ -99,8 +99,19 @@ class UncertainQuadLU(Module):
         self, values: Tensor, uncertainties: Optional[Tensor] = None
     ) -> tuple[Tensor, Optional[Tensor]]:
         """Forward pass of UncertainQuadLU"""
-        values = self._quadlu(values)
-        return values, uncertainties
+        if uncertainties is None:
+            return self._quadlu(values), uncertainties
+        first_derivs = (
+            uncertainties if self._inplace else torch.zeros_like(uncertainties)
+        )
+        less_or_equal_mask = values <= -self._quadlu._alpha  # pylint: disable=W0212
+        greater_or_equal_mask = values >= self._quadlu._alpha  # pylint: disable=W0212
+        first_derivs[greater_or_equal_mask] = (
+            4.0 * self._quadlu._alpha  # pylint: disable=W0212
+        )
+        in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
+        first_derivs[in_between_mask] = 2 * values + self._two_alpha
+        return self._quadlu(values), torch.square(first_derivs) * uncertainties
 
     @property
     def _alpha(self) -> Parameter:
