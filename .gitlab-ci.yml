@@ -89,7 +89,7 @@ black:
     - pip install --upgrade black[jupyter]
     - black --check .
 
-deploy:
+release:
   except:
     - tags
   stage: deploy
