@@ -78,12 +78,6 @@ def test_init_uncertain_quadlu_creates_attribute_alpha(
     assert hasattr(uncertain_quadlu_instance, "_alpha")
 
 
-def test_init_uncertain_quadlu_creates_attribute_two_alpha(
-    uncertain_quadlu_instance: UncertainQuadLU,
-) -> None:
-    assert hasattr(uncertain_quadlu_instance, "_two_alpha")
-
-
 def test_uncertain_quadlu_has_parameter_inplace() -> None:
     assert "inplace" in signature(UncertainQuadLU).parameters
 

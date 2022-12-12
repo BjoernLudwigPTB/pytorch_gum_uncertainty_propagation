@@ -92,7 +92,6 @@ class UncertainQuadLU(Module):
     def __init__(self, alpha: Parameter = QUADLU_ALPHA_DEFAULT, inplace: bool = False):
         """Parametrized QuadLU activation function and uncertainty propagation"""
         super().__init__()
-        self._two_alpha = 2 * alpha
         self._quadlu = QuadLU(alpha, inplace)
 
     def forward(
@@ -110,7 +109,9 @@ class UncertainQuadLU(Module):
             4.0 * self._quadlu._alpha  # pylint: disable=W0212
         )
         in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
-        first_derivs[in_between_mask] = 2 * values + self._two_alpha
+        first_derivs[in_between_mask] = 2 * (
+            values + self._quadlu._alpha  # pylint: disable=W0212
+        )
         return self._quadlu(values), torch.square(first_derivs) * uncertainties
 
     @property
