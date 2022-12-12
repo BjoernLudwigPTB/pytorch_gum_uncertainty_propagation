@@ -19,9 +19,10 @@ def quadlu(
     See :class:`~gum_compliant_neural_network_uncertainty_propagation.modules.QuadLU`
     for more details.
     """
-    result_tensor = values if inplace else torch.empty_like(values)
+    result_tensor = values if inplace else torch.zeros_like(values)
     less_or_equal_mask = values <= -alpha
-    result_tensor[less_or_equal_mask] = 0.0
+    if inplace:
+        result_tensor[less_or_equal_mask] = 0.0
     greater_or_equal_mask = values >= alpha
     result_tensor[greater_or_equal_mask] = 4.0 * alpha * values[greater_or_equal_mask]
     in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
