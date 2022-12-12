@@ -94,6 +94,7 @@ deploy:
     - tags
   stage: deploy
   script:
+    - *install-pip-tools
     - python -m piptools sync release-requirements.txt
     - git config --global user.name "Bjoern Ludwig"
     - git config --global user.email "bjoern.ludwig@ptb.de"
