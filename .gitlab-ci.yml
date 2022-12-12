@@ -31,7 +31,7 @@ before_script:
 
 what_is_tag:
   rules:
-    - if: $CI_COMMIT_TAG != ""
+    - if: $CI_COMMIT_TAG ==
       changes:
         - "*.yml"
   script:
@@ -39,7 +39,7 @@ what_is_tag:
 
 test:
   rules:
-    - if: $CI_COMMIT_TAG != ""
+    - if: $CI_COMMIT_TAG == ""
   script:
     - *install-dev-deps
     - pytest --verbose --cov=gum_compliant_neural_network_uncertainty_propagation
