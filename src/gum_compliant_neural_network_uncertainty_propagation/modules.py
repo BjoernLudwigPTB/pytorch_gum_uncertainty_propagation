@@ -89,7 +89,7 @@ class UncertainQuadLU(Module):
 
     QUADLU_ALPHA_DEFAULT: Parameter = QUADLU_ALPHA_DEFAULT
 
-    def __init__(self, alpha: Optional[Parameter] = None, inplace: bool = False):
+    def __init__(self, alpha: Parameter = QUADLU_ALPHA_DEFAULT, inplace: bool = False):
         """Parametrized QuadLU activation function and uncertainty propagation"""
         super().__init__()
         self._quadlu = QuadLU(alpha, inplace)
