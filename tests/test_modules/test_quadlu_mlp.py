@@ -85,7 +85,7 @@ def test_quadlu_mlp_correct_output_dimension(
 def test_quadlu_mlp_is_correct_for_identity_matrix_product(
     quadlu_instance: QuadLU, values: Tensor, quadlu_mlp: QuadLUMLP
 ) -> None:
-    quadlu_mlp[0].weight.data.fill_(0.0)
+    quadlu_mlp[0].weight.data.zero_()
     quadlu_mlp[0].weight.data.fill_diagonal_(1.0)
     assert_close(
         quadlu_mlp(values),
