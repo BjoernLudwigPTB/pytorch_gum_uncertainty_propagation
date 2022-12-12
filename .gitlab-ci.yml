@@ -30,9 +30,8 @@ before_script:
   - *create-venv
 
 test:
-  only:
-    refs:
-      - branches
+  rules:
+    - if: $CI_COMMIT_TAG == ""
   script:
     - *install-dev-deps
     - pytest --verbose --cov=gum_compliant_neural_network_uncertainty_propagation
@@ -51,49 +50,44 @@ test:
         path: coverage.xml
 
 mypy:
-  only:
-    refs:
-      - branches
-    changes:
-      - "*.py"
+  rules:
+    - if: $CI_COMMIT_TAG == ""
+      changes:
+        - "*.py"
   script:
     - pip install --upgrade mypy
     - mypy .
 
 pylint:
-  only:
-    refs:
-      - branches
-    changes:
-      - "*.py"
+  rules:
+    - if: $CI_COMMIT_TAG == ""
+      changes:
+        - "*.py"
   script:
     - pip install --upgrade pylint
     - pylint src/gum_compliant_neural_network_uncertainty_propagation
 
 flake8:
-  only:
-    refs:
-      - branches
-    changes:
-      - "*.py"
+  rules:
+    - if: $CI_COMMIT_TAG == ""
+      changes:
+        - "*.py"
   script:
     - pip install --upgrade flake8 Flake8-pyproject
     - flake8 .
 
 black:
-  only:
-    refs:
-      - branches
-    changes:
-      - "*.py"
+  rules:
+    - if: $CI_COMMIT_TAG == ""
+      changes:
+        - "*.py"
   script:
     - pip install --upgrade black[jupyter]
     - black --check .
 
 release:
-  only:
-    refs:
-      - branches
+  rules:
+    - if: $CI_COMMIT_TAG == ""
   stage: deploy
   script:
     - *install-pip-tools
