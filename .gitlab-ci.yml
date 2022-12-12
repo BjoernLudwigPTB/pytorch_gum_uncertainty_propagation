@@ -31,7 +31,7 @@ before_script:
 
 what_is_tag:
   script:
-    - [[ ! -n ${$CI_COMMIT_TAG} ]] && echo "$CI_COMMIT_TAG is not set" || echo "$CI_COMMIT_TAG is set"
+    - printenv | grep CI_COMMIT_TAG
 
 test:
   rules:
