@@ -2,6 +2,7 @@
 from inspect import signature
 from typing import cast
 
+import torch
 from hypothesis import given
 from hypothesis.strategies import composite, DrawFn, SearchStrategy
 from numpy.testing import assert_equal
@@ -183,7 +184,9 @@ def test_uncertain_quadlu_forward_near_zero(x: Tensor, alpha: Parameter) -> None
 
 
 @given(tensors())
-def test_default_uncertain_quadlu_forward_for_random_input(values: Tensor) -> None:
+def test_default_uncertain_quadlu_forward_values_for_random_input(
+    values: Tensor,
+) -> None:
     less_or_equal_mask = values <= -UncertainQuadLU.QUADLU_ALPHA_DEFAULT
     greater_or_equal_mask = values >= UncertainQuadLU.QUADLU_ALPHA_DEFAULT
     in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
@@ -198,7 +201,7 @@ def test_default_uncertain_quadlu_forward_for_random_input(values: Tensor) -> No
 
 
 @given(tensors(), alphas())
-def test_uncertain_quadlu_forward_for_random_input(
+def test_uncertain_quadlu_forward_values_for_random_input(
     values: Tensor, alpha: Parameter
 ) -> None:
     less_or_equal_mask = values <= -alpha
@@ -331,7 +334,7 @@ def test_default_uncertain_quadlu_forward_accepts_random_input(
 
 
 @given(values_with_uncertainties(less_than=-QUADLU_ALPHA_DEFAULT.data.item()))
-def test_default_uncertain_quadlu_forward_for_small_input(
+def test_default_uncertain_quadlu_forward_uncertainties_for_small_input(
     values_and_uncertainties: dict[str, Tensor]
 ) -> None:
     assert_close(
@@ -344,7 +347,7 @@ def test_default_uncertain_quadlu_forward_for_small_input(
 
 
 @given(values_with_uncertainties(less_than=-0.13), alphas(max_value=0.13))
-def test_uncertain_quadlu_forward_for_small_input(
+def test_uncertain_quadlu_forward_uncertainties_for_small_input(
     values_and_uncertainties: dict[str, Tensor], alpha: Parameter
 ) -> None:
     assert_close(
@@ -357,7 +360,7 @@ def test_uncertain_quadlu_forward_for_small_input(
 
 
 @given(values_with_uncertainties(greater_than=QUADLU_ALPHA_DEFAULT.data.item()))
-def test_default_uncertain_quadlu_forward_for_large_input(
+def test_default_uncertain_quadlu_forward_uncertainties_for_large_input(
     values_and_uncertainties: dict[str, Tensor]
 ) -> None:
     assert_close(
@@ -370,7 +373,7 @@ def test_default_uncertain_quadlu_forward_for_large_input(
 
 
 @given(values_with_uncertainties(greater_than=0.1401), alphas(max_value=0.14))
-def test_uncertain_quadlu_forward_for_large_input(
+def test_uncertain_quadlu_forward_uncertainties_for_large_input(
     values_and_uncertainties: dict[str, Tensor], alpha: Parameter
 ) -> None:
     assert_close(
@@ -388,7 +391,7 @@ def test_uncertain_quadlu_forward_for_large_input(
         less_than=QUADLU_ALPHA_DEFAULT.data.item(),
     )
 )
-def test_default_uncertain_quadlu_forward_for_medium_input(
+def test_default_uncertain_quadlu_forward_uncertainties_for_medium_input(
     values_and_uncertainties: dict[str, Tensor]
 ) -> None:
     assert_close(
@@ -405,7 +408,7 @@ def test_default_uncertain_quadlu_forward_for_medium_input(
     values_with_uncertainties(greater_than=-0.14, less_than=0.14),
     alphas(min_value=0.14),
 )
-def test_uncertain_quadlu_forward_for_medium_input(
+def test_uncertain_quadlu_forward_uncertainties_for_medium_input(
     values_and_uncertainties: dict[str, Tensor], alpha: Parameter
 ) -> None:
     assert_close(
