@@ -419,3 +419,65 @@ def test_uncertain_quadlu_forward_uncertainties_for_medium_input(
         square(2 * (values_and_uncertainties["values"] + alpha))
         * values_and_uncertainties["std_uncertainties"],
     )
+
+
+@given(values_with_uncertainties())
+def test_default_uncertain_quadlu_forward_uncertainties_for_random_input(
+    values_and_uncertainties: dict[str, Tensor]
+) -> None:
+    less_or_equal_mask = values_and_uncertainties["values"] <= -QUADLU_ALPHA_DEFAULT
+    greater_or_equal_mask = values_and_uncertainties["values"] >= QUADLU_ALPHA_DEFAULT
+    in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
+    result_uncertainties = UncertainQuadLU().forward(
+        values_and_uncertainties["values"],
+        values_and_uncertainties["std_uncertainties"],
+    )[1]
+    assert result_uncertainties is not None
+    assert_equal(result_uncertainties[less_or_equal_mask].data.numpy(), 0.0)
+    if torch.any(in_between_mask):
+        assert_close(
+            result_uncertainties[in_between_mask],
+            square(
+                2
+                * (
+                    values_and_uncertainties["values"][in_between_mask]
+                    + QUADLU_ALPHA_DEFAULT
+                )
+            ).unsqueeze(1)
+            * values_and_uncertainties["std_uncertainties"][in_between_mask],
+            equal_nan=True,
+        )
+    assert_close(
+        result_uncertainties[greater_or_equal_mask],
+        values_and_uncertainties["std_uncertainties"][greater_or_equal_mask],
+    )
+
+
+@given(values_with_uncertainties(), alphas())
+def test_uncertain_quadlu_forward_uncertainties_for_random_input(
+    values_and_uncertainties: dict[str, Tensor], alpha: Parameter
+) -> None:
+    less_or_equal_mask = values_and_uncertainties["values"] <= -alpha
+    greater_or_equal_mask = values_and_uncertainties["values"] >= alpha
+    in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
+    result_uncertainties = UncertainQuadLU(alpha).forward(
+        values_and_uncertainties["values"],
+        values_and_uncertainties["std_uncertainties"],
+    )[1]
+    assert result_uncertainties is not None
+    assert_equal(result_uncertainties[less_or_equal_mask].data.numpy(), 0.0)
+    if torch.any(in_between_mask):
+        assert_close(
+            result_uncertainties[in_between_mask],
+            square(
+                2 * (values_and_uncertainties["values"][in_between_mask] + alpha)
+            ).unsqueeze(1)
+            * values_and_uncertainties["std_uncertainties"][in_between_mask],
+            equal_nan=True,
+        )
+    assert_close(
+        result_uncertainties[greater_or_equal_mask],
+        values_and_uncertainties["std_uncertainties"][greater_or_equal_mask]
+        * 16
+        * square(alpha),
+    )
