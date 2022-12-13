@@ -110,7 +110,10 @@ class UncertainQuadLU(Module):
         first_derivs[in_between_mask] = 2 * (
             values[in_between_mask] + self._quadlu._alpha  # pylint: disable=W0212
         )
-        return self._quadlu(values), torch.square(first_derivs) * uncertainties
+        return (
+            self._quadlu(values),
+            torch.square(first_derivs).unsqueeze(1) * uncertainties,
+        )
 
     @property
     def _alpha(self) -> Parameter:
