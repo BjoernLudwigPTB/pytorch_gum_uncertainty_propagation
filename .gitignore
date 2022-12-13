@@ -12,6 +12,4 @@ junit.xml
 **/*.txt
 **/*.jpg
 *-checkpoint.ipynb
-docs/CHANGELOG.md
-docs/INSTALL.md
-docs/README.md
+*.h5
