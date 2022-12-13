@@ -399,7 +399,7 @@ def test_default_uncertain_quadlu_forward_uncertainties_for_medium_input(
             values_and_uncertainties["values"],
             values_and_uncertainties["std_uncertainties"],
         )[1],
-        square(2 * values_and_uncertainties["values"] + 0.5)
+        square(2 * values_and_uncertainties["values"] + 0.5).unsqueeze(1)
         * values_and_uncertainties["std_uncertainties"],
     )
 
@@ -416,7 +416,7 @@ def test_uncertain_quadlu_forward_uncertainties_for_medium_input(
             values_and_uncertainties["values"],
             values_and_uncertainties["std_uncertainties"],
         )[1],
-        square(2 * (values_and_uncertainties["values"] + alpha))
+        square(2 * (values_and_uncertainties["values"] + alpha)).unsqueeze(1)
         * values_and_uncertainties["std_uncertainties"],
     )
 
