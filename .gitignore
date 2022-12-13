@@ -1,14 +1,32 @@
-train/
-test/
+#########################
+### Release artifacts ###
+#########################
 build/
+*.egg-info
+
+######################
+### Docs artifacts ###
+######################
 docs/_build
 docs/examples/
+docs/CHANGELOG.md
+docs/INSTALL.md
+docs/README.md
+
+######################
+### Test artifacts ###
+######################
 **/.hypothesis/
 **/.coverage/
-*.egg-info
 .__atomic-write*
 coverage.xml
 junit.xml
+
+############################
+### Experiment artifacts ###
+############################
+train/
+test/
 **/*.txt
 **/*.jpg
 *-checkpoint.ipynb
