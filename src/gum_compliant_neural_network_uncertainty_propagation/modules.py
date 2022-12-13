@@ -100,9 +100,7 @@ class UncertainQuadLU(Module):
         """Forward pass of UncertainQuadLU"""
         if uncertainties is None:
             return self._quadlu(values), uncertainties
-        first_derivs = (
-            uncertainties if self._inplace else torch.zeros_like(uncertainties)
-        )
+        first_derivs = torch.zeros_like(values)
         less_or_equal_mask = values <= -self._quadlu._alpha  # pylint: disable=W0212
         greater_or_equal_mask = values >= self._quadlu._alpha  # pylint: disable=W0212
         first_derivs[greater_or_equal_mask] = (
@@ -110,7 +108,7 @@ class UncertainQuadLU(Module):
         )
         in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
         first_derivs[in_between_mask] = 2 * (
-            values + self._quadlu._alpha  # pylint: disable=W0212
+            values[in_between_mask] + self._quadlu._alpha  # pylint: disable=W0212
         )
         return self._quadlu(values), torch.square(first_derivs) * uncertainties
 
