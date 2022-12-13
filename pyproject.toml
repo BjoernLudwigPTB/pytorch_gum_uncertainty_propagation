@@ -70,7 +70,7 @@ license-files = ["LICENSE"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
-addopts = "--strict-markers --suppress-no-test-exit-code"
+addopts = "--strict-markers --suppress-no-test-exit-code --color=yes"
 filterwarnings = "error"
 
 [tool.mypy]
