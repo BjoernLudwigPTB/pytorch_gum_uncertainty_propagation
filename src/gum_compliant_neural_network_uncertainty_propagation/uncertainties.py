@@ -65,7 +65,9 @@ def _is_positive_semi_definite(tensor_under_test: Tensor) -> Tensor:
         torch.linalg.cholesky(tensor_under_test.to(torch.float64))
         return torch.tensor(True)
     except RuntimeError:
-        return torch.all(tensor_under_test == 0)
+        return torch.all(
+            torch.isclose(tensor_under_test, tensor_under_test.new_zeros(1))
+        )
 
 
 def _match_dimen_and_std_uncertainty_vec_len(
