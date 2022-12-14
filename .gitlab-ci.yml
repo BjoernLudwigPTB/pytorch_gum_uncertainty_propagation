@@ -12,12 +12,6 @@ variables:
   HTTP_PROXY: "http://webproxy:8080"
   HTTPS_PROXY: "http://webproxy:8080"
 
-.create-venv: &create-venv
-  - pip install --upgrade pip virtualenv
-  - virtualenv venv
-  - source venv/bin/activate
-  - pip install --upgrade pip
-
 .install-pip-tools: &install-pip-tools
   - pip install --upgrade pip-tools
 
@@ -26,8 +20,15 @@ variables:
   - python -m piptools sync dev-requirements.txt
   - pip install .
 
+.install-deps: &install-deps
+  - *install-pip-tools
+  - python -m piptools sync requirements.txt
+
 before_script:
-  - *create-venv
+  - pip install --upgrade pip virtualenv
+  - virtualenv venv
+  - source venv/bin/activate
+  - pip install --upgrade pip
 
 test:
   rules:
@@ -55,6 +56,7 @@ mypy:
       changes:
         - "**/*.py"
   script:
+    - *install-deps
     - pip install --upgrade mypy
     - mypy .
 
@@ -64,6 +66,7 @@ pylint:
       changes:
         - "**/*.py"
   script:
+    - *install-deps
     - pip install --upgrade pylint
     - pylint src/gum_compliant_neural_network_uncertainty_propagation
 
