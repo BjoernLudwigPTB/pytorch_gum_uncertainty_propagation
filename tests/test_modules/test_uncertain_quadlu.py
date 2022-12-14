@@ -79,16 +79,6 @@ def test_init_uncertain_quadlu_creates_attribute_alpha(
     assert hasattr(uncertain_quadlu_instance, "_alpha")
 
 
-def test_uncertain_quadlu_has_parameter_inplace() -> None:
-    assert "inplace" in signature(UncertainQuadLU).parameters
-
-
-def test_init_uncertain_quadlu_creates_attribute_inplace(
-    uncertain_quadlu_instance: UncertainQuadLU,
-) -> None:
-    assert hasattr(uncertain_quadlu_instance, "_inplace")
-
-
 def test_init_uncertain_quadlu_creates_attribute_quadlu(
     uncertain_quadlu_instance: UncertainQuadLU,
 ) -> None:
@@ -217,40 +207,6 @@ def test_uncertain_quadlu_forward_values_for_random_input(
     assert_close(
         result_tensor[greater_or_equal_mask],
         4 * alpha * values[greater_or_equal_mask],
-        equal_nan=True,
-    )
-
-
-@given(tensors())
-def test_default_uncertain_quadlu_inplace_is_inplace(values: Tensor) -> None:
-    assert_close(
-        UncertainQuadLU(inplace=True).forward(values)[0], values, equal_nan=True
-    )
-
-
-@given(tensors(), alphas())
-def test_uncertain_quadlu_inplace_is_inplace(values: Tensor, alpha: Parameter) -> None:
-    assert_close(
-        UncertainQuadLU(alpha, inplace=True).forward(values)[0], values, equal_nan=True
-    )
-
-
-@given(tensors())
-def test_default_inplace_uncertain_quadlu_equals_quadlu(values: Tensor) -> None:
-    assert_close(
-        UncertainQuadLU().forward(values),
-        UncertainQuadLU(inplace=True).forward(values),
-        equal_nan=True,
-    )
-
-
-@given(tensors(), alphas())
-def test_inplace_uncertain_quadlu_equals_quadlu(
-    values: Tensor, alpha: Parameter
-) -> None:
-    assert_close(
-        UncertainQuadLU(alpha).forward(values),
-        UncertainQuadLU(alpha, inplace=True).forward(values),
         equal_nan=True,
     )
 
