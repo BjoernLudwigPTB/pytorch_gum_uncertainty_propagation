@@ -6,7 +6,7 @@ import torch
 from hypothesis import given
 from hypothesis.strategies import composite, DrawFn, SearchStrategy
 from numpy.testing import assert_equal
-from torch import square, Tensor
+from torch import square, Tensor, tensor
 from torch.nn import Module
 from torch.nn.parameter import Parameter
 from torch.testing import assert_close  # type: ignore[attr-defined]
@@ -480,4 +480,37 @@ def test_uncertain_quadlu_forward_uncertainties_for_random_input(
         values_and_uncertainties["std_uncertainties"][greater_or_equal_mask]
         * 16
         * square(alpha),
+    )
+
+
+def test_default_uncertain_quadlu_forward_uncertainties_for_given_input() -> None:
+    uncertainties = torch.eye(3)
+    values = tensor([-1.0, 0.0, 1.0])
+    assert_close(
+        UncertainQuadLU().forward(
+            values,
+            uncertainties,
+        )[1],
+        tensor([[0.0, 0.0, 0.0], [0.0, 0.25, 0.0], [0.0, 0.0, 1.0]]),
+    )
+
+
+@given(alphas(max_value=0.12))
+def test_uncertain_quadlu_forward_uncertainties_for_given_input(
+    alpha: Parameter,
+) -> None:
+    uncertainties = torch.tensor(
+        [
+            [0.0625, 0.0, 0.0],
+            [0.0, 0.25, 0.0],
+            [0.0, 0.0, 1.0],
+        ]
+    )
+    values = tensor([1.0, 0.0, -1.0])
+    assert_close(
+        UncertainQuadLU(alpha).forward(
+            values,
+            uncertainties,
+        )[1],
+        tensor([[square(alpha), 0.0, 0.0], [0.0, square(alpha), 0.0], [0.0, 0.0, 0.0]]),
     )
