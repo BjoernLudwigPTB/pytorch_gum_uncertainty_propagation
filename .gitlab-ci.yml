@@ -56,7 +56,7 @@ mypy:
       changes:
         - "**/*.py"
   script:
-    - *install-deps
+    - *install-dev-deps
     - pip install --upgrade mypy
     - mypy .
 
