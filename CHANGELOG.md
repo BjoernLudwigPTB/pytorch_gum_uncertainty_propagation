@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.0 (2022-12-14)
+### Feature
+* **UncertainQuadLU:** Finalize implementation of UncertainQuadLU ([`76092a5`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/76092a511600366b73539d62ee4b37b2ca96cf78))
+
+### Fix
+* **UncertainQuadLU:** Fix computation of propagated uncertainties ([`83c1b28`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/83c1b28fdcd3aab2efb0ec60b56a120c9af8c8c1))
+
 ## v0.5.0 (2022-12-11)
 ### Feature
 * **UncertainQuadLU:** Make UncertainQuadLU inplace-able ([`1f43385`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/1f433853aef0f5445e0537a09f8527c4e2c55c86))
