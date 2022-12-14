@@ -107,7 +107,7 @@ class UncertainQuadLU(Module):
             4.0 * self._quadlu._alpha  # pylint: disable=W0212
         )
         in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
-        first_derivs[in_between_mask] = 2 * (
+        first_derivs[in_between_mask] = 2.0 * (
             values[in_between_mask] + self._quadlu._alpha  # pylint: disable=W0212
         )
         return (
