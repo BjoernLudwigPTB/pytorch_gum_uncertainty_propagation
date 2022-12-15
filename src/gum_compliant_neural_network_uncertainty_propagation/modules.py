@@ -115,6 +115,7 @@ class UncertainQuadLU(Module):
 
     @property
     def _alpha(self) -> Parameter:
+        """The parameter alpha of the activation function"""
         return self._quadlu._alpha  # it is still private, pylint: disable=W0212
 
 
