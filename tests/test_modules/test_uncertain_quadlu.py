@@ -185,21 +185,21 @@ def test_uncertain_quadlu_forward_values_for_random_input(
 
 @given(values_with_uncertainties(greater_than=QUADLU_ALPHA_DEFAULT.data.item()))
 def test_default_uncertain_quadlu_forward_accepts_big_input(
-    values_and_uncertainties: dict[str, Tensor]
+    values_and_uncertainties: ValuesUncertainties,
 ) -> None:
     assert UncertainQuadLU().forward(
-        values_and_uncertainties["values"],
-        values_and_uncertainties["std_uncertainties"],
+        values_and_uncertainties.values,
+        values_and_uncertainties.uncertainties,
     )
 
 
 @given(values_with_uncertainties(greater_than=0.16), alphas(max_value=0.16))
 def test_uncertain_quadlu_forward_accepts_big_input(
-    values_and_uncertainties: dict[str, Tensor], alpha: Parameter
+    values_and_uncertainties: ValuesUncertainties, alpha: Parameter
 ) -> None:
     assert UncertainQuadLU(alpha).forward(
-        values_and_uncertainties["values"],
-        values_and_uncertainties["std_uncertainties"],
+        values_and_uncertainties.values,
+        values_and_uncertainties.uncertainties,
     )
 
 
@@ -210,11 +210,11 @@ def test_uncertain_quadlu_forward_accepts_big_input(
     )
 )
 def test_default_uncertain_quadlu_forward_accepts_medium_input(
-    values_and_uncertainties: dict[str, Tensor]
+    values_and_uncertainties: ValuesUncertainties,
 ) -> None:
     assert UncertainQuadLU().forward(
-        values_and_uncertainties["values"],
-        values_and_uncertainties["std_uncertainties"],
+        values_and_uncertainties.values,
+        values_and_uncertainties.uncertainties,
     )
 
 
@@ -223,93 +223,93 @@ def test_default_uncertain_quadlu_forward_accepts_medium_input(
     alphas(max_value=0.14),
 )
 def test_uncertain_quadlu_forward_accepts_medium_input(
-    values_and_uncertainties: dict[str, Tensor], alpha: Parameter
+    values_and_uncertainties: ValuesUncertainties, alpha: Parameter
 ) -> None:
     assert UncertainQuadLU(alpha).forward(
-        values_and_uncertainties["values"],
-        values_and_uncertainties["std_uncertainties"],
+        values_and_uncertainties.values,
+        values_and_uncertainties.uncertainties,
     )
 
 
 @given(values_with_uncertainties(less_than=-QUADLU_ALPHA_DEFAULT.data.item()))
 def test_default_uncertain_quadlu_forward_accepts_small_input(
-    values_and_uncertainties: dict[str, Tensor]
+    values_and_uncertainties: ValuesUncertainties,
 ) -> None:
     assert UncertainQuadLU().forward(
-        values_and_uncertainties["values"],
-        values_and_uncertainties["std_uncertainties"],
+        values_and_uncertainties.values,
+        values_and_uncertainties.uncertainties,
     )
 
 
 @given(values_with_uncertainties(less_than=-0.14), alphas(max_value=0.14))
 def test_uncertain_quadlu_forward_accepts_small_input(
-    values_and_uncertainties: dict[str, Tensor], alpha: Parameter
+    values_and_uncertainties: ValuesUncertainties, alpha: Parameter
 ) -> None:
     assert UncertainQuadLU(alpha).forward(
-        values_and_uncertainties["values"],
-        values_and_uncertainties["std_uncertainties"],
+        values_and_uncertainties.values,
+        values_and_uncertainties.uncertainties,
     )
 
 
 @given(values_with_uncertainties())
 def test_default_uncertain_quadlu_forward_accepts_random_input(
-    values_and_uncertainties: dict[str, Tensor]
+    values_and_uncertainties: ValuesUncertainties,
 ) -> None:
     assert UncertainQuadLU().forward(
-        values_and_uncertainties["values"],
-        values_and_uncertainties["std_uncertainties"],
+        values_and_uncertainties.values,
+        values_and_uncertainties.uncertainties,
     )
 
 
 @given(values_with_uncertainties(less_than=-QUADLU_ALPHA_DEFAULT.data.item()))
 def test_default_uncertain_quadlu_forward_uncertainties_for_small_input(
-    values_and_uncertainties: dict[str, Tensor]
+    values_and_uncertainties: ValuesUncertainties,
 ) -> None:
     assert_close(
         UncertainQuadLU().forward(
-            values_and_uncertainties["values"],
-            values_and_uncertainties["std_uncertainties"],
+            values_and_uncertainties.values,
+            values_and_uncertainties.uncertainties,
         )[1],
-        values_and_uncertainties["std_uncertainties"].zero_(),
+        values_and_uncertainties.uncertainties.zero_(),
     )
 
 
 @given(values_with_uncertainties(less_than=-0.13), alphas(max_value=0.13))
 def test_uncertain_quadlu_forward_uncertainties_for_small_input(
-    values_and_uncertainties: dict[str, Tensor], alpha: Parameter
+    values_and_uncertainties: ValuesUncertainties, alpha: Parameter
 ) -> None:
     assert_close(
         UncertainQuadLU(alpha).forward(
-            values_and_uncertainties["values"],
-            values_and_uncertainties["std_uncertainties"],
+            values_and_uncertainties.values,
+            values_and_uncertainties.uncertainties,
         )[1],
-        values_and_uncertainties["std_uncertainties"].zero_(),
+        values_and_uncertainties.uncertainties.zero_(),
     )
 
 
 @given(values_with_uncertainties(greater_than=QUADLU_ALPHA_DEFAULT.data.item()))
 def test_default_uncertain_quadlu_forward_uncertainties_for_large_input(
-    values_and_uncertainties: dict[str, Tensor]
+    values_and_uncertainties: ValuesUncertainties,
 ) -> None:
     assert_close(
         UncertainQuadLU().forward(
-            values_and_uncertainties["values"],
-            values_and_uncertainties["std_uncertainties"],
+            values_and_uncertainties.values,
+            values_and_uncertainties.uncertainties,
         )[1],
-        values_and_uncertainties["std_uncertainties"],
+        values_and_uncertainties.uncertainties,
     )
 
 
 @given(values_with_uncertainties(greater_than=0.1401), alphas(max_value=0.14))
 def test_uncertain_quadlu_forward_uncertainties_for_large_input(
-    values_and_uncertainties: dict[str, Tensor], alpha: Parameter
+    values_and_uncertainties: ValuesUncertainties, alpha: Parameter
 ) -> None:
     assert_close(
         UncertainQuadLU(alpha).forward(
-            values_and_uncertainties["values"],
-            values_and_uncertainties["std_uncertainties"],
+            values_and_uncertainties.values,
+            values_and_uncertainties.uncertainties,
         )[1],
-        values_and_uncertainties["std_uncertainties"] * 16 * square(alpha),
+        values_and_uncertainties.uncertainties * 16 * square(alpha),
     )
 
 
@@ -320,15 +320,15 @@ def test_uncertain_quadlu_forward_uncertainties_for_large_input(
     )
 )
 def test_default_uncertain_quadlu_forward_uncertainties_for_medium_input(
-    values_and_uncertainties: dict[str, Tensor]
+    values_and_uncertainties: ValuesUncertainties,
 ) -> None:
     assert_close(
         UncertainQuadLU().forward(
-            values_and_uncertainties["values"],
-            values_and_uncertainties["std_uncertainties"],
+            values_and_uncertainties.values,
+            values_and_uncertainties.uncertainties,
         )[1],
-        square(2 * values_and_uncertainties["values"] + 0.5).unsqueeze(1)
-        * values_and_uncertainties["std_uncertainties"],
+        square(2 * values_and_uncertainties.values + 0.5).unsqueeze(1)
+        * values_and_uncertainties.uncertainties,
     )
 
 
@@ -337,28 +337,28 @@ def test_default_uncertain_quadlu_forward_uncertainties_for_medium_input(
     alphas(min_value=0.14),
 )
 def test_uncertain_quadlu_forward_uncertainties_for_medium_input(
-    values_and_uncertainties: dict[str, Tensor], alpha: Parameter
+    values_and_uncertainties: ValuesUncertainties, alpha: Parameter
 ) -> None:
     assert_close(
         UncertainQuadLU(alpha).forward(
-            values_and_uncertainties["values"],
-            values_and_uncertainties["std_uncertainties"],
+            values_and_uncertainties.values,
+            values_and_uncertainties.uncertainties,
         )[1],
-        square(2 * (values_and_uncertainties["values"] + alpha)).unsqueeze(1)
-        * values_and_uncertainties["std_uncertainties"],
+        square(2 * (values_and_uncertainties.values + alpha)).unsqueeze(1)
+        * values_and_uncertainties.uncertainties,
     )
 
 
 @given(values_with_uncertainties())
 def test_default_uncertain_quadlu_forward_uncertainties_for_random_input(
-    values_and_uncertainties: dict[str, Tensor]
+    values_and_uncertainties: ValuesUncertainties,
 ) -> None:
-    less_or_equal_mask = values_and_uncertainties["values"] <= -QUADLU_ALPHA_DEFAULT
-    greater_or_equal_mask = values_and_uncertainties["values"] >= QUADLU_ALPHA_DEFAULT
+    less_or_equal_mask = values_and_uncertainties.values <= -QUADLU_ALPHA_DEFAULT
+    greater_or_equal_mask = values_and_uncertainties.values >= QUADLU_ALPHA_DEFAULT
     in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
     result_uncertainties = UncertainQuadLU().forward(
-        values_and_uncertainties["values"],
-        values_and_uncertainties["std_uncertainties"],
+        values_and_uncertainties.values,
+        values_and_uncertainties.uncertainties,
     )[1]
     assert result_uncertainties is not None
     assert_equal(result_uncertainties[less_or_equal_mask].data.numpy(), 0.0)
@@ -368,29 +368,29 @@ def test_default_uncertain_quadlu_forward_uncertainties_for_random_input(
             square(
                 2
                 * (
-                    values_and_uncertainties["values"][in_between_mask]
+                    values_and_uncertainties.values[in_between_mask]
                     + QUADLU_ALPHA_DEFAULT
                 )
             ).unsqueeze(1)
-            * values_and_uncertainties["std_uncertainties"][in_between_mask],
+            * values_and_uncertainties.uncertainties[in_between_mask],
             equal_nan=True,
         )
     assert_close(
         result_uncertainties[greater_or_equal_mask],
-        values_and_uncertainties["std_uncertainties"][greater_or_equal_mask],
+        values_and_uncertainties.uncertainties[greater_or_equal_mask],
     )
 
 
 @given(values_with_uncertainties(), alphas())
 def test_uncertain_quadlu_forward_uncertainties_for_random_input(
-    values_and_uncertainties: dict[str, Tensor], alpha: Parameter
+    values_and_uncertainties: ValuesUncertainties, alpha: Parameter
 ) -> None:
-    less_or_equal_mask = values_and_uncertainties["values"] <= -alpha
-    greater_or_equal_mask = values_and_uncertainties["values"] >= alpha
+    less_or_equal_mask = values_and_uncertainties.values <= -alpha
+    greater_or_equal_mask = values_and_uncertainties.values >= alpha
     in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
     result_uncertainties = UncertainQuadLU(alpha).forward(
-        values_and_uncertainties["values"],
-        values_and_uncertainties["std_uncertainties"],
+        values_and_uncertainties.values,
+        values_and_uncertainties.uncertainties,
     )[1]
     assert result_uncertainties is not None
     assert_equal(result_uncertainties[less_or_equal_mask].data.numpy(), 0.0)
@@ -398,14 +398,14 @@ def test_uncertain_quadlu_forward_uncertainties_for_random_input(
         assert_close(
             result_uncertainties[in_between_mask],
             square(
-                2 * (values_and_uncertainties["values"][in_between_mask] + alpha)
+                2 * (values_and_uncertainties.values[in_between_mask] + alpha)
             ).unsqueeze(1)
-            * values_and_uncertainties["std_uncertainties"][in_between_mask],
+            * values_and_uncertainties.uncertainties[in_between_mask],
             equal_nan=True,
         )
     assert_close(
         result_uncertainties[greater_or_equal_mask],
-        values_and_uncertainties["std_uncertainties"][greater_or_equal_mask]
+        values_and_uncertainties.uncertainties[greater_or_equal_mask]
         * 16
         * square(alpha),
     )
