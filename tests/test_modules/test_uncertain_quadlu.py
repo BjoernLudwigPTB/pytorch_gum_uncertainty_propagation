@@ -57,6 +57,10 @@ def test_init_uncertain_quadlu_creates_attribute_quadlu(
     assert hasattr(uncertain_quadlu_instance, "_quadlu")
 
 
+def test_uncertain_quadlu_alpha_has_docstring() -> None:
+    assert UncertainQuadLU._alpha.__doc__ is not None
+
+
 def test_init_uncertain_quadlu_alpha_requires_grad(
     uncertain_quadlu_instance: UncertainQuadLU,
 ) -> None:
