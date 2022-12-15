@@ -1,12 +1,18 @@
 """Contains the custom activation functions based on QuadLU for now"""
 
-__all__ = ["QuadLU", "QUADLU_ALPHA_DEFAULT", "QuadLUMLP", "UncertainQuadLU"]
+__all__ = [
+    "QuadLU",
+    "QUADLU_ALPHA_DEFAULT",
+    "QuadLUMLP",
+    "UncertainLinear",
+    "UncertainQuadLU",
+]
 
 from typing import Optional
 
 import torch
 from torch import Tensor
-from torch.nn import Module, ModuleList, Sequential
+from torch.nn import Linear, Module, ModuleList, Sequential
 from torch.nn.parameter import Parameter
 
 from gum_compliant_neural_network_uncertainty_propagation.functionals import (
@@ -117,6 +123,69 @@ class UncertainQuadLU(Module):
     def _alpha(self) -> Parameter:
         """The parameter alpha of the activation function"""
         return self._quadlu._alpha  # it is still private, pylint: disable=W0212
+
+
+class UncertainLinear(Module):
+    """Applies a linear transformation to the incoming data: :math:`y = xA^T + b`
+
+    This module supports TensorFloat32.
+
+    On certain ROCm devices, when using float16 inputs this module will use different
+    precision for backward.
+
+    Parameters
+    ----------
+    in_features : int
+        size of each input sample
+    out_features : int
+        size of each output sample
+    bias : bool
+        If set to False, the layer will not learn an additive bias.
+        Default: ``True``
+    """
+
+    def __init__(self, in_features: int, out_features: int, bias: bool = True):
+        super().__init__()
+        self._linear = Linear(in_features, out_features, bias=bias)
+
+    def forward(
+        self, values: Tensor, uncertainties: Tensor | None
+    ) -> tuple[Tensor, Tensor | None]:
+        """Forward pass of LinearQuadLU"""
+        return (
+            self._linear.forward(values),
+            self._linear.weight @ uncertainties @ self._linear.weight.T
+            if uncertainties is not None
+            else None,
+        )
+
+    @property
+    def in_features(self) -> int:
+        """Size of each input sample"""
+        return self._linear.in_features
+
+    @property
+    def out_features(self) -> int:
+        """Size of each output sample"""
+        return self._linear.out_features
+
+    @property
+    def bias(self) -> Tensor:
+        r"""The learnable additive bias of the module of shape ``(out_features)``
+
+        If ``bias`` is ``True``, the values are initialized from :math:`\mathcal{U}
+        (-\sqrt{k}, \sqrt{k})`, where :math:`k=\frac{1}{\text{in_features}}`.(
+        """
+        return self._linear.bias
+
+    @property
+    def weight(self) -> Tensor:
+        r"""The learnable weights of the module of shape ``(out_features, in_features)``
+
+        The values are initialized from :math:`\mathcal{U} (-\sqrt{k}, \sqrt{k})`,
+        where :math:`k=\frac{1}{\text{in_features}}`.
+        """
+        return self._linear.weight
 
 
 class QuadLUMLP(Sequential):
