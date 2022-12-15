@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.7.0 (2022-12-15)
+### Feature
+* **UncertainLinear:** Introduce Linear layer with uncertainty propagation ([`11ebf1e`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/11ebf1e554e199493efe6856a243067769ddf685))
+
+### Documentation
+* **UncertainQuadLU:** Introduce _alpha's docstring ([`1b4c11a`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/1b4c11a79c16b922a9b328fb72d17f70bdd0720f))
+
 ## v0.6.0 (2022-12-14)
 ### Feature
 * **UncertainQuadLU:** Finalize implementation of UncertainQuadLU ([`76092a5`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/76092a511600366b73539d62ee4b37b2ca96cf78))
