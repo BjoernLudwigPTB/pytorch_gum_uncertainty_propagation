@@ -27,7 +27,8 @@ GUM-compliant uncertainty propagation
    :caption: Code Reference:
 
    gum_compliant_neural_network_uncertainty_propagation.modules
-   gum_compliant_neural_network_uncertainty_propagation.functionals.rst
+   gum_compliant_neural_network_uncertainty_propagation.functionals
+   gum_compliant_neural_network_uncertainty_propagation.uncertainties
 
 Indices and tables
 ==================
