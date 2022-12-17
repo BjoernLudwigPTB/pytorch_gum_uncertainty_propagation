@@ -215,6 +215,7 @@ class QuadLUMLP(Sequential):
         in_channels: int,
         out_features: list[int],
     ):
+        """An MLP consisting of linear layers and QuadLU activation function"""
         layers = ModuleList()
         in_dimen = in_channels
         for out_dimen in out_features:
