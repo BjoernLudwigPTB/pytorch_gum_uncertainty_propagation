@@ -4,28 +4,28 @@ from inspect import signature
 from hypothesis import given, strategies as hst
 from numpy.testing import assert_equal
 from torch import Tensor
-from torch.nn import Module
+from torch.nn import Linear, Module
 from torch.testing import assert_close  # type: ignore[attr-defined]
 
 from gum_compliant_neural_network_uncertainty_propagation import modules
-from gum_compliant_neural_network_uncertainty_propagation.modules import (
-    UncertainLinear,
+from gum_compliant_neural_network_uncertainty_propagation.modules import UncertainLinear
+from gum_compliant_neural_network_uncertainty_propagation.uncertainties import (
+    UncertainTensor,
 )
 from .conftest import (
     uncertain_linears,
+    UncertainTensorForLinear,
     values_uncertainties_and_uncertain_linears,
-    values_with_uncertainties,
-    ValuesUncertainties,
-    ValuesUncertaintiesForLinear,
 )
-
-
-def test_modules_all_contains_uncertain_linear() -> None:
-    assert UncertainLinear.__name__ in modules.__all__
+from ..conftest import uncertain_tensors
 
 
 def test_modules_actually_contains_uncertain_linear() -> None:
     assert hasattr(modules, UncertainLinear.__name__)
+
+
+def test_modules_all_contains_uncertain_linear() -> None:
+    assert UncertainLinear.__name__ in modules.__all__
 
 
 def test_uncertain_linear_is_subclass_of_nn_module() -> None:
@@ -122,89 +122,92 @@ def test_uncertain_linear_contains_callable_forward() -> None:
     assert callable(UncertainLinear.forward)
 
 
-def test_uncertain_linear_forward_accepts_two_parameters() -> None:
-    assert_equal(len(signature(UncertainLinear.forward).parameters), 3)
+def test_uncertain_linear_forward_accepts_one_parameters() -> None:
+    assert_equal(len(signature(UncertainLinear.forward).parameters), 2)
 
 
-def test_uncertain_linear_forward_accepts_values_parameter() -> None:
-    assert "values" in signature(UncertainLinear.forward).parameters
+def test_uncertain_linear_forward_accepts_uncertain_values_parameter() -> None:
+    assert "uncertain_values" in signature(UncertainLinear.forward).parameters
 
 
-def test_uncertain_linear_forward_accepts_uncertainties_parameter() -> None:
-    assert "uncertainties" in signature(UncertainLinear.forward).parameters
-
-
-def test_uncertain_linear_forward_expects_values_parameter_as_tensor() -> None:
+def test_uncertain_linear_forward_expects_uncertain_tensor_parameter() -> None:
     assert issubclass(
-        signature(UncertainLinear.forward).parameters["values"].annotation, Tensor
+        signature(UncertainLinear.forward).parameters["uncertain_values"].annotation,
+        UncertainTensor,
     )
 
 
-@given(values_with_uncertainties(), hst.integers(min_value=1, max_value=10))
+@given(uncertain_tensors(), hst.integers(min_value=1, max_value=10))
 def test_uncertain_linear_forward_returns_tuple(
-    values_and_uncertainties: ValuesUncertainties, out_features: int
+    values_and_uncertainties: UncertainTensor, out_features: int
 ) -> None:
     assert isinstance(
         UncertainLinear(len(values_and_uncertainties.values), out_features).forward(
-            values_and_uncertainties.values.float(),
-            values_and_uncertainties.uncertainties.float(),
+            values_and_uncertainties,
         ),
-        tuple,
+        UncertainTensor,
     )
 
 
 @given(values_uncertainties_and_uncertain_linears())
 def test_uncertain_linear_forward_returns_tensors(
-    values_uncertainties_and_uncertain_linear: ValuesUncertaintiesForLinear,
+    values_uncertainties_and_uncertain_linear: UncertainTensorForLinear,
 ) -> None:
-    for (
-        return_element
-    ) in values_uncertainties_and_uncertain_linear.uncertain_linear.forward(
-        values_uncertainties_and_uncertain_linear.values.float(),
-        values_uncertainties_and_uncertain_linear.uncertainties.float(),
-    ):
+    uncertain_result = (
+        values_uncertainties_and_uncertain_linear.uncertain_linear.forward(
+            values_uncertainties_and_uncertain_linear.uncertain_values
+        )
+    )
+    assert uncertain_result.uncertainties is not None
+    for return_element in uncertain_result:
         assert isinstance(return_element, Tensor)
 
 
 @given(values_uncertainties_and_uncertain_linears())
 def test_default_uncertain_linear_forward_provides_no_uncertainties_if_not_provided(
-    values_uncertainties_and_uncertain_linear: ValuesUncertaintiesForLinear,
+    values_uncertainties_and_uncertain_linear: UncertainTensorForLinear,
 ) -> None:
+    certain_values = UncertainTensor(
+        values_uncertainties_and_uncertain_linear.uncertain_values.values, None
+    )
     assert (
         values_uncertainties_and_uncertain_linear.uncertain_linear.forward(
-            values_uncertainties_and_uncertain_linear.values.float(), None
-        )[1]
+            certain_values
+        ).uncertainties
         is None
     )
 
 
 @given(values_uncertainties_and_uncertain_linears())
 def test_uncertain_linear_forward_uncertainties_for_random_input(
-    values_uncertainties_and_uncertain_linear: ValuesUncertaintiesForLinear,
+    values_uncertainties_and_uncertain_linear: UncertainTensorForLinear,
 ) -> None:
+    uncertain_linear = (
+        values_uncertainties_and_uncertain_linear.uncertain_linear._linear
+    )
+    result_uncertainties = values_uncertainties_and_uncertain_linear.uncertain_linear(
+        values_uncertainties_and_uncertain_linear.uncertain_values
+    ).uncertainties
+    assert result_uncertainties is not None
     assert_close(
-        values_uncertainties_and_uncertain_linear.uncertain_linear.forward(
-            values_uncertainties_and_uncertain_linear.values,
-            values_uncertainties_and_uncertain_linear.uncertainties,
-        )[1],
-        values_uncertainties_and_uncertain_linear.uncertain_linear._linear.weight
-        @ values_uncertainties_and_uncertain_linear.uncertainties
-        @ values_uncertainties_and_uncertain_linear.uncertain_linear._linear.weight.T,
+        result_uncertainties,
+        uncertain_linear.weight
+        @ values_uncertainties_and_uncertain_linear.uncertain_values.uncertainties
+        @ uncertain_linear.weight.T,
     )
 
 
 @given(values_uncertainties_and_uncertain_linears())
 def test_uncertain_linear_forward_values_for_random_input(
-    values_uncertainties_and_uncertain_linear: ValuesUncertaintiesForLinear,
+    values_uncertainties_and_uncertain_linear: UncertainTensorForLinear,
 ) -> None:
     assert_close(
         values_uncertainties_and_uncertain_linear.uncertain_linear.forward(
-            values_uncertainties_and_uncertain_linear.values,
-            values_uncertainties_and_uncertain_linear.uncertainties,
-        )[0],
+            values_uncertainties_and_uncertain_linear.uncertain_values
+        ).values,
         (
-            values_uncertainties_and_uncertain_linear.uncertain_linear._linear.forward(
-                values_uncertainties_and_uncertain_linear.values
+            values_uncertainties_and_uncertain_linear.uncertain_linear._linear(
+                values_uncertainties_and_uncertain_linear.uncertain_values.values
             )
         ),
     )
@@ -212,18 +215,24 @@ def test_uncertain_linear_forward_values_for_random_input(
 
 @given(values_uncertainties_and_uncertain_linears())
 def test_uncertain_linear_forward_for_random_input(
-    values_uncertainties_and_uncertain_linear: ValuesUncertaintiesForLinear,
+    uncertain_values_and_uncertain_linear: UncertainTensorForLinear,
 ) -> None:
-    linear_layer = values_uncertainties_and_uncertain_linear.uncertain_linear._linear
+    assert (
+        uncertain_values_and_uncertain_linear.uncertain_values.uncertainties is not None
+    )
+    uncertain_linear = uncertain_values_and_uncertain_linear.uncertain_linear
+    similar_linear = Linear(uncertain_linear.in_features, uncertain_linear.out_features)
+    similar_linear.load_state_dict(uncertain_linear._linear.state_dict())
     assert_close(
-        values_uncertainties_and_uncertain_linear.uncertain_linear.forward(
-            values_uncertainties_and_uncertain_linear.values,
-            values_uncertainties_and_uncertain_linear.uncertainties,
+        uncertain_linear.forward(
+            uncertain_values_and_uncertain_linear.uncertain_values
         ),
         (
-            linear_layer.forward(values_uncertainties_and_uncertain_linear.values),
-            linear_layer.weight
-            @ values_uncertainties_and_uncertain_linear.uncertainties
-            @ linear_layer.weight.T,
+            similar_linear(
+                uncertain_values_and_uncertain_linear.uncertain_values.values
+            ),
+            uncertain_linear.weight
+            @ uncertain_values_and_uncertain_linear.uncertain_values.uncertainties
+            @ uncertain_linear.weight.T,
         ),
     )
