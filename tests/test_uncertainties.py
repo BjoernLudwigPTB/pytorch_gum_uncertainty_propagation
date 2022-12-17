@@ -1,3 +1,4 @@
+from inspect import signature
 from typing import Any, cast, Optional, Union
 
 import numpy as np
@@ -9,14 +10,19 @@ from hypothesis.strategies import composite, DrawFn, SearchStrategy
 from numpy import array, float64
 from numpy._typing import NDArray
 from numpy.linalg import eigvals
+from numpy.testing import assert_equal
 from torch import diag, isnan, tensor, Tensor
+from torch.testing import assert_close  # type: ignore[attr-defined]
 
+from gum_compliant_neural_network_uncertainty_propagation import uncertainties
 from gum_compliant_neural_network_uncertainty_propagation.uncertainties import (
     _is_positive_semi_definite,
     _is_symmetric,
     _match_dimen_and_std_uncertainty_vec_len,
     cov_matrix_from_std_uncertainties,
+    UncertainTensor,
 )
+from .conftest import tensors, uncertain_tensors
 
 
 @composite
@@ -83,6 +89,34 @@ def input_for_cov_matrix_from_std_uncertainties(
     return cast(
         SearchStrategy[tuple[Tensor, float, float, float]], (sigma, rho, phi, nu)
     )
+
+
+def test_modules_has_attribute_uncertain_tensor() -> None:
+    assert hasattr(uncertainties, "UncertainTensor")
+
+
+def test_uncertain_tensor_present_in_all() -> None:
+    assert UncertainTensor.__name__ in uncertainties.__all__
+
+
+def test_uncertainties_has_attribute_uncertain_tensor() -> None:
+    assert hasattr(uncertainties, "cov_matrix_from_std_uncertainties")
+
+
+def test_cov_matrix_from_std_uncertainties_present_in_all() -> None:
+    assert cov_matrix_from_std_uncertainties.__name__ in uncertainties.__all__
+
+
+def test_uncertainties_has_attribute_is_positive_semi_definite() -> None:
+    assert hasattr(uncertainties, "_is_positive_semi_definite")
+
+
+def test_uncertainties_has_attribute_match_dimen_and_std_uncertainty_vec_len() -> None:
+    assert hasattr(uncertainties, "_match_dimen_and_std_uncertainty_vec_len")
+
+
+def test_uncertainties_has_attribute_is_symmetric() -> None:
+    assert hasattr(uncertainties, "_is_symmetric")
 
 
 @given(hnp.arrays(float, hnp.array_shapes()))
@@ -224,3 +258,101 @@ def test_cov_matrix_from_std_uncertainties_raises_exception(
         cov_matrix_from_std_uncertainties(
             sigma_rho_phi_nu[0], 2.0, *sigma_rho_phi_nu[2:]
         )
+
+
+def test_uncertain_tensor_has_two_parameters() -> None:
+    assert_equal(len(signature(UncertainTensor).parameters), 2)
+
+
+def test_uncertain_tensor_has_parameter_values() -> None:
+    assert "values" in signature(UncertainTensor).parameters
+
+
+def test_uncertain_tensor_has_parameter_uncertainties() -> None:
+    assert "uncertainties" in signature(UncertainTensor).parameters
+
+
+def test_uncertain_tensor_parameter_values_is_tensor() -> None:
+    assert issubclass(
+        signature(UncertainTensor).parameters["values"].annotation, Tensor
+    )
+
+
+def test_uncertain_tensor_parameter_uncertainties_is_tensor() -> None:
+    assert (
+        signature(UncertainTensor).parameters["uncertainties"].annotation
+        == Tensor | None
+    )
+
+
+@given(tensors())
+def test_init_uncertain_tensor_allows_init_with_values_only(values: Tensor) -> None:
+    UncertainTensor(values)
+
+
+@given(tensors())
+def test_init_uncertain_tensor_with_values_only_contains_values(values: Tensor) -> None:
+    assert_close(UncertainTensor(values).values, values, equal_nan=True)
+
+
+@given(tensors())
+def test_init_uncertain_tensor_with_values_only_contains_values_at_index_zero(
+    values: Tensor,
+) -> None:
+    assert_close(UncertainTensor(values)[0], values, equal_nan=True)
+
+
+@given(uncertain_tensors())
+def test_init_uncertain_tensor_contains_values(
+    uncertain_tensor: UncertainTensor,
+) -> None:
+    assert_close(
+        UncertainTensor(uncertain_tensor.values, uncertain_tensor.uncertainties).values,
+        uncertain_tensor.values,
+        equal_nan=True,
+    )
+
+
+@given(uncertain_tensors())
+def test_init_uncertain_tensor_contains_values_at_index_zero(
+    uncertain_tensor: UncertainTensor,
+) -> None:
+    assert_close(
+        UncertainTensor(uncertain_tensor.values, uncertain_tensor.uncertainties)[0],
+        uncertain_tensor.values,
+        equal_nan=True,
+    )
+
+
+@given(uncertain_tensors())
+def test_init_uncertain_tensor_contains_uncertainties(
+    uncertain_tensor: UncertainTensor,
+) -> None:
+    assert_close(
+        UncertainTensor(
+            uncertain_tensor.values, uncertain_tensor.uncertainties
+        ).uncertainties,
+        uncertain_tensor.uncertainties,
+        equal_nan=True,
+    )
+
+
+@given(uncertain_tensors())
+def test_init_uncertain_tensor_contains_values_at_index_one(
+    uncertain_tensor: UncertainTensor,
+) -> None:
+    assert_close(
+        UncertainTensor(uncertain_tensor.values, uncertain_tensor.uncertainties)[1],
+        uncertain_tensor.uncertainties,
+        equal_nan=True,
+    )
+
+
+@given(uncertain_tensors())
+def test_init_uncertain_tensor_with_named_parameter_value_only(
+    uncertain_tensor: UncertainTensor,
+) -> None:
+    assert_close(
+        UncertainTensor(values=uncertain_tensor.values),
+        UncertainTensor(uncertain_tensor.values, None),
+    )
