@@ -13,6 +13,7 @@ from gum_compliant_neural_network_uncertainty_propagation.modules import (
 )
 from gum_compliant_neural_network_uncertainty_propagation.uncertainties import (
     cov_matrix_from_std_uncertainties,
+    UncertainTensor,
 )
 from ..conftest import tensors
 
@@ -50,45 +51,15 @@ def uncertain_linears(
     )
 
 
-class ValuesUncertainties(NamedTuple):
-    values: Tensor
-    uncertainties: Tensor
-
-
-@composite
-def values_with_uncertainties(
-    draw: DrawFn, greater_than: float = -1e2, less_than: float = 1e2
-) -> SearchStrategy[ValuesUncertainties]:
-    values: Tensor = cast(
-        Tensor, draw(tensors(elements_min=greater_than, elements_max=less_than))
-    )
-    std_uncertainties = cast(
-        Tensor,
-        draw(
-            tensors(
-                elements_min=values.abs().min().data.item() * 1e-3,
-                elements_max=values.abs().min().data.item() * 1e2,
-                length=len(values),
-            )
-        ),
-    )
-    cov_matrix = cov_matrix_from_std_uncertainties(std_uncertainties, 0.5, 0.5, 0.5)
-    return cast(
-        SearchStrategy[ValuesUncertainties],
-        ValuesUncertainties(values, cov_matrix),
-    )
-
-
-class ValuesUncertaintiesForLinear(NamedTuple):
-    values: Tensor
-    uncertainties: Tensor
+class UncertainTensorForLinear(NamedTuple):
+    uncertain_values: UncertainTensor
     uncertain_linear: UncertainLinear
 
 
 @composite
 def values_uncertainties_and_uncertain_linears(
     draw: DrawFn, greater_than: float = -1e2, less_than: float = 1e2
-) -> SearchStrategy[ValuesUncertaintiesForLinear]:
+) -> SearchStrategy[UncertainTensorForLinear]:
     values: Tensor = cast(
         Tensor,
         draw(tensors(elements_min=greater_than, elements_max=less_than)),
@@ -105,10 +76,9 @@ def values_uncertainties_and_uncertain_linears(
     )
     cov_matrix = cov_matrix_from_std_uncertainties(std_uncertainties, 0.5, 0.5, 0.5)
     return cast(
-        SearchStrategy[ValuesUncertaintiesForLinear],
-        ValuesUncertaintiesForLinear(
-            values.float(),
-            cov_matrix.float(),
+        SearchStrategy[UncertainTensorForLinear],
+        UncertainTensorForLinear(
+            UncertainTensor(values.float(), cov_matrix.float()),
             UncertainLinear(len(values), draw(hst.integers(min_value=1, max_value=10))),
         ),
     )

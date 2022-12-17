@@ -7,6 +7,11 @@ from hypothesis.strategies import composite, DrawFn, SearchStrategy
 from torch import tensor, Tensor
 from torch.nn.parameter import Parameter
 
+from gum_compliant_neural_network_uncertainty_propagation.uncertainties import (
+    cov_matrix_from_std_uncertainties,
+    UncertainTensor,
+)
+
 
 @composite
 def alphas(
@@ -77,4 +82,32 @@ def tensors(
                 ),
             )
         ),
+    )
+
+
+@composite
+def uncertain_tensors(
+    draw: DrawFn,
+    greater_than: float = -1e2,
+    less_than: float = 1e2,
+    length: int | None = None,
+) -> SearchStrategy[UncertainTensor]:
+    values: Tensor = cast(
+        Tensor,
+        draw(tensors(elements_min=greater_than, elements_max=less_than, length=length)),
+    )
+    std_uncertainties = cast(
+        Tensor,
+        draw(
+            tensors(
+                elements_min=values.abs().min().data.item() * 1e-3,
+                elements_max=values.abs().min().data.item() * 1e2,
+                length=len(values),
+            )
+        ),
+    )
+    cov_matrix = cov_matrix_from_std_uncertainties(std_uncertainties, 0.5, 0.5, 0.5)
+    return cast(
+        SearchStrategy[UncertainTensor],
+        UncertainTensor(values.float(), cov_matrix.float()),
     )
