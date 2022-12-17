@@ -11,6 +11,8 @@ image: python:3.10
 variables:
   HTTP_PROXY: "http://webproxy:8080"
   HTTPS_PROXY: "http://webproxy:8080"
+  http_proxy: "http://webproxy:8080"
+  https_proxy: "http://webproxy:8080"
 
 .install-pip-tools: &install-pip-tools
   - pip install --upgrade pip-tools
