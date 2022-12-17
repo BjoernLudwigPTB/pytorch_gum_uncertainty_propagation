@@ -1,5 +1,5 @@
 """Test the module modules"""
-from gum_compliant_neural_network_uncertainty_propagation import modules
+from pytorch_gum_uncertainty_propagation import modules
 
 
 def test_modules_has_module_docstring() -> None:

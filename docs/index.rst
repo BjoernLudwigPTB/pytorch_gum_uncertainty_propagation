@@ -26,9 +26,9 @@ GUM-compliant uncertainty propagation
    :maxdepth: 1
    :caption: Code Reference:
 
-   gum_compliant_neural_network_uncertainty_propagation.modules
-   gum_compliant_neural_network_uncertainty_propagation.functionals
-   gum_compliant_neural_network_uncertainty_propagation.uncertainties
+   pytorch_gum_uncertainty_propagation.modules
+   pytorch_gum_uncertainty_propagation.functionals
+   pytorch_gum_uncertainty_propagation.uncertainties
 
 Indices and tables
 ==================

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# gum_compliant_neural_network_uncertainty_propagation documentation build
+# pytorch_gum_uncertainty_propagation documentation build
 # configuration file, created by copying PyDynamic's on Sat Dec 04 16:30:35 2022.
 #
 # This file is execfile()d with the current directory set to its
@@ -99,7 +99,7 @@ tutorials_source = os.path.abspath(
         os.path.dirname(__file__),
         "..",
         "src",
-        "gum_compliant_neural_network_uncertainty_propagation",
+        "pytorch_gum_uncertainty_propagation",
         "examples",
     )
 )
@@ -144,7 +144,7 @@ myst_heading_anchors = 4
 root_doc = "index"
 
 # General information about the project.
-project = "gum_compliant_neural_network_uncertainty_propagation"
+project = "pytorch_gum_uncertainty_propagation"
 copyright = "2022, B. Ludwig (PTB)"
 author = "B. Ludwig"
 
@@ -298,7 +298,7 @@ html_static_path: list[str] = []
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "gum_compliant_neural_network_uncertainty_propagationdoc"
+htmlhelp_basename = "pytorch_gum_uncertainty_propagation"
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -319,8 +319,8 @@ htmlhelp_basename = "gum_compliant_neural_network_uncertainty_propagationdoc"
 latex_documents = [
     (
         root_doc,
-        "gum_compliant_neural_network_uncertainty_propagation.tex",
-        "gum_compliant_neural_network_uncertainty_propagation Documentation",
+        "pytorch_gum_uncertainty_propagation.tex",
+        "pytorch_gum_uncertainty_propagation Documentation",
         "B. Ludwig",
         "manual",
     ),
@@ -354,8 +354,8 @@ latex_domain_indices = True
 man_pages = [
     (
         root_doc,
-        "gum_compliant_neural_network_uncertainty_propagation",
-        "gum_compliant_neural_network_uncertainty_propagation Documentation",
+        "pytorch_gum_uncertainty_propagation",
+        "pytorch_gum_uncertainty_propagation Documentation",
         [author],
         1,
     )
@@ -373,10 +373,10 @@ man_show_urls = False
 # texinfo_documents = [
 #     (
 #         root_doc,
-#         "gum_compliant_neural_network_uncertainty_propagation",
-#         "gum_compliant_neural_network_uncertainty_propagation Documentation",
+#         "pytorch_gum_uncertainty_propagation",
+#         "pytorch_gum_uncertainty_propagation Documentation",
 #         author,
-#         "gum_compliant_neural_network_uncertainty_propagation",
+#         "pytorch_gum_uncertainty_propagation",
 #         "One line description of project.",
 #         "Miscellaneous",
 #     ),

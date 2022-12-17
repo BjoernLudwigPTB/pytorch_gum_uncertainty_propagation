@@ -7,8 +7,8 @@ from torch import tensor, Tensor
 from torch.nn.parameter import Parameter
 from torch.testing import assert_close  # type: ignore[attr-defined]
 
-from gum_compliant_neural_network_uncertainty_propagation import functionals
-from gum_compliant_neural_network_uncertainty_propagation.functionals import (
+from pytorch_gum_uncertainty_propagation import functionals
+from pytorch_gum_uncertainty_propagation.functionals import (
     quadlu,
     quadlu_,
     QUADLU_ALPHA_DEFAULT,

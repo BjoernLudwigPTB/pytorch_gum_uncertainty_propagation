@@ -7,7 +7,7 @@ from hypothesis.strategies import composite, DrawFn, SearchStrategy
 from torch import tensor, Tensor
 from torch.nn.parameter import Parameter
 
-from gum_compliant_neural_network_uncertainty_propagation.uncertainties import (
+from pytorch_gum_uncertainty_propagation.uncertainties import (
     cov_matrix_from_std_uncertainties,
     UncertainTensor,
 )

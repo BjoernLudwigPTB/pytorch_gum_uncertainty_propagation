@@ -14,11 +14,11 @@ from torch import Tensor
 from torch.nn import Linear, Module, ModuleList, Sequential
 from torch.nn.parameter import Parameter
 
-from gum_compliant_neural_network_uncertainty_propagation.functionals import (
+from pytorch_gum_uncertainty_propagation.functionals import (
     quadlu,
     QUADLU_ALPHA_DEFAULT,
 )
-from gum_compliant_neural_network_uncertainty_propagation.uncertainties import (
+from pytorch_gum_uncertainty_propagation.uncertainties import (
     UncertainTensor,
 )
 
@@ -200,7 +200,7 @@ class QuadLUMLP(Sequential):
 
     The implementation is heavily based on the module :class:`~torchvision.ops.MLP`.
     For each specified output dimension a combination of a :class:`~torch.nn.Linear` and
-    the :class:`~gum_compliant_neural_network_uncertainty_propagation.modules.QuadLU`
+    the :class:`~pytorch_gum_uncertainty_propagation.modules.QuadLU`
     activation function is added.
 
     Parameters

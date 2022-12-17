@@ -6,12 +6,12 @@ from hypothesis import strategies as hst
 from hypothesis.strategies import composite, DrawFn, SearchStrategy
 from torch import Tensor
 
-from gum_compliant_neural_network_uncertainty_propagation.modules import (
+from pytorch_gum_uncertainty_propagation.modules import (
     QuadLU,
     UncertainLinear,
     UncertainQuadLU,
 )
-from gum_compliant_neural_network_uncertainty_propagation.uncertainties import (
+from pytorch_gum_uncertainty_propagation.uncertainties import (
     cov_matrix_from_std_uncertainties,
     UncertainTensor,
 )

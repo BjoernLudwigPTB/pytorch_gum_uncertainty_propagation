@@ -16,7 +16,7 @@ def quadlu(
 ) -> Tensor:
     r"""Applies QuadLU element-wise
 
-    See :class:`~gum_compliant_neural_network_uncertainty_propagation.modules.QuadLU`
+    See :class:`~pytorch_gum_uncertainty_propagation.modules.QuadLU`
     for more details.
     """
     result_tensor = values if inplace else torch.zeros_like(values)

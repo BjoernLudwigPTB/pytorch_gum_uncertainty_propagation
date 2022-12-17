@@ -14,8 +14,8 @@ from numpy.testing import assert_equal
 from torch import diag, isnan, tensor, Tensor
 from torch.testing import assert_close  # type: ignore[attr-defined]
 
-from gum_compliant_neural_network_uncertainty_propagation import uncertainties
-from gum_compliant_neural_network_uncertainty_propagation.uncertainties import (
+from pytorch_gum_uncertainty_propagation import uncertainties
+from pytorch_gum_uncertainty_propagation.uncertainties import (
     _is_positive_semi_definite,
     _is_symmetric,
     _match_dimen_and_std_uncertainty_vec_len,

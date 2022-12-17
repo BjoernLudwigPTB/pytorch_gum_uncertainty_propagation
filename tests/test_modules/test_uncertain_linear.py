@@ -7,9 +7,9 @@ from torch import Tensor
 from torch.nn import Linear, Module
 from torch.testing import assert_close  # type: ignore[attr-defined]
 
-from gum_compliant_neural_network_uncertainty_propagation import modules
-from gum_compliant_neural_network_uncertainty_propagation.modules import UncertainLinear
-from gum_compliant_neural_network_uncertainty_propagation.uncertainties import (
+from pytorch_gum_uncertainty_propagation import modules
+from pytorch_gum_uncertainty_propagation.modules import UncertainLinear
+from pytorch_gum_uncertainty_propagation.uncertainties import (
     UncertainTensor,
 )
 from .conftest import (

@@ -3,7 +3,7 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "gum_compliant_neural_network_uncertainty_propagation"
+name = "pytorch_gum_uncertainty_propagation"
 description = """
 This package accompanies my Master's thesis on GUM-compliant uncertainty propagation\
 and provides an implementation for fully-connected, feed-forward, deep neural networks\

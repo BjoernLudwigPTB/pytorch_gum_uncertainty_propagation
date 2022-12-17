@@ -8,8 +8,8 @@ from torch.nn import Module
 from torch.nn.parameter import Parameter
 from torch.testing import assert_close  # type: ignore[attr-defined]
 
-from gum_compliant_neural_network_uncertainty_propagation import modules
-from gum_compliant_neural_network_uncertainty_propagation.modules import (
+from pytorch_gum_uncertainty_propagation import modules
+from pytorch_gum_uncertainty_propagation.modules import (
     QuadLU,
 )
 from ..conftest import alphas, tensors
