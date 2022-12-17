@@ -8,8 +8,6 @@ __all__ = [
     "UncertainQuadLU",
 ]
 
-from typing import Optional
-
 import torch
 from torch import Tensor
 from torch.nn import Linear, Module, ModuleList, Sequential
@@ -157,14 +155,12 @@ class UncertainLinear(Module):
         super().__init__()
         self._linear = Linear(in_features, out_features, bias=bias)
 
-    def forward(
-        self, values: Tensor, uncertainties: Tensor | None
-    ) -> tuple[Tensor, Tensor | None]:
+    def forward(self, uncertain_values: UncertainTensor) -> UncertainTensor:
         """Forward pass of LinearQuadLU"""
-        return (
-            self._linear.forward(values),
-            self._linear.weight @ uncertainties @ self._linear.weight.T
-            if uncertainties is not None
+        return UncertainTensor(
+            self._linear.forward(uncertain_values.values),
+            self.weight @ uncertain_values.uncertainties @ self.weight.T
+            if uncertain_values.uncertainties is not None
             else None,
         )
 
