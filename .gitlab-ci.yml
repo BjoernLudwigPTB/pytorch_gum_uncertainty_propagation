@@ -82,7 +82,9 @@ sphinx:
   rules:
     - if: $CI_COMMIT_TAG == null
   script:
-    - *install-dev-deps
+    - *install-pip-tools
+    - python -m piptools sync docs-requirements.txt
+    - pip install .
     - sphinx-build -W --keep-going docs/ docs/_build
 
 black:
