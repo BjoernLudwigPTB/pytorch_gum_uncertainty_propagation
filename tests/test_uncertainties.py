@@ -120,7 +120,7 @@ def test_uncertainties_has_attribute_is_symmetric() -> None:
 
 
 @given(hnp.arrays(float, hnp.array_shapes()))
-def test_is_semi_positive_definite_usual_call(matrix: NDArray[Any]) -> None:
+def test_is_positive_semi_definite_usual_call(matrix: NDArray[Any]) -> None:
     tmp_tensor = tensor(matrix)
     assert isinstance(_is_positive_semi_definite(tmp_tensor), bool) or isinstance(
         _is_positive_semi_definite(tmp_tensor).item(), bool
@@ -128,17 +128,17 @@ def test_is_semi_positive_definite_usual_call(matrix: NDArray[Any]) -> None:
 
 
 @given(hst.integers(min_value=1, max_value=10))
-def test_is_semi_positive_definite_against_zero(length: int) -> None:
+def test_is_positive_semi_definite_against_zero(length: int) -> None:
     assert _is_positive_semi_definite(tensor(np.zeros((length, length))))
 
 
-def test_is_semi_positive_definite_for_single_instance_true() -> None:
+def test_is_positive_semi_definite_for_single_instance_true() -> None:
     A = tensor([[5, 2, 1], [2, 4, 2], [1, 2, 3]])
     smallest_eigenvalue = min(eigvals(A))
     assert _is_positive_semi_definite(A) == tensor(bool(smallest_eigenvalue > 0))
 
 
-def test_is_semi_positive_definite_for_single_instance_false() -> None:
+def test_is_positive_semi_definite_for_single_instance_false() -> None:
     A = tensor(array([[1, 2, 1], [2, 2, 2], [1, 2, 3]]))
     smallest_eigenvalue = min(eigvals(A))
     assert _is_positive_semi_definite(A) == tensor(bool(smallest_eigenvalue > 0))
