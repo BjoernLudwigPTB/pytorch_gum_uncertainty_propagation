@@ -152,6 +152,7 @@ class UncertainLinear(Module):
     """
 
     def __init__(self, in_features: int, out_features: int, bias: bool = True):
+        """A Linear layer with uncertainty propagation"""
         super().__init__()
         self._linear = Linear(in_features, out_features, bias=bias)
 
