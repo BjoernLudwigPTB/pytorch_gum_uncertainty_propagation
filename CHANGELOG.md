@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v0.8.0 (2022-12-17)
+### Feature
+* **UncertainQuadLUMLP:** Introduce first implementation of an MLP equipped with UncertainQuadLU ([`d17d333`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/d17d333a1021613b7db28b383c1cbb6e4044667f))
+* **ValuesUncertainties:** Introduce new namedtuple datatype for values with associated uncertainty ([`b68e7fc`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/b68e7fc36d9a1cabee6f99ea7ef9a283461b688c))
+
+### Documentation
+* **uncertainties:** Introduce uncertainties module into docs ([`2cdf789`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/2cdf78922f23a9db7a45799a047d336569392859))
+
 ## v0.7.0 (2022-12-15)
 ### Feature
 * **UncertainLinear:** Introduce Linear layer with uncertainty propagation ([`11ebf1e`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/11ebf1e554e199493efe6856a243067769ddf685))
