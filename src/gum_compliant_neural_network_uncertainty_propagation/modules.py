@@ -6,6 +6,7 @@ __all__ = [
     "QuadLUMLP",
     "UncertainLinear",
     "UncertainQuadLU",
+    "UncertainQuadLUMLP",
 ]
 
 import torch
@@ -222,4 +223,31 @@ class QuadLUMLP(Sequential):
             layers.append(torch.nn.Linear(in_dimen, out_dimen, dtype=torch.double))
             layers.append(QuadLU())
             in_dimen = out_dimen
+        super().__init__(*layers)
+
+
+class UncertainQuadLUMLP(Sequential):
+    """This implements the multi-layer perceptron (MLP) with UncertainQuadLU activation
+
+    The implementation is heavily based on the module :class:`~torchvision.ops.MLP`.
+    For each specified output dimension a combination of a
+    :class:`UncertainLinear` and the :class:`UncertainQuadLU` activation function is
+    added.
+
+    Parameters
+    ----------
+    in_channels : int
+        number of channels of the input
+    out_features : list[int]
+        the hidden and output layers' dimensions
+    """
+
+    def __init__(self, in_channels: int, out_features: list[int]) -> None:
+        """An MLP consisting of UncertainLinear QuadLU layers"""
+        super().__init__()
+        layers = ModuleList()
+        for out_dimen in out_features:
+            layers.append(UncertainLinear(in_channels, out_dimen))
+            layers.append(UncertainQuadLU())
+            in_channels = out_dimen
         super().__init__(*layers)
