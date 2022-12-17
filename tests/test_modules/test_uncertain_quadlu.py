@@ -17,8 +17,10 @@ from gum_compliant_neural_network_uncertainty_propagation.modules import (
     QuadLU,
     UncertainQuadLU,
 )
-from .conftest import values_with_uncertainties, ValuesUncertainties
-from ..conftest import alphas, tensors
+from gum_compliant_neural_network_uncertainty_propagation.uncertainties import (
+    UncertainTensor,
+)
+from ..conftest import alphas, tensors, uncertain_tensors
 
 
 def test_modules_all_contains_uncertain_quadlu() -> None:
@@ -104,59 +106,83 @@ def test_uncertain_quadlu_contains_callable_forward() -> None:
     assert callable(UncertainQuadLU.forward)
 
 
-@given(tensors(elements_max=-UncertainQuadLU.QUADLU_ALPHA_DEFAULT.data.item()))
-def test_default_uncertain_quadlu_forward_for_small_x(x: Tensor) -> None:
-    assert_equal(UncertainQuadLU().forward(x)[0].data.numpy(), 0.0)
+@given(uncertain_tensors(less_than=-UncertainQuadLU.QUADLU_ALPHA_DEFAULT.data.item()))
+def test_default_uncertain_quadlu_forward_for_small_values(
+    uncertain_tensor: UncertainTensor,
+) -> None:
+    assert_equal(UncertainQuadLU().forward(uncertain_tensor)[0].data.numpy(), 0.0)
 
 
-@given(tensors(elements_max=-0.1501), alphas(max_value=0.15))
-def test_uncertain_quadlu_forward_for_small_x(x: Tensor, alpha: Parameter) -> None:
-    assert_equal(UncertainQuadLU(alpha).forward(x)[0].data.numpy(), 0.0)
+@given(uncertain_tensors(less_than=-0.1501), alphas(max_value=0.15))
+def test_uncertain_quadlu_forward_for_small_values(
+    uncertain_tensor: UncertainTensor, alpha: Parameter
+) -> None:
+    assert_equal(UncertainQuadLU(alpha).forward(uncertain_tensor)[0].data.numpy(), 0.0)
 
 
 @given(tensors())
 def test_default_uncertain_quadlu_forward_provides_no_uncertainties_if_not_provided(
-    x: Tensor,
+    values: Tensor,
 ) -> None:
-    assert UncertainQuadLU().forward(x)[1] is None
+    assert (
+        UncertainQuadLU().forward(UncertainTensor(values, None)).uncertainties is None
+    )
 
 
-@given(tensors(elements_min=UncertainQuadLU.QUADLU_ALPHA_DEFAULT.data.item()))
-def test_default_uncertain_quadlu_forward_for_large_x(x: Tensor) -> None:
-    assert_close(UncertainQuadLU().forward(x)[0], x)
+@given(uncertain_tensors(greater_than=UncertainQuadLU.QUADLU_ALPHA_DEFAULT.data.item()))
+def test_default_uncertain_quadlu_forward_for_large_values(
+    uncertain_tensor: UncertainTensor,
+) -> None:
+    assert_close(
+        UncertainQuadLU().forward(uncertain_tensor)[0], uncertain_tensor.values
+    )
 
 
-@given(tensors(elements_min=0.15), alphas(max_value=0.15))
-def test_uncertain_quadlu_forward_for_large_x(x: Tensor, alpha: Parameter) -> None:
-    assert_close(UncertainQuadLU(alpha).forward(x)[0], 4 * alpha * x, equal_nan=True)
+@given(uncertain_tensors(greater_than=0.15), alphas(max_value=0.15))
+def test_uncertain_quadlu_forward_for_large_x(
+    uncertain_tensor: UncertainTensor, alpha: Parameter
+) -> None:
+    assert_close(
+        UncertainQuadLU(alpha).forward(uncertain_tensor)[0],
+        4 * alpha * uncertain_tensor.values,
+        equal_nan=True,
+    )
 
 
 @given(
-    tensors(
-        elements_min=-UncertainQuadLU.QUADLU_ALPHA_DEFAULT.data.item(),
-        elements_max=UncertainQuadLU.QUADLU_ALPHA_DEFAULT.data.item(),
+    uncertain_tensors(
+        greater_than=-UncertainQuadLU.QUADLU_ALPHA_DEFAULT.data.item(),
+        less_than=UncertainQuadLU.QUADLU_ALPHA_DEFAULT.data.item(),
     )
 )
-def test_default_uncertain_quadlu_forward_near_zero(x: Tensor) -> None:
+def test_default_uncertain_quadlu_forward_near_zero(
+    uncertain_tensor: UncertainTensor,
+) -> None:
     assert_close(
-        UncertainQuadLU().forward(x)[0],
-        square(x + UncertainQuadLU.QUADLU_ALPHA_DEFAULT),
+        UncertainQuadLU().forward(uncertain_tensor)[0],
+        square(uncertain_tensor.values + UncertainQuadLU.QUADLU_ALPHA_DEFAULT),
     )
 
 
-@given(tensors(elements_min=-0.14, elements_max=0.14), alphas(min_value=0.14))
-def test_uncertain_quadlu_forward_near_zero(x: Tensor, alpha: Parameter) -> None:
-    assert_close(UncertainQuadLU(alpha).forward(x)[0], square(x + alpha))
-
-
-@given(tensors())
-def test_default_uncertain_quadlu_forward_values_for_random_input(
-    values: Tensor,
+@given(uncertain_tensors(greater_than=-0.14, less_than=0.14), alphas(min_value=0.14))
+def test_uncertain_quadlu_forward_near_zero(
+    uncertain_tensor: UncertainTensor, alpha: Parameter
 ) -> None:
+    assert_close(
+        UncertainQuadLU(alpha).forward(uncertain_tensor)[0],
+        square(uncertain_tensor.values + alpha),
+    )
+
+
+@given(uncertain_tensors())
+def test_default_uncertain_quadlu_forward_values_for_random_input(
+    uncertain_tensor: UncertainTensor,
+) -> None:
+    values = uncertain_tensor.values
     less_or_equal_mask = values <= -UncertainQuadLU.QUADLU_ALPHA_DEFAULT
     greater_or_equal_mask = values >= UncertainQuadLU.QUADLU_ALPHA_DEFAULT
     in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
-    result_tensor = UncertainQuadLU().forward(values)[0]
+    result_tensor = UncertainQuadLU().forward(uncertain_tensor)[0]
     assert_equal(result_tensor[less_or_equal_mask].data.numpy(), 0.0)
     assert_close(
         result_tensor[in_between_mask],
@@ -166,14 +192,15 @@ def test_default_uncertain_quadlu_forward_values_for_random_input(
     assert_close(result_tensor[greater_or_equal_mask], values[greater_or_equal_mask])
 
 
-@given(tensors(), alphas())
+@given(uncertain_tensors(), alphas())
 def test_uncertain_quadlu_forward_values_for_random_input(
-    values: Tensor, alpha: Parameter
+    uncertain_tensor: UncertainTensor, alpha: Parameter
 ) -> None:
+    values = uncertain_tensor.values
     less_or_equal_mask = values <= -alpha
     greater_or_equal_mask = values >= alpha
     in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
-    result_tensor = UncertainQuadLU(alpha).forward(values)[0]
+    result_tensor = UncertainQuadLU(alpha).forward(uncertain_tensor)[0]
     assert_equal(result_tensor[less_or_equal_mask].data.numpy(), 0.0)
     assert_close(
         result_tensor[in_between_mask],
@@ -187,183 +214,171 @@ def test_uncertain_quadlu_forward_values_for_random_input(
     )
 
 
-@given(values_with_uncertainties(greater_than=QUADLU_ALPHA_DEFAULT.data.item()))
+@given(uncertain_tensors(greater_than=QUADLU_ALPHA_DEFAULT.data.item()))
 def test_default_uncertain_quadlu_forward_accepts_big_input(
-    values_and_uncertainties: ValuesUncertainties,
+    values_and_uncertainties: UncertainTensor,
 ) -> None:
-    assert UncertainQuadLU().forward(
-        values_and_uncertainties.values,
-        values_and_uncertainties.uncertainties,
-    )
+    assert UncertainQuadLU().forward(values_and_uncertainties)
 
 
-@given(values_with_uncertainties(greater_than=0.16), alphas(max_value=0.16))
+@given(uncertain_tensors(greater_than=0.16), alphas(max_value=0.16))
 def test_uncertain_quadlu_forward_accepts_big_input(
-    values_and_uncertainties: ValuesUncertainties, alpha: Parameter
+    values_and_uncertainties: UncertainTensor, alpha: Parameter
 ) -> None:
-    assert UncertainQuadLU(alpha).forward(
-        values_and_uncertainties.values,
-        values_and_uncertainties.uncertainties,
-    )
+    assert UncertainQuadLU(alpha).forward(values_and_uncertainties)
 
 
 @given(
-    values_with_uncertainties(
+    uncertain_tensors(
         greater_than=-QUADLU_ALPHA_DEFAULT.data.item(),
         less_than=QUADLU_ALPHA_DEFAULT.data.item(),
     )
 )
 def test_default_uncertain_quadlu_forward_accepts_medium_input(
-    values_and_uncertainties: ValuesUncertainties,
+    values_and_uncertainties: UncertainTensor,
 ) -> None:
-    assert UncertainQuadLU().forward(
-        values_and_uncertainties.values,
-        values_and_uncertainties.uncertainties,
-    )
+    assert UncertainQuadLU().forward(values_and_uncertainties)
 
 
 @given(
-    values_with_uncertainties(greater_than=-0.14, less_than=0.14),
+    uncertain_tensors(greater_than=-0.14, less_than=0.14),
     alphas(max_value=0.14),
 )
 def test_uncertain_quadlu_forward_accepts_medium_input(
-    values_and_uncertainties: ValuesUncertainties, alpha: Parameter
+    values_and_uncertainties: UncertainTensor, alpha: Parameter
 ) -> None:
-    assert UncertainQuadLU(alpha).forward(
-        values_and_uncertainties.values,
-        values_and_uncertainties.uncertainties,
-    )
+    assert UncertainQuadLU(alpha).forward(values_and_uncertainties)
 
 
-@given(values_with_uncertainties(less_than=-QUADLU_ALPHA_DEFAULT.data.item()))
+@given(uncertain_tensors(less_than=-QUADLU_ALPHA_DEFAULT.data.item()))
 def test_default_uncertain_quadlu_forward_accepts_small_input(
-    values_and_uncertainties: ValuesUncertainties,
+    values_and_uncertainties: UncertainTensor,
 ) -> None:
-    assert UncertainQuadLU().forward(
-        values_and_uncertainties.values,
-        values_and_uncertainties.uncertainties,
-    )
+    assert UncertainQuadLU().forward(values_and_uncertainties)
 
 
-@given(values_with_uncertainties(less_than=-0.14), alphas(max_value=0.14))
+@given(uncertain_tensors(less_than=-0.14), alphas(max_value=0.14))
 def test_uncertain_quadlu_forward_accepts_small_input(
-    values_and_uncertainties: ValuesUncertainties, alpha: Parameter
+    values_and_uncertainties: UncertainTensor, alpha: Parameter
 ) -> None:
-    assert UncertainQuadLU(alpha).forward(
-        values_and_uncertainties.values,
-        values_and_uncertainties.uncertainties,
-    )
+    assert UncertainQuadLU(alpha).forward(values_and_uncertainties)
 
 
-@given(values_with_uncertainties())
+@given(uncertain_tensors())
 def test_default_uncertain_quadlu_forward_accepts_random_input(
-    values_and_uncertainties: ValuesUncertainties,
+    values_and_uncertainties: UncertainTensor,
 ) -> None:
-    assert UncertainQuadLU().forward(
-        values_and_uncertainties.values,
-        values_and_uncertainties.uncertainties,
-    )
+    assert UncertainQuadLU().forward(values_and_uncertainties)
 
 
-@given(values_with_uncertainties(less_than=-QUADLU_ALPHA_DEFAULT.data.item()))
+@given(uncertain_tensors(less_than=-QUADLU_ALPHA_DEFAULT.data.item()))
 def test_default_uncertain_quadlu_forward_uncertainties_for_small_input(
-    values_and_uncertainties: ValuesUncertainties,
+    values_and_uncertainties: UncertainTensor,
 ) -> None:
+    assert values_and_uncertainties.uncertainties is not None
     assert_close(
-        UncertainQuadLU().forward(
-            values_and_uncertainties.values,
-            values_and_uncertainties.uncertainties,
-        )[1],
+        UncertainQuadLU().forward(values_and_uncertainties).uncertainties,
         values_and_uncertainties.uncertainties.zero_(),
     )
 
 
-@given(values_with_uncertainties(less_than=-0.13), alphas(max_value=0.13))
+@given(uncertain_tensors(less_than=-0.13), alphas(max_value=0.13))
 def test_uncertain_quadlu_forward_uncertainties_for_small_input(
-    values_and_uncertainties: ValuesUncertainties, alpha: Parameter
+    values_and_uncertainties: UncertainTensor, alpha: Parameter
 ) -> None:
+    assert values_and_uncertainties.uncertainties is not None
     assert_close(
-        UncertainQuadLU(alpha).forward(
-            values_and_uncertainties.values,
-            values_and_uncertainties.uncertainties,
-        )[1],
+        UncertainQuadLU(alpha).forward(values_and_uncertainties).uncertainties,
         values_and_uncertainties.uncertainties.zero_(),
     )
 
 
-@given(values_with_uncertainties(greater_than=QUADLU_ALPHA_DEFAULT.data.item()))
+@given(uncertain_tensors(greater_than=QUADLU_ALPHA_DEFAULT.data.item()))
 def test_default_uncertain_quadlu_forward_uncertainties_for_large_input(
-    values_and_uncertainties: ValuesUncertainties,
+    values_and_uncertainties: UncertainTensor,
 ) -> None:
     assert_close(
-        UncertainQuadLU().forward(
-            values_and_uncertainties.values,
-            values_and_uncertainties.uncertainties,
-        )[1],
+        UncertainQuadLU().forward(values_and_uncertainties).uncertainties,
         values_and_uncertainties.uncertainties,
     )
 
 
-@given(values_with_uncertainties(greater_than=0.1401), alphas(max_value=0.14))
+@given(uncertain_tensors(greater_than=0.1401), alphas(max_value=0.14))
 def test_uncertain_quadlu_forward_uncertainties_for_large_input(
-    values_and_uncertainties: ValuesUncertainties, alpha: Parameter
+    values_and_uncertainties: UncertainTensor, alpha: Parameter
 ) -> None:
+    assert values_and_uncertainties.uncertainties is not None
+    result_uncertainties = (
+        UncertainQuadLU(alpha)
+        .forward(
+            values_and_uncertainties,
+        )
+        .uncertainties
+    )
+    assert result_uncertainties is not None
     assert_close(
-        UncertainQuadLU(alpha).forward(
-            values_and_uncertainties.values,
-            values_and_uncertainties.uncertainties,
-        )[1],
+        UncertainQuadLU(alpha)
+        .forward(
+            values_and_uncertainties,
+        )
+        .uncertainties,
         values_and_uncertainties.uncertainties * 16 * square(alpha),
     )
 
 
 @given(
-    values_with_uncertainties(
+    uncertain_tensors(
         greater_than=-QUADLU_ALPHA_DEFAULT.data.item(),
         less_than=QUADLU_ALPHA_DEFAULT.data.item(),
     )
 )
 def test_default_uncertain_quadlu_forward_uncertainties_for_medium_input(
-    values_and_uncertainties: ValuesUncertainties,
+    values_and_uncertainties: UncertainTensor,
 ) -> None:
     assert_close(
-        UncertainQuadLU().forward(
-            values_and_uncertainties.values,
-            values_and_uncertainties.uncertainties,
-        )[1],
+        UncertainQuadLU()
+        .forward(
+            values_and_uncertainties,
+        )
+        .uncertainties,
         square(2 * values_and_uncertainties.values + 0.5).unsqueeze(1)
         * values_and_uncertainties.uncertainties,
     )
 
 
 @given(
-    values_with_uncertainties(greater_than=-0.14, less_than=0.14),
+    uncertain_tensors(greater_than=-0.14, less_than=0.14),
     alphas(min_value=0.14),
 )
 def test_uncertain_quadlu_forward_uncertainties_for_medium_input(
-    values_and_uncertainties: ValuesUncertainties, alpha: Parameter
+    values_and_uncertainties: UncertainTensor, alpha: Parameter
 ) -> None:
     assert_close(
-        UncertainQuadLU(alpha).forward(
-            values_and_uncertainties.values,
-            values_and_uncertainties.uncertainties,
-        )[1],
+        UncertainQuadLU(alpha)
+        .forward(
+            values_and_uncertainties,
+        )
+        .uncertainties,
         square(2 * (values_and_uncertainties.values + alpha)).unsqueeze(1)
         * values_and_uncertainties.uncertainties,
     )
 
 
-@given(values_with_uncertainties())
+@given(uncertain_tensors())
 def test_default_uncertain_quadlu_forward_uncertainties_for_random_input(
-    values_and_uncertainties: ValuesUncertainties,
+    values_and_uncertainties: UncertainTensor,
 ) -> None:
+    assert values_and_uncertainties.uncertainties is not None
     less_or_equal_mask = values_and_uncertainties.values <= -QUADLU_ALPHA_DEFAULT
     greater_or_equal_mask = values_and_uncertainties.values >= QUADLU_ALPHA_DEFAULT
     in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
-    result_uncertainties = UncertainQuadLU().forward(
-        values_and_uncertainties.values,
-        values_and_uncertainties.uncertainties,
-    )[1]
+    result_uncertainties = (
+        UncertainQuadLU()
+        .forward(
+            values_and_uncertainties,
+        )
+        .uncertainties
+    )
     assert result_uncertainties is not None
     assert_equal(result_uncertainties[less_or_equal_mask].data.numpy(), 0.0)
     if torch.any(in_between_mask):
@@ -385,17 +400,17 @@ def test_default_uncertain_quadlu_forward_uncertainties_for_random_input(
     )
 
 
-@given(values_with_uncertainties(), alphas())
+@given(uncertain_tensors(), alphas())
 def test_uncertain_quadlu_forward_uncertainties_for_random_input(
-    values_and_uncertainties: ValuesUncertainties, alpha: Parameter
+    values_and_uncertainties: UncertainTensor, alpha: Parameter
 ) -> None:
+    assert values_and_uncertainties.uncertainties is not None
     less_or_equal_mask = values_and_uncertainties.values <= -alpha
     greater_or_equal_mask = values_and_uncertainties.values >= alpha
     in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
-    result_uncertainties = UncertainQuadLU(alpha).forward(
-        values_and_uncertainties.values,
-        values_and_uncertainties.uncertainties,
-    )[1]
+    result_uncertainties = (
+        UncertainQuadLU(alpha).forward(values_and_uncertainties).uncertainties
+    )
     assert result_uncertainties is not None
     assert_equal(result_uncertainties[less_or_equal_mask].data.numpy(), 0.0)
     if torch.any(in_between_mask):
@@ -416,13 +431,9 @@ def test_uncertain_quadlu_forward_uncertainties_for_random_input(
 
 
 def test_default_uncertain_quadlu_forward_uncertainties_for_given_input() -> None:
-    uncertainties = torch.eye(3)
-    values = tensor([-1.0, 0.0, 1.0])
+    uncertain_tensor = UncertainTensor(tensor([-1.0, 0.0, 1.0]), torch.eye(3))
     assert_close(
-        UncertainQuadLU().forward(
-            values,
-            uncertainties,
-        )[1],
+        UncertainQuadLU().forward(uncertain_tensor).uncertainties,
         tensor([[0.0, 0.0, 0.0], [0.0, 0.25, 0.0], [0.0, 0.0, 1.0]]),
     )
 
@@ -431,18 +442,17 @@ def test_default_uncertain_quadlu_forward_uncertainties_for_given_input() -> Non
 def test_uncertain_quadlu_forward_uncertainties_for_given_input(
     alpha: Parameter,
 ) -> None:
-    uncertainties = torch.tensor(
-        [
-            [0.0625, 0.0, 0.0],
-            [0.0, 0.25, 0.0],
-            [0.0, 0.0, 1.0],
-        ]
+    uncertain_tensor = UncertainTensor(
+        tensor([1.0, 0.0, -1.0]),
+        torch.tensor(
+            [
+                [0.0625, 0.0, 0.0],
+                [0.0, 0.25, 0.0],
+                [0.0, 0.0, 1.0],
+            ]
+        ),
     )
-    values = tensor([1.0, 0.0, -1.0])
     assert_close(
-        UncertainQuadLU(alpha).forward(
-            values,
-            uncertainties,
-        )[1],
+        UncertainQuadLU(alpha).forward(uncertain_tensor).uncertainties,
         tensor([[square(alpha), 0.0, 0.0], [0.0, square(alpha), 0.0], [0.0, 0.0, 0.0]]),
     )
