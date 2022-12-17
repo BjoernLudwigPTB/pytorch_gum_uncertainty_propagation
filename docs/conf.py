@@ -153,7 +153,7 @@ author = "B. Ludwig"
 # built documents.K
 #
 # The short X.Y version.
-version = "0.8.0"
+version = "0.9.0"
 # The full version, including alpha/beta/rc tags.
 # release = "1.3.1"
 

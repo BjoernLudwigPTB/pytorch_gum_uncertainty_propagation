@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.9.0 (2022-12-17)
+### Feature
+* **read_dataset:** Introduce full pipeline to extract ZeMA hdf5 into numpy array ([`4a275d0`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/4a275d0bbb30de38db45b08ce0849b46f51cb171))
+
 ## v0.8.0 (2022-12-17)
 ### Feature
 * **UncertainQuadLUMLP:** Introduce first implementation of an MLP equipped with UncertainQuadLU ([`d17d333`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/d17d333a1021613b7db28b383c1cbb6e4044667f))
