@@ -195,7 +195,7 @@ class UncertainLinear(Module):
 
 
 class QuadLUMLP(Sequential):
-    """This block implements the multi-layer perceptron (MLP) with QuadLU activation
+    """This implements the multi-layer perceptron (MLP) with QuadLU activation
 
     The implementation is heavily based on the module :class:`~torchvision.ops.MLP`.
     For each specified output dimension a combination of a :class:`~torch.nn.Linear` and
