@@ -1,11 +1,18 @@
 """Contains utilities to process measurement uncertainties"""
 
-__all__ = ["cov_matrix_from_std_uncertainties"]
+__all__ = ["cov_matrix_from_std_uncertainties", "UncertainTensor"]
 
-from typing import Optional, Tuple
+from typing import NamedTuple, Optional, Tuple
 
 import torch
 from torch import Tensor
+
+
+class UncertainTensor(NamedTuple):
+    """A tuple of a tensor of values with a tensor of associated uncertainties"""
+
+    values: Tensor
+    uncertainties: Tensor | None = None
 
 
 def cov_matrix_from_std_uncertainties(
