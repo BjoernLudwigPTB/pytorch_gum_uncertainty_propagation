@@ -29,6 +29,8 @@ GUM-compliant uncertainty propagation
    pytorch_gum_uncertainty_propagation.modules
    pytorch_gum_uncertainty_propagation.functionals
    pytorch_gum_uncertainty_propagation.uncertainties
+   pytorch_gum_uncertainty_propagation.zema_dataset
+   pytorch_gum_uncertainty_propagation.zema_dataset
 
 Indices and tables
 ==================
@@ -36,3 +38,11 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+References
+==========
+
+.. [Dorst2021] Dorst, Tanja, Gruber, Maximilian, & Vedurmudi, Anupam Prasad. (2021).
+                Sensor data set of one electromechanical cylinder at ZeMA testbed (ZeMA
+                DAQ and Smart-Up Unit) [Data set]. Zenodo.
+                https://doi.org/10.5281/zenodo.5185953
