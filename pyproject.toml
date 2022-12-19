@@ -86,7 +86,7 @@ strict = true
 disallow_untyped_decorators = false
 
 [[tool.mypy.overrides]]
-module = "setuptools.*"
+module = ["setuptools.*", "h5py.*", "pooch.*"]
 ignore_missing_imports = true
 
 [tool.semantic_release]
