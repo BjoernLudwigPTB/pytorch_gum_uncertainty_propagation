@@ -1,5 +1,5 @@
 from inspect import signature
-from typing import Any, cast, Optional, Union
+from typing import Any, cast, Union
 
 import numpy as np
 import pytest
@@ -27,7 +27,7 @@ from .conftest import tensors, uncertain_tensors
 
 @composite
 def square_tensors(
-    draw: DrawFn, dimen: Optional[int] = None, symmetric: Optional[bool] = False
+    draw: DrawFn, dimen: int | None = None, symmetric: bool | None = False
 ) -> SearchStrategy[Tensor]:
     rows: int = (
         draw(hst.integers(min_value=2, max_value=10)) if dimen is None else dimen
