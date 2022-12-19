@@ -53,6 +53,7 @@ dev = [
     "pytest",
     "pytest-cov",
     "pytest-custom-exit-code",
+    "yappi",
 ]
 docs = [
     "ipython",
