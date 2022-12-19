@@ -100,9 +100,9 @@ myst-parser==0.18.1
     # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 nbclient==0.7.2
     # via nbconvert
-nbconvert==7.2.6
+nbconvert==7.2.7
     # via nbsphinx
-nbformat==5.7.0
+nbformat==5.7.1
     # via
     #   nbclient
     #   nbconvert
@@ -111,7 +111,7 @@ nbsphinx==0.8.10
     # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 nest-asyncio==1.5.6
     # via jupyter-client
-numpy==1.23.5
+numpy==1.24.0
     # via
     #   contourpy
     #   h5py
@@ -214,7 +214,7 @@ torchvision==0.14.1+cpu
     # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 tornado==6.2
     # via jupyter-client
-traitlets==5.7.1
+traitlets==5.8.0
     # via
     #   ipython
     #   jupyter-client
