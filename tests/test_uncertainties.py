@@ -9,7 +9,6 @@ from hypothesis.extra import numpy as hnp
 from hypothesis.strategies import composite, DrawFn, SearchStrategy
 from numpy import array, float64
 from numpy._typing import NDArray
-from numpy.linalg import eigvals
 from numpy.testing import assert_equal
 from torch import diag, isnan, tensor, Tensor
 from torch.testing import assert_close  # type: ignore[attr-defined]
@@ -119,11 +118,13 @@ def test_uncertainties_has_attribute_is_symmetric() -> None:
     assert hasattr(uncertainties, "_is_symmetric")
 
 
-@given(hnp.arrays(float, hnp.array_shapes()))
-def test_is_positive_semi_definite_usual_call(matrix: NDArray[Any]) -> None:
-    tmp_tensor = tensor(matrix)
-    assert isinstance(_is_positive_semi_definite(tmp_tensor), bool) or isinstance(
-        _is_positive_semi_definite(tmp_tensor).item(), bool
+@given(uncertain_tensors())
+def test_is_positive_semi_definite_usual_call(
+    uncertain_tensor: UncertainTensor,
+) -> None:
+    assert uncertain_tensor.uncertainties is not None
+    assert isinstance(
+        _is_positive_semi_definite(uncertain_tensor.uncertainties).item(), bool
     )
 
 
@@ -133,15 +134,13 @@ def test_is_positive_semi_definite_against_zero(length: int) -> None:
 
 
 def test_is_positive_semi_definite_for_single_instance_true() -> None:
-    A = tensor([[5, 2, 1], [2, 4, 2], [1, 2, 3]])
-    smallest_eigenvalue = min(eigvals(A))
-    assert _is_positive_semi_definite(A) == tensor(bool(smallest_eigenvalue > 0))
+    A = tensor([[5.0, 2.0, 1.0], [2.0, 4.0, 2.0], [1.0, 2.0, 3.0]])
+    assert _is_positive_semi_definite(A) == tensor(True)
 
 
 def test_is_positive_semi_definite_for_single_instance_false() -> None:
-    A = tensor(array([[1, 2, 1], [2, 2, 2], [1, 2, 3]]))
-    smallest_eigenvalue = min(eigvals(A))
-    assert _is_positive_semi_definite(A) == tensor(bool(smallest_eigenvalue > 0))
+    A = tensor(array([[1.0, 2.0, 1.0], [2.0, 2.0, 2.0], [1.0, 2.0, 3.0]]))
+    assert _is_positive_semi_definite(A) == tensor(False)
 
 
 @given(
