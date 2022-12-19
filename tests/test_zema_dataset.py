@@ -182,7 +182,7 @@ def test_zema_dataset_extract_samples_expects_parameter_download_as_bool() -> No
 
 
 def test_zema_dataset_extract_samples_parameter_download_default_is_False() -> None:
-    assert signature(provide_zema_samples).parameters["download"].default is False
+    assert signature(provide_zema_samples).parameters["download"].default is True
 
 
 def test_zema_dataset_extract_samples_states_to_return_uncertain_tensor() -> None:
