@@ -68,13 +68,14 @@ def _is_symmetric(matrix: Tensor) -> Tensor:
 
 def _is_positive_semi_definite(tensor_under_test: Tensor) -> Tensor:
     """Returns True if tensor is positive semi-definite"""
-    try:
-        torch.linalg.cholesky(tensor_under_test.to(torch.float64))
-        return torch.tensor(True)
-    except RuntimeError:
-        return torch.all(
-            torch.isclose(tensor_under_test, tensor_under_test.new_zeros(1))
+    if len(tensor_under_test) == 1:
+        return tensor_under_test >= 0
+    eigenvalues = torch.linalg.eigvalsh(tensor_under_test)
+    return torch.all(
+        torch.logical_or(
+            eigenvalues >= 0, torch.isclose(eigenvalues, tensor_under_test.new_zeros(1))
         )
+    )
 
 
 def _match_dimen_and_std_uncertainty_vec_len(
