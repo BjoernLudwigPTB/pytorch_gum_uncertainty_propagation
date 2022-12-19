@@ -139,7 +139,7 @@ def test_uncertain_linear_forward_expects_uncertain_tensor_parameter() -> None:
 
 
 @given(uncertain_tensors(), hst.integers(min_value=1, max_value=10))
-def test_uncertain_linear_forward_returns_tuple(
+def test_uncertain_linear_forward_returns_uncertain_tensor(
     values_and_uncertainties: UncertainTensor, out_features: int
 ) -> None:
     assert isinstance(
