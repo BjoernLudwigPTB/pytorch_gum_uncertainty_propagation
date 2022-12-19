@@ -1,6 +1,7 @@
 """Common strategies"""
 from typing import cast, Optional
 
+import torch
 from hypothesis import strategies as hst
 from hypothesis.extra import numpy as hnp
 from hypothesis.strategies import composite, DrawFn, SearchStrategy
@@ -11,6 +12,8 @@ from pytorch_gum_uncertainty_propagation.uncertainties import (
     cov_matrix_from_std_uncertainties,
     UncertainTensor,
 )
+
+torch.set_default_dtype(torch.double)  # type: ignore[no-untyped-call]
 
 
 @composite
@@ -109,5 +112,5 @@ def uncertain_tensors(
     cov_matrix = cov_matrix_from_std_uncertainties(std_uncertainties, 0.5, 0.5, 0.5)
     return cast(
         SearchStrategy[UncertainTensor],
-        UncertainTensor(values.float(), cov_matrix.float()),
+        UncertainTensor(values, cov_matrix),
     )

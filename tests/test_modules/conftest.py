@@ -78,7 +78,7 @@ def values_uncertainties_and_uncertain_linears(
     return cast(
         SearchStrategy[UncertainTensorForLinear],
         UncertainTensorForLinear(
-            UncertainTensor(values.float(), cov_matrix.float()),
+            UncertainTensor(values, cov_matrix),
             UncertainLinear(len(values), draw(hst.integers(min_value=1, max_value=10))),
         ),
     )
