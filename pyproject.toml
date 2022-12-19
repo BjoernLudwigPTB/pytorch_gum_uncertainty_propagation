@@ -27,6 +27,7 @@ dependencies = [
     "h5py",
     "matplotlib",
     "pillow",
+    "pooch",
     "torch",
     "torchvision",
     "torchaudio",
