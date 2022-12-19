@@ -8,6 +8,8 @@
 
 alabaster==0.7.12
     # via sphinx
+appdirs==1.4.4
+    # via pooch
 asttokens==2.2.1
     # via stack-data
 attrs==22.1.0
@@ -47,13 +49,13 @@ fastjsonschema==2.16.2
 fonttools==4.38.0
     # via matplotlib
 h5py==3.7.0
-    # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
+    # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 idna==3.4
     # via requests
 imagesize==1.4.1
     # via sphinx
 ipython==8.7.0
-    # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
+    # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 jedi==0.18.2
     # via ipython
 jinja2==3.1.2
@@ -85,7 +87,7 @@ markupsafe==2.1.1
     #   jinja2
     #   nbconvert
 matplotlib==3.6.2
-    # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
+    # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 matplotlib-inline==0.1.6
     # via ipython
 mdit-py-plugins==0.3.3
@@ -95,7 +97,7 @@ mdurl==0.1.2
 mistune==2.0.4
     # via nbconvert
 myst-parser==0.18.1
-    # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
+    # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 nbclient==0.7.2
     # via nbconvert
 nbconvert==7.2.6
@@ -106,7 +108,7 @@ nbformat==5.7.0
     #   nbconvert
     #   nbsphinx
 nbsphinx==0.8.10
-    # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
+    # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 nest-asyncio==1.5.6
     # via jupyter-client
 numpy==1.23.5
@@ -119,6 +121,7 @@ packaging==22.0
     # via
     #   matplotlib
     #   nbconvert
+    #   pooch
     #   sphinx
 pandocfilters==1.5.0
     # via nbconvert
@@ -130,11 +133,13 @@ pickleshare==0.7.5
     # via ipython
 pillow==9.3.0
     # via
-    #   gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
     #   matplotlib
+    #   pytorch-gum-uncertainty-propagation (pyproject.toml)
     #   torchvision
 platformdirs==2.6.0
     # via jupyter-core
+pooch==1.6.0
+    # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 prompt-toolkit==3.0.36
     # via ipython
 ptyprocess==0.7.0
@@ -154,7 +159,7 @@ python-dateutil==2.8.2
     # via
     #   jupyter-client
     #   matplotlib
-pytz==2022.6
+pytz==2022.7
     # via babel
 pyyaml==6.0
     # via myst-parser
@@ -162,6 +167,7 @@ pyzmq==24.0.1
     # via jupyter-client
 requests==2.28.1
     # via
+    #   pooch
     #   sphinx
     #   torchvision
 six==1.16.0
@@ -175,12 +181,12 @@ soupsieve==2.3.2.post1
     # via beautifulsoup4
 sphinx==5.3.0
     # via
-    #   gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
     #   myst-parser
     #   nbsphinx
+    #   pytorch-gum-uncertainty-propagation (pyproject.toml)
     #   sphinx-rtd-theme
 sphinx-rtd-theme==1.1.1
-    # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
+    # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 sphinxcontrib-applehelp==1.0.2
     # via sphinx
 sphinxcontrib-devhelp==1.0.2
@@ -197,18 +203,18 @@ stack-data==0.6.2
     # via ipython
 tinycss2==1.2.1
     # via nbconvert
-torch==1.13.0+cpu
+torch==1.13.1+cpu
     # via
-    #   gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
+    #   pytorch-gum-uncertainty-propagation (pyproject.toml)
     #   torchaudio
     #   torchvision
-torchaudio==0.13.0+cpu
-    # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
-torchvision==0.14.0+cpu
-    # via gum-compliant-neural-network-uncertainty-propagation (pyproject.toml)
+torchaudio==0.13.1+cpu
+    # via pytorch-gum-uncertainty-propagation (pyproject.toml)
+torchvision==0.14.1+cpu
+    # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 tornado==6.2
     # via jupyter-client
-traitlets==5.7.0
+traitlets==5.7.1
     # via
     #   ipython
     #   jupyter-client
