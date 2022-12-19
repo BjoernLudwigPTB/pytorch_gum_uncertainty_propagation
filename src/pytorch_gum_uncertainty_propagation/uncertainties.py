@@ -2,7 +2,7 @@
 
 __all__ = ["cov_matrix_from_std_uncertainties", "UncertainTensor"]
 
-from typing import NamedTuple, Optional, Tuple
+from typing import NamedTuple
 
 import torch
 from torch import Tensor
@@ -16,7 +16,7 @@ class UncertainTensor(NamedTuple):
 
 
 def cov_matrix_from_std_uncertainties(
-    sigma: Tensor, rho: float, phi: float, nju: float, dimen: Optional[int] = None
+    sigma: Tensor, rho: float, phi: float, nju: float, dimen: int | None = None
 ) -> Tensor:
     r"""Set up a covariance matrix from given standard uncertainties
 
@@ -78,8 +78,8 @@ def _is_positive_semi_definite(tensor_under_test: Tensor) -> Tensor:
 
 
 def _match_dimen_and_std_uncertainty_vec_len(
-    std_uncertainty: Tensor, desired_length: Optional[int] = None
-) -> Tuple[Tensor, int]:
+    std_uncertainty: Tensor, desired_length: int | None = None
+) -> tuple[Tensor, int]:
     """Adapt dimension specifier or vector of standard uncertainties"""
     if desired_length is None:
         desired_length = 1 if std_uncertainty.dim() == 0 else len(std_uncertainty)
