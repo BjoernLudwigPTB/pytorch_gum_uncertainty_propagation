@@ -1,5 +1,5 @@
-Propagate through QuadLUMLP
-===========================
+ZeMA dataset API
+================
 
-.. automodule:: pytorch_gum_uncertainty_propagation.uncertain_quadlu_propagate
+.. automodule:: pytorch_gum_uncertainty_propagation.zema_dataset
     :members:
