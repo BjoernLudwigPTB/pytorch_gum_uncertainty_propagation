@@ -23,13 +23,11 @@ from pooch import retrieve
 
 from pytorch_gum_uncertainty_propagation.uncertainties import UncertainTensor
 
-LOCAL_ZEMA_DATASET_PATH = Path(
-    dirname(__file__), "datasets", "axis11_2kHz_ZeMA_PTB_SI.h5"
-)
-ZEMA_DATASET_URL = "https://zenodo.org/record/5185953/files/axis11_2kHz_ZeMA_PTB_SI.h5"
+LOCAL_ZEMA_DATASET_PATH = Path(dirname(__file__), "datasets")
 ZEMA_DATASET_HASH = (
     "sha256:fb0e80de4e8928ae8b859ad9668a1b6ea6310028a6690bb8d4c1abee31cb8833"
 )
+ZEMA_DATASET_URL = "https://zenodo.org/record/5185953/files/axis11_2kHz_ZeMA_PTB_SI.h5"
 ZEMA_DATATYPES = ("qudt:standardUncertainty", "qudt:value")
 ZEMA_QUANTITIES = (
     "Acceleration",
@@ -91,13 +89,13 @@ def provide_zema_samples(n_samples: int = 1) -> UncertainTensor:
     ) -> NDArray[np.double]:
         return np.append(append_to, appendix, axis=1)
 
-    if download:
-        retrieve(
-            url=ZEMA_DATASET_URL,
-            known_hash=ZEMA_DATASET_HASH,
-            path=LOCAL_ZEMA_DATASET_PATH,
-        )
-    assert local_dataset_exists()
+    dataset_full_path = retrieve(
+        url=ZEMA_DATASET_URL,
+        known_hash=ZEMA_DATASET_HASH,
+        path=LOCAL_ZEMA_DATASET_PATH,
+        progressbar=True,
+    )
+    assert exists(dataset_full_path)
     uncertainties = np.empty((n_samples, 0))
     values = np.empty((n_samples, 0))
     indices = np.s_[0:n_samples, 0]
@@ -106,7 +104,7 @@ def provide_zema_samples(n_samples: int = 1) -> UncertainTensor:
         for quantity in ZEMA_QUANTITIES
         for datatype in ZEMA_DATATYPES
     )
-    with h5py.File(LOCAL_ZEMA_DATASET_PATH, "r") as h5f:
+    with h5py.File(dataset_full_path, "r") as h5f:
         for dataset in relevant_datasets:
             if ExtractionDataType.UNCERTAINTIES.value in dataset:
                 extracted_data = uncertainties
