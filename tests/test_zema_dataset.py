@@ -1,6 +1,7 @@
 from inspect import signature
 from pathlib import Path
 
+import pytest
 import torch
 from hypothesis import given, settings, strategies as hst
 
@@ -175,12 +176,14 @@ def test_zema_dataset_extract_samples_states_to_return_uncertain_tensor() -> Non
     assert signature(provide_zema_samples).return_annotation is UncertainTensor
 
 
+@pytest.mark.webtest
 @given(hst.integers(min_value=1, max_value=10))
 @settings(deadline=None)
 def test_extract_samples_actually_returns_uncertain_tensor(n_samples: int) -> None:
     assert isinstance(provide_zema_samples(n_samples), UncertainTensor)
 
 
+@pytest.mark.webtest
 @given(hst.integers(min_value=1, max_value=10))
 @settings(deadline=None)
 def test_extract_samples_actually_returns_uncertain_tensor_with_n_samples_values(
@@ -189,6 +192,7 @@ def test_extract_samples_actually_returns_uncertain_tensor_with_n_samples_values
     assert len(provide_zema_samples(n_samples).values) == n_samples
 
 
+@pytest.mark.webtest
 @given(hst.integers(min_value=1, max_value=10))
 @settings(deadline=None)
 def test_extract_samples_actually_returns_uncertain_tensor_with_n_samples_uncertainties(
@@ -199,6 +203,7 @@ def test_extract_samples_actually_returns_uncertain_tensor_with_n_samples_uncert
     assert len(result_uncertainties) == n_samples
 
 
+@pytest.mark.webtest
 @given(hst.integers(min_value=1, max_value=10))
 @settings(deadline=None)
 def test_extract_samples_returns_values_of_eleven_sensors(
@@ -207,6 +212,7 @@ def test_extract_samples_returns_values_of_eleven_sensors(
     assert provide_zema_samples(n_samples).values.shape[1] == 11
 
 
+@pytest.mark.webtest
 @given(hst.integers(min_value=1, max_value=10))
 @settings(deadline=None)
 def test_extract_samples_returns_uncertainties_of_eleven_sensors(
@@ -217,6 +223,7 @@ def test_extract_samples_returns_uncertainties_of_eleven_sensors(
     assert result_uncertainties.shape[1] == 11
 
 
+@pytest.mark.webtest
 @given(hst.integers(min_value=1, max_value=10))
 @settings(deadline=None)
 def test_extract_samples_returns_values_and_uncertainties_which_are_not_similar(
