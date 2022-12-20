@@ -134,7 +134,9 @@ torchaudio==0.13.1+cpu
 torchvision==0.14.1+cpu
     # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 tqdm==4.64.1
-    # via twine
+    # via
+    #   pytorch-gum-uncertainty-propagation (pyproject.toml)
+    #   twine
 twine==3.8.0
     # via python-semantic-release
 typing-extensions==4.4.0

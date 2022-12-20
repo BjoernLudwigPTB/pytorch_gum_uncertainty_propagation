@@ -175,6 +175,8 @@ torchaudio==0.13.1+cpu
     # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 torchvision==0.14.1+cpu
     # via pytorch-gum-uncertainty-propagation (pyproject.toml)
+tqdm==4.64.1
+    # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 traitlets==5.8.0
     # via
     #   ipython
