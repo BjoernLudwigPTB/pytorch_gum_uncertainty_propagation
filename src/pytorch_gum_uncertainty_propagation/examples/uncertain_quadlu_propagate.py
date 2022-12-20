@@ -3,6 +3,7 @@
 __all__ = ["assemble_pipeline"]
 
 import torch
+from torch.autograd.profiler import profile
 
 from pytorch_gum_uncertainty_propagation.modules import UncertainQuadLUMLP
 from pytorch_gum_uncertainty_propagation.uncertainties import (
@@ -15,7 +16,7 @@ from pytorch_gum_uncertainty_propagation.zema_dataset import (
 
 def assemble_pipeline(
     n_samples: int = 1, uncertain_values: UncertainTensor | None = None
-) -> None:
+) -> profile:
     """Propagate data through an MLP equipped with UncertainQuadLU activation"""
     if uncertain_values is None:
         uncertain_values = (
@@ -27,8 +28,10 @@ def assemble_pipeline(
         _construct_partition(uncertain_values.values.shape[1]),
     )
     for uncertain_value in zip(uncertain_values.values, uncertain_values.uncertainties):
-        propagated = uncertain_quadlu_mlp(UncertainTensor(*uncertain_value))
+        with profile(with_stack=True, enabled=False) as profiler:
+            propagated = uncertain_quadlu_mlp(UncertainTensor(*uncertain_value))
         print(f"propagated and received: \n" f"{propagated}")
+    return profiler
 
 
 def _instantiate_uncertain_quadlu_mlp(
@@ -47,5 +50,10 @@ def _construct_partition(in_features: int) -> list[int]:
 
 
 if __name__ == "__main__":
-    torch.set_default_dtype(torch.double)  # type: ignore[no-untyped-call]
-    assemble_pipeline()
+    profiles = assemble_pipeline(100)
+    print(
+        profiles.key_averages(group_by_stack_n=2).table(
+            sort_by="self_cpu_time_total", row_limit=7
+        )
+    )
+    profiles.export_chrome_trace(path="trace.json")

@@ -2,6 +2,7 @@ from inspect import signature
 
 import pytest
 from hypothesis import given, settings, strategies as hst
+from torch.autograd.profiler import profile
 
 from pytorch_gum_uncertainty_propagation.examples import (
     uncertain_quadlu_propagate,
@@ -155,3 +156,12 @@ def test_propagate_parameter_n_samples_is_of_type_int() -> None:
 
 def test_propagate_parameter_n_samples_default_is_one() -> None:
     assert signature(assemble_pipeline).parameters["n_samples"].default == 1
+
+
+def test_assemble_pipeline_states_to_return_profiler() -> None:
+    assert signature(assemble_pipeline).return_annotation is profile
+
+
+@pytest.mark.webtest
+def test_assemble_pipeline_actually_returns_profiler() -> None:
+    assert isinstance(assemble_pipeline(), profile)
