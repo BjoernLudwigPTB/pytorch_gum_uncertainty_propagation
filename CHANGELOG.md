@@ -2,6 +2,21 @@
 
 <!--next-version-placeholder-->
 
+## v0.10.0 (2022-12-20)
+### Feature
+* **uncertain_quadlu_propagate:** Introduce actual propagation for QuadLUMLP ([`d72d9bd`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/d72d9bdbddd4e9b6595ab586a3a8ed09b6576be8))
+* **zema_dataset:** Introduce dataset extraction function ([`b207e87`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/b207e87c40937ee5d5f733afa21da4f2f5bce82a))
+
+### Fix
+* **docs:** Fix accidentally removing ZeMA dataset content and really introduce QuadLUMLP propagation ([`ae20ecf`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/ae20ecf32e7bb7bdd194ca315db1aad4e175a3cc))
+
+### Documentation
+* **uncertain_quadlu_propagate:** Introduce QuadLUMLP propagation into docs ([`db145b5`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/db145b5cf55dc46473ba3a694faa7f812c06a4cc))
+* **zema_dataset:** Introduce ZeMA dataset extraction function into docs ([`9934dea`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/9934dea417833a94a07a72a476e436184386ca18))
+
+### Performance
+* **_is_positive_semi_definite:** Improve implementation to catch more edge cases ([`9591265`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/9591265ef3b4ed9f5328ecf60f216b840a6005b8))
+
 ## v0.9.0 (2022-12-17)
 ### Feature
 * **read_dataset:** Introduce full pipeline to extract ZeMA hdf5 into numpy array ([`4a275d0`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/4a275d0bbb30de38db45b08ce0849b46f51cb171))
