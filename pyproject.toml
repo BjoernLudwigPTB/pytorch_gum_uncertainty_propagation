@@ -42,7 +42,6 @@ examples = [
     "ipywidgets",
     "jupyter_nbextensions_configurator",
     "notebook",
-    "tqdm",
 ]
 dev = [
     "black[jupyter]",
