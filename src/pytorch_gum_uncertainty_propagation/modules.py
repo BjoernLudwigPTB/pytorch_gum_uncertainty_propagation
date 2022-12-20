@@ -103,30 +103,32 @@ class UncertainQuadLU(Module):
 
     def forward(self, uncertain_values: UncertainTensor) -> UncertainTensor:
         """Forward pass of UncertainQuadLU"""
-        if uncertain_values.uncertainties is None:
+        with profiler.record_function("UNCERTAINQUADLU PASS"):
+            if uncertain_values.uncertainties is None:
+                return UncertainTensor(
+                    self._quadlu(uncertain_values.values),
+                    uncertain_values.uncertainties,
+                )
+            first_derivs = torch.zeros_like(uncertain_values.values)
+            less_or_equal_mask = (
+                uncertain_values.values <= -self._quadlu._alpha  # pylint: disable=W0212
+            )
+            greater_or_equal_mask = (
+                uncertain_values.values >= self._quadlu._alpha  # pylint: disable=W0212
+            )
+            first_derivs[greater_or_equal_mask] = (
+                4.0 * self._quadlu._alpha  # pylint: disable=W0212
+            )
+            in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
+            first_derivs[in_between_mask] = 2.0 * (
+                uncertain_values.values[in_between_mask]
+                + self._quadlu._alpha  # pylint: disable=W0212
+            )
             return UncertainTensor(
                 self._quadlu(uncertain_values.values),
-                uncertain_values.uncertainties,
+                torch.square(first_derivs).unsqueeze(1)
+                * uncertain_values.uncertainties,
             )
-        first_derivs = torch.zeros_like(uncertain_values.values)
-        less_or_equal_mask = (
-            uncertain_values.values <= -self._quadlu._alpha  # pylint: disable=W0212
-        )
-        greater_or_equal_mask = (
-            uncertain_values.values >= self._quadlu._alpha  # pylint: disable=W0212
-        )
-        first_derivs[greater_or_equal_mask] = (
-            4.0 * self._quadlu._alpha  # pylint: disable=W0212
-        )
-        in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
-        first_derivs[in_between_mask] = 2.0 * (
-            uncertain_values.values[in_between_mask]
-            + self._quadlu._alpha  # pylint: disable=W0212
-        )
-        return UncertainTensor(
-            self._quadlu(uncertain_values.values),
-            torch.square(first_derivs).unsqueeze(1) * uncertain_values.uncertainties,
-        )
 
     @property
     def _alpha(self) -> Parameter:
