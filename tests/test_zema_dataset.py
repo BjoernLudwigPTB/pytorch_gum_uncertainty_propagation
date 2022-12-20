@@ -1,5 +1,4 @@
 from inspect import signature
-from os.path import dirname, exists
 from pathlib import Path
 
 import torch
@@ -225,32 +224,3 @@ def test_extract_samples_returns_values_and_uncertainties_which_are_not_similar(
 ) -> None:
     result = provide_zema_samples(n_samples)
     assert not torch.all(result.values == result.uncertainties)
-
-
-def test_local_dataset_exists() -> None:
-    assert hasattr(zema_dataset, "local_dataset_exists")
-
-
-def test_local_dataset_has_docstring() -> None:
-    assert local_dataset_exists.__doc__ is not None
-
-
-def test_local_dataset_states_to_return_bool() -> None:
-    assert signature(local_dataset_exists).return_annotation is bool
-
-
-def test_local_dataset_actually_returns_bool() -> None:
-    assert isinstance(local_dataset_exists(), bool)
-
-
-def test_local_dataset_returns_value_based_on_filesystem_state() -> None:
-    assert local_dataset_exists() == exists(
-        Path(
-            dirname(__file__),
-            "..",
-            "src",
-            "pytorch_gum_uncertainty_propagation",
-            "datasets",
-            "axis11_2kHz_ZeMA_PTB_SI.h5",
-        )
-    )

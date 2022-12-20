@@ -136,8 +136,3 @@ def provide_zema_samples(n_samples: int = 1) -> UncertainTensor:
                     values = extracted_data
                     print("    Values extracted")
     return UncertainTensor(torch.tensor(values), torch.tensor(uncertainties))
-
-
-def local_dataset_exists() -> bool:
-    """Returns ``True`` if the dataset was already downloaded"""
-    return exists(LOCAL_ZEMA_DATASET_PATH)
