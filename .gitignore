@@ -31,3 +31,4 @@ test/
 **/*.jpg
 *-checkpoint.ipynb
 *.h5
+**/trace.json
