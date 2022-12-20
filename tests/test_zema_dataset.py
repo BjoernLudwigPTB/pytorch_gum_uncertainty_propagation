@@ -173,18 +173,6 @@ def test_zema_dataset_extract_samples_parameter_n_samples_default_is_one() -> No
     assert signature(provide_zema_samples).parameters["n_samples"].default == 1
 
 
-def test_zema_dataset_extract_samples_expects_parameter_download() -> None:
-    assert "download" in signature(provide_zema_samples).parameters
-
-
-def test_zema_dataset_extract_samples_expects_parameter_download_as_bool() -> None:
-    assert signature(provide_zema_samples).parameters["download"].annotation is bool
-
-
-def test_zema_dataset_extract_samples_parameter_download_default_is_False() -> None:
-    assert signature(provide_zema_samples).parameters["download"].default is True
-
-
 def test_zema_dataset_extract_samples_states_to_return_uncertain_tensor() -> None:
     assert signature(provide_zema_samples).return_annotation is UncertainTensor
 

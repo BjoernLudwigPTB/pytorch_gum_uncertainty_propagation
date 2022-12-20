@@ -57,7 +57,7 @@ class ExtractionData(Enum):
     VALUES = "qudt:value"
 
 
-def provide_zema_samples(n_samples: int = 1, download: bool = True) -> UncertainTensor:
+def provide_zema_samples(n_samples: int = 1) -> UncertainTensor:
     """Extracts requested number of samples of values with associated uncertainties
 
     The underlying dataset is the annotated "Sensor data set of one electromechanical
@@ -68,10 +68,6 @@ def provide_zema_samples(n_samples: int = 1, download: bool = True) -> Uncertain
     n_samples : int
         number of samples each containing one reading from each of the eleven sensors
         with associated uncertainties
-    download : bool, optional
-        if ``True`` the dataset gets downloaded, if it is not present in the
-        subfolder _dataset_ in the expected version determined via a known hash,
-        defaults to ``False``
 
     Returns
     -------
