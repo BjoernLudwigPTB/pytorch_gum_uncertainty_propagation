@@ -11,6 +11,7 @@ __all__ = [
 
 import torch
 from torch import Tensor
+from torch.autograd import profiler
 from torch.nn import Linear, Module, ModuleList, Sequential
 from torch.nn.parameter import Parameter
 
@@ -158,13 +159,14 @@ class UncertainLinear(Module):
         self._linear = Linear(in_features, out_features, bias=bias)
 
     def forward(self, uncertain_values: UncertainTensor) -> UncertainTensor:
-        """Forward pass of LinearQuadLU"""
-        return UncertainTensor(
-            self._linear.forward(uncertain_values.values),
-            self.weight @ uncertain_values.uncertainties @ self.weight.T
-            if uncertain_values.uncertainties is not None
-            else None,
-        )
+        """Forward pass of UncertainLinear"""
+        with profiler.record_function("UNCERTAINLINEAR PASS"):
+            return UncertainTensor(
+                self._linear.forward(uncertain_values.values),
+                self.weight @ uncertain_values.uncertainties @ self.weight.T
+                if uncertain_values.uncertainties is not None
+                else None,
+            )
 
     @property
     def in_features(self) -> int:
