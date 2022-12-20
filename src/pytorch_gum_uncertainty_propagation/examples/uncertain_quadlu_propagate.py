@@ -18,6 +18,7 @@ def assemble_pipeline(
     n_samples: int = 1, uncertain_values: UncertainTensor | None = None
 ) -> profile:
     """Propagate data through an MLP equipped with UncertainQuadLU activation"""
+    torch.set_default_dtype(torch.double)
     if uncertain_values is None:
         uncertain_values = (
             convert_zema_std_uncertainties_into_synthetic_full_cov_matrices(n_samples)
