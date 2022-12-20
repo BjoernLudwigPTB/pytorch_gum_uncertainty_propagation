@@ -21,7 +21,10 @@ from h5py import Dataset, File, Group
 from numpy._typing import NDArray
 from pooch import retrieve
 
-from pytorch_gum_uncertainty_propagation.uncertainties import UncertainTensor
+from pytorch_gum_uncertainty_propagation.uncertainties import (
+    cov_matrix_from_std_uncertainties,
+    UncertainTensor,
+)
 
 LOCAL_ZEMA_DATASET_PATH = Path(dirname(__file__), "datasets")
 ZEMA_DATASET_HASH = (
@@ -139,3 +142,29 @@ def provide_zema_samples(n_samples: int = 1) -> UncertainTensor:
                     values = extracted_data
                     print("    Values extracted")
     return UncertainTensor(torch.tensor(values), torch.tensor(uncertainties))
+
+
+def convert_zema_std_uncertainties_into_synthetic_full_cov_matrices(
+    n_samples: int = 1,
+) -> UncertainTensor:
+    """Prepare the ZeMA data for forward propagations in any PyTorch GUM-enabled network
+
+    The main task is turning the standard uncertainties in the ZeMA dataset
+    synthetically into full covariance matrices only for showcasing
+    :class:`~pytorch_gum_uncertainty_propagation.modules.UncertainQuadLU`'s
+    capabilities.
+    """
+    uncertain_values = provide_zema_samples(n_samples)
+    assert uncertain_values.uncertainties is not None
+    result_uncertainties = torch.empty(
+        (
+            len(uncertain_values.uncertainties),
+            uncertain_values.uncertainties.shape[1],
+            uncertain_values.uncertainties.shape[1],
+        )
+    )
+    for sample_idx, sample in enumerate(uncertain_values.uncertainties):
+        result_uncertainties[sample_idx, ...] = cov_matrix_from_std_uncertainties(
+            sample, 0.5, 0.5, 0.5
+        )
+    return UncertainTensor(uncertain_values.values, result_uncertainties)

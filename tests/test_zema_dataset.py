@@ -6,10 +6,14 @@ import torch
 from hypothesis import given, settings, strategies as hst
 
 from pytorch_gum_uncertainty_propagation import zema_dataset
-from pytorch_gum_uncertainty_propagation.uncertainties import UncertainTensor
+from pytorch_gum_uncertainty_propagation.uncertainties import (
+    _is_positive_semi_definite,
+    UncertainTensor,
+)
 from pytorch_gum_uncertainty_propagation.zema_dataset import (
     ExtractionDataType,
     LOCAL_ZEMA_DATASET_PATH,
+    convert_zema_std_uncertainties_into_synthetic_full_cov_matrices,
     provide_zema_samples,
     ZEMA_DATASET_HASH,
     ZEMA_DATASET_URL,
@@ -231,3 +235,77 @@ def test_extract_samples_returns_values_and_uncertainties_which_are_not_similar(
 ) -> None:
     result = provide_zema_samples(n_samples)
     assert not torch.all(result.values == result.uncertainties)
+
+
+def test_zema_dataset_has_function_prepare_data() -> None:
+    assert hasattr(
+        zema_dataset, "convert_zema_std_uncertainties_into_synthetic_full_cov_matrices"
+    )
+
+
+def test_prepare_data_has_docstring() -> None:
+    assert (
+        convert_zema_std_uncertainties_into_synthetic_full_cov_matrices.__doc__
+        is not None
+    )
+
+
+def test_prepare_data_expects_parameter_n_samples() -> None:
+    assert (
+        "n_samples"
+        in signature(
+            convert_zema_std_uncertainties_into_synthetic_full_cov_matrices
+        ).parameters
+    )
+
+
+def test_prepare_data_parameter_n_samples_is_of_type_int() -> None:
+    assert (
+        signature(convert_zema_std_uncertainties_into_synthetic_full_cov_matrices)
+        .parameters["n_samples"]
+        .annotation
+        is int
+    )
+
+
+def test_prepare_data_parameter_n_samples_default_is_one() -> None:
+    assert (
+        signature(convert_zema_std_uncertainties_into_synthetic_full_cov_matrices)
+        .parameters["n_samples"]
+        .default
+        == 1
+    )
+
+
+def test_prepare_data_provides_uncertain_tensor() -> None:
+    assert issubclass(
+        signature(
+            convert_zema_std_uncertainties_into_synthetic_full_cov_matrices
+        ).return_annotation,
+        UncertainTensor,
+    )
+
+
+def test_prepare_data_actually_returns_uncertain_tensor() -> None:
+    assert isinstance(
+        convert_zema_std_uncertainties_into_synthetic_full_cov_matrices(),
+        UncertainTensor,
+    )
+
+
+def test_prepare_data_returns_full_covariance() -> None:
+    uncertainties = (
+        convert_zema_std_uncertainties_into_synthetic_full_cov_matrices().uncertainties
+    )
+    assert uncertainties is not None
+    shape = uncertainties.shape
+    assert len(shape) == 3 and shape[-1] == shape[-2]
+
+
+def test_prepare_data_returns_positive_semi_definite_covariance() -> None:
+    uncertainties = (
+        convert_zema_std_uncertainties_into_synthetic_full_cov_matrices().uncertainties
+    )
+    assert uncertainties is not None
+    for cov_matrix in uncertainties:
+        assert _is_positive_semi_definite(cov_matrix)

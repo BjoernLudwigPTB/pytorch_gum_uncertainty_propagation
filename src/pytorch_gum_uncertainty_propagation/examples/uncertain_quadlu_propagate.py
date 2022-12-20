@@ -6,10 +6,11 @@ import torch
 
 from pytorch_gum_uncertainty_propagation.modules import UncertainQuadLUMLP
 from pytorch_gum_uncertainty_propagation.uncertainties import (
-    cov_matrix_from_std_uncertainties,
     UncertainTensor,
 )
-from pytorch_gum_uncertainty_propagation.zema_dataset import provide_zema_samples
+from pytorch_gum_uncertainty_propagation.zema_dataset import (
+    convert_zema_std_uncertainties_into_synthetic_full_cov_matrices,
+)
 
 
 def assemble_pipeline(
@@ -17,7 +18,9 @@ def assemble_pipeline(
 ) -> None:
     """Propagate data through an MLP equipped with UncertainQuadLU activation"""
     if uncertain_values is None:
-        uncertain_values = prepare_data(n_samples)
+        uncertain_values = (
+            convert_zema_std_uncertainties_into_synthetic_full_cov_matrices(n_samples)
+        )
     assert uncertain_values.uncertainties is not None
     uncertain_quadlu_mlp = instantiate_uncertain_quadlu_mlp(
         uncertain_values.values.shape[1],

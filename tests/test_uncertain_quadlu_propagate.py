@@ -14,7 +14,6 @@ from pytorch_gum_uncertainty_propagation.examples.uncertain_quadlu_propagate imp
 )
 from pytorch_gum_uncertainty_propagation.modules import UncertainQuadLUMLP
 from pytorch_gum_uncertainty_propagation.uncertainties import (
-    _is_positive_semi_definite,
     UncertainTensor,
 )
 
@@ -23,15 +22,11 @@ def test_uncertain_quadlu_propagate_has_docstring() -> None:
     assert uncertain_quadlu_propagate.__doc__ is not None
 
 
-def test_uncertain_quadlu_propagate_has_function_prepare_data() -> None:
-    assert hasattr(uncertain_quadlu_propagate, "prepare_data")
-
-
-def test_uncertain_quadlu_propagate_has_function_propagate() -> None:
+def test_uncertain_quadlu_propagate_has_function_assemble_pipeline() -> None:
     assert hasattr(uncertain_quadlu_propagate, "assemble_pipeline")
 
 
-def test_uncertain_quadlu_propagate_all_contains_prepare_data() -> None:
+def test_uncertain_quadlu_propagate_all_contains_assemble_pipeline() -> None:
     assert assemble_pipeline.__name__ in uncertain_quadlu_propagate.__all__
 
 
@@ -85,28 +80,6 @@ def test_instantiate_uncertain_quadlu_mlp_out_features_parameter_is_int_list() -
         .annotation
         == list[int]
     )
-
-
-def test_prepare_data_provides_uncertain_tensor() -> None:
-    assert issubclass(signature(prepare_data).return_annotation, UncertainTensor)
-
-
-def test_prepare_data_actually_returns_uncertain_tensor() -> None:
-    assert isinstance(prepare_data(), UncertainTensor)
-
-
-def test_prepare_data_returns_full_covariance() -> None:
-    uncertainties = prepare_data().uncertainties
-    assert uncertainties is not None
-    shape = uncertainties.shape
-    assert len(shape) == 3 and shape[-1] == shape[-2]
-
-
-def test_prepare_data_returns_positive_semi_definite_covariance() -> None:
-    uncertainties = prepare_data().uncertainties
-    assert uncertainties is not None
-    for cov_matrix in uncertainties:
-        assert _is_positive_semi_definite(cov_matrix)
 
 
 @given(
