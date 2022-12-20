@@ -31,6 +31,7 @@ dependencies = [
     "torch",
     "torchvision",
     "torchaudio",
+    "tqdm",
 ]
 [license]
 text = "MIT"
