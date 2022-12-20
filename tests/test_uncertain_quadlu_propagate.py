@@ -34,7 +34,7 @@ def test_uncertain_quadlu_propagate_has_instantiate_uncertain_quadlu_mlp() -> No
     assert hasattr(uncertain_quadlu_propagate, "_instantiate_uncertain_quadlu_mlp")
 
 
-def test_propagate_has_docstring() -> None:
+def test_assemble_pipeline_has_docstring() -> None:
     assert assemble_pipeline.__doc__ is not None
 
 
@@ -80,18 +80,18 @@ def test_instantiate_uncertain_quadlu_mlp_returns_uncertain_quadlu_mlp(
     )
 
 
-def test_propagate_expects_parameter_uncertain_values() -> None:
+def test_assemble_pipeline_expects_parameter_uncertain_values() -> None:
     assert "uncertain_values" in signature(assemble_pipeline).parameters
 
 
-def test_propagate_expects_uncertain_values_of_type_uncertain_values() -> None:
+def test_assemble_pipeline_expects_uncertain_values_of_type_uncertain_values() -> None:
     assert (
         signature(assemble_pipeline).parameters["uncertain_values"].annotation
         == UncertainTensor | None
     )
 
 
-def test_propagate_expects_uncertain_values_default_is_None() -> None:
+def test_assemble_pipeline_expects_uncertain_values_default_is_None() -> None:
     assert signature(assemble_pipeline).parameters["uncertain_values"].default is None
 
 
@@ -142,19 +142,19 @@ def test_construct_partition_returns_correct_large_example() -> None:
 @pytest.mark.webtest
 @given(hst.integers(min_value=1, max_value=10))
 @settings(deadline=None)
-def test_propagate_actually_runs(n_samples: int) -> None:
+def test_assemble_pipeline_actually_runs(n_samples: int) -> None:
     assemble_pipeline(n_samples)
 
 
-def test_propagate_expects_parameter_n_samples() -> None:
+def test_assemble_pipeline_expects_parameter_n_samples() -> None:
     assert "n_samples" in signature(assemble_pipeline).parameters
 
 
-def test_propagate_parameter_n_samples_is_of_type_int() -> None:
+def test_assemble_pipeline_parameter_n_samples_is_of_type_int() -> None:
     assert signature(assemble_pipeline).parameters["n_samples"].annotation is int
 
 
-def test_propagate_parameter_n_samples_default_is_one() -> None:
+def test_assemble_pipeline_parameter_n_samples_default_is_one() -> None:
     assert signature(assemble_pipeline).parameters["n_samples"].default == 1
 
 
