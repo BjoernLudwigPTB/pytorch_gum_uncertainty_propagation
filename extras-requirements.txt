@@ -129,7 +129,7 @@ iniconfig==1.1.1
     # via pytest
 invoke==1.7.3
     # via python-semantic-release
-ipykernel==6.19.3
+ipykernel==6.19.4
     # via
     #   ipywidgets
     #   nbclassic
@@ -197,7 +197,7 @@ jupyter-events==0.5.0
     # via jupyter-server
 jupyter-nbextensions-configurator==0.6.1
     # via pytorch-gum-uncertainty-propagation (pyproject.toml)
-jupyter-server==2.0.1
+jupyter-server==2.0.2
     # via
     #   nbclassic
     #   notebook-shim
@@ -552,8 +552,6 @@ widgetsnbextension==4.0.4
     # via ipywidgets
 wrapt==1.14.1
     # via astroid
-yappi==1.4.0
-    # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 zipp==3.11.0
     # via importlib-metadata
 

@@ -192,5 +192,3 @@ wcwidth==0.2.5
     # via prompt-toolkit
 wrapt==1.14.1
     # via astroid
-yappi==1.4.0
-    # via pytorch-gum-uncertainty-propagation (pyproject.toml)
