@@ -129,7 +129,10 @@ def provide_zema_samples(n_samples: int = 1) -> UncertainTensor:
                             indices,
                         ),
                     )
-                if ExtractionDataType.UNCERTAINTIES.value in _hdf5_part(h5f, dataset).name:
+                if (
+                    ExtractionDataType.UNCERTAINTIES.value
+                    in _hdf5_part(h5f, dataset).name
+                ):
                     uncertainties = extracted_data
                     print("    Uncertainties extracted")
                 elif ExtractionDataType.VALUES.value in _hdf5_part(h5f, dataset).name:
