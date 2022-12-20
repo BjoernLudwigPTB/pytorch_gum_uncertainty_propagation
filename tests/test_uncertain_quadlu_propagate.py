@@ -1,4 +1,5 @@
 from inspect import signature
+from typing import Any
 
 import pytest
 from hypothesis import given, settings, strategies as hst
@@ -158,8 +159,8 @@ def test_assemble_pipeline_parameter_n_samples_default_is_one() -> None:
     assert signature(assemble_pipeline).parameters["n_samples"].default == 1
 
 
-def test_assemble_pipeline_states_to_return_profiler() -> None:
-    assert signature(assemble_pipeline).return_annotation is profile
+def test_assemble_pipeline_states_to_return_anything() -> None:
+    assert signature(assemble_pipeline).return_annotation is Any
 
 
 @pytest.mark.webtest

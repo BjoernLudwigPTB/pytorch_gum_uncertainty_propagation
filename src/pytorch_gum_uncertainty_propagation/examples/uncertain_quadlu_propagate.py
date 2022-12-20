@@ -2,6 +2,8 @@
 
 __all__ = ["assemble_pipeline"]
 
+from typing import Any
+
 import torch
 from torch.autograd.profiler import profile
 
@@ -16,9 +18,9 @@ from pytorch_gum_uncertainty_propagation.zema_dataset import (
 
 def assemble_pipeline(
     n_samples: int = 1, uncertain_values: UncertainTensor | None = None
-) -> profile:
+) -> Any:
     """Propagate data through an MLP equipped with UncertainQuadLU activation"""
-    torch.set_default_dtype(torch.double)
+    torch.set_default_dtype(torch.double)  # type: ignore[no-untyped-call]
     if uncertain_values is None:
         uncertain_values = (
             convert_zema_std_uncertainties_into_synthetic_full_cov_matrices(n_samples)
@@ -29,7 +31,9 @@ def assemble_pipeline(
         _construct_partition(uncertain_values.values.shape[1]),
     )
     for uncertain_value in zip(uncertain_values.values, uncertain_values.uncertainties):
-        with profile(with_stack=True, enabled=False) as profiler:
+        with profile(
+            with_stack=True, enabled=False
+        ) as profiler:  # type: ignore[no-untyped-call]
             propagated = uncertain_quadlu_mlp(UncertainTensor(*uncertain_value))
         print(f"propagated and received: \n" f"{propagated}")
     return profiler
