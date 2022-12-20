@@ -1,7 +1,7 @@
 """An API for accessing the data in the ZeMA remaining-useful life dataset"""
 
 __all__ = [
-    "ExtractionData",
+    "ExtractionDataType",
     "provide_zema_samples",
     "LOCAL_ZEMA_DATASET_PATH",
     "ZEMA_DATASET_HASH",
@@ -42,7 +42,7 @@ ZEMA_QUANTITIES = (
 )
 
 
-class ExtractionData(Enum):
+class ExtractionDataType(Enum):
     """Identifiers of data types in ZeMA dataset
 
     Attributes
@@ -108,10 +108,10 @@ def provide_zema_samples(n_samples: int = 1) -> UncertainTensor:
     )
     with h5py.File(LOCAL_ZEMA_DATASET_PATH, "r") as h5f:
         for dataset in relevant_datasets:
-            if ExtractionData.UNCERTAINTIES.value in dataset:
+            if ExtractionDataType.UNCERTAINTIES.value in dataset:
                 extracted_data = uncertainties
                 print(f"    Extract uncertainties from {dataset}")
-            elif ExtractionData.VALUES.value in dataset:
+            elif ExtractionDataType.VALUES.value in dataset:
                 extracted_data = values
                 print(f"    Extract values from {dataset}")
             else:
@@ -131,10 +131,10 @@ def provide_zema_samples(n_samples: int = 1) -> UncertainTensor:
                             indices,
                         ),
                     )
-                if ExtractionData.UNCERTAINTIES.value in _hdf5_part(h5f, dataset).name:
+                if ExtractionDataType.UNCERTAINTIES.value in _hdf5_part(h5f, dataset).name:
                     uncertainties = extracted_data
                     print("    Uncertainties extracted")
-                elif ExtractionData.VALUES.value in _hdf5_part(h5f, dataset).name:
+                elif ExtractionDataType.VALUES.value in _hdf5_part(h5f, dataset).name:
                     values = extracted_data
                     print("    Values extracted")
     return UncertainTensor(torch.tensor(values), torch.tensor(uncertainties))

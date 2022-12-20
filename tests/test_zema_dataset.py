@@ -8,8 +8,7 @@ from hypothesis import given, settings, strategies as hst
 from pytorch_gum_uncertainty_propagation import zema_dataset
 from pytorch_gum_uncertainty_propagation.uncertainties import UncertainTensor
 from pytorch_gum_uncertainty_propagation.zema_dataset import (
-    ExtractionData,
-    local_dataset_exists,
+    ExtractionDataType,
     LOCAL_ZEMA_DATASET_PATH,
     provide_zema_samples,
     ZEMA_DATASET_HASH,
@@ -24,29 +23,29 @@ def test_zema_dataset_has_docstring() -> None:
 
 
 def test_zema_dataset_has_enum_extraction_data() -> None:
-    assert hasattr(zema_dataset, "ExtractionData")
+    assert hasattr(zema_dataset, "ExtractionDataType")
 
 
 def test_extraction_data_enum_has_docstring_with_values() -> None:
-    assert ExtractionData.__doc__ is not None
-    assert "VALUES" in ExtractionData.__doc__
+    assert ExtractionDataType.__doc__ is not None
+    assert "VALUES" in ExtractionDataType.__doc__
 
 
 def test_extraction_data_enum_has_docstring_with_uncertainties() -> None:
-    assert ExtractionData.__doc__ is not None
-    assert "UNCERTAINTIES" in ExtractionData.__doc__
+    assert ExtractionDataType.__doc__ is not None
+    assert "UNCERTAINTIES" in ExtractionDataType.__doc__
 
 
 def test_zema_dataset_extraction_data_contains_key_for_uncertainties() -> None:
-    assert "qudt:standardUncertainty" in ExtractionData._value2member_map_
+    assert "qudt:standardUncertainty" in ExtractionDataType._value2member_map_
 
 
 def test_zema_dataset_extraction_data_contains_key_for_values() -> None:
-    assert "qudt:value" in ExtractionData._value2member_map_
+    assert "qudt:value" in ExtractionDataType._value2member_map_
 
 
 def test_zema_dataset_all_contains_extraction_data() -> None:
-    assert ExtractionData.__name__ in zema_dataset.__all__
+    assert ExtractionDataType.__name__ in zema_dataset.__all__
 
 
 def test_zema_dataset_has_constant_datatypes() -> None:
