@@ -22,7 +22,7 @@ def assemble_pipeline(
             convert_zema_std_uncertainties_into_synthetic_full_cov_matrices(n_samples)
         )
     assert uncertain_values.uncertainties is not None
-    uncertain_quadlu_mlp = instantiate_uncertain_quadlu_mlp(
+    uncertain_quadlu_mlp = _instantiate_uncertain_quadlu_mlp(
         uncertain_values.values.shape[1],
         _construct_partition(uncertain_values.values.shape[1]),
     )
@@ -31,25 +31,7 @@ def assemble_pipeline(
         print(f"propagated and received: \n" f"{propagated}")
 
 
-def prepare_data(n_samples: int = 1) -> UncertainTensor:
-    """Prepare the data for forward propagations in any PyTorch network"""
-    uncertain_values = provide_zema_samples(n_samples)
-    assert uncertain_values.uncertainties is not None
-    result_uncertainties = torch.empty(
-        (
-            len(uncertain_values.uncertainties),
-            uncertain_values.uncertainties.shape[1],
-            uncertain_values.uncertainties.shape[1],
-        )
-    )
-    for sample_idx, sample in enumerate(uncertain_values.uncertainties):
-        result_uncertainties[sample_idx, ...] = cov_matrix_from_std_uncertainties(
-            sample, 0.5, 0.5, 0.5
-        )
-    return UncertainTensor(uncertain_values.values, result_uncertainties)
-
-
-def instantiate_uncertain_quadlu_mlp(
+def _instantiate_uncertain_quadlu_mlp(
     in_features: int, out_features: list[int]
 ) -> UncertainQuadLUMLP:
     """Create an instance of an MLP equipped with UncertainQuadLU activation"""

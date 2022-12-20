@@ -8,9 +8,8 @@ from pytorch_gum_uncertainty_propagation.examples import (
 )
 from pytorch_gum_uncertainty_propagation.examples.uncertain_quadlu_propagate import (
     _construct_partition,
+    _instantiate_uncertain_quadlu_mlp,
     assemble_pipeline,
-    instantiate_uncertain_quadlu_mlp,
-    prepare_data,
 )
 from pytorch_gum_uncertainty_propagation.modules import UncertainQuadLUMLP
 from pytorch_gum_uncertainty_propagation.uncertainties import (
@@ -31,23 +30,7 @@ def test_uncertain_quadlu_propagate_all_contains_assemble_pipeline() -> None:
 
 
 def test_uncertain_quadlu_propagate_has_instantiate_uncertain_quadlu_mlp() -> None:
-    assert hasattr(uncertain_quadlu_propagate, "instantiate_uncertain_quadlu_mlp")
-
-
-def test_prepare_data_has_docstring() -> None:
-    assert prepare_data.__doc__ is not None
-
-
-def test_prepare_data_expects_parameter_n_samples() -> None:
-    assert "n_samples" in signature(prepare_data).parameters
-
-
-def test_prepare_data_parameter_n_samples_is_of_type_int() -> None:
-    assert signature(prepare_data).parameters["n_samples"].annotation is int
-
-
-def test_prepare_data_parameter_n_samples_default_is_one() -> None:
-    assert signature(prepare_data).parameters["n_samples"].default == 1
+    assert hasattr(uncertain_quadlu_propagate, "_instantiate_uncertain_quadlu_mlp")
 
 
 def test_propagate_has_docstring() -> None:
@@ -55,27 +38,29 @@ def test_propagate_has_docstring() -> None:
 
 
 def test_instantiate_uncertain_quadlu_mlp_has_docstring() -> None:
-    assert instantiate_uncertain_quadlu_mlp.__doc__ is not None
+    assert _instantiate_uncertain_quadlu_mlp.__doc__ is not None
 
 
 def test_instantiate_uncertain_quadlu_mlp_has_in_features_parameter() -> None:
-    assert "in_features" in signature(instantiate_uncertain_quadlu_mlp).parameters
+    assert "in_features" in signature(_instantiate_uncertain_quadlu_mlp).parameters
 
 
 def test_instantiate_uncertain_quadlu_mlp_in_features_parameter_is_int() -> None:
     assert (
-        signature(instantiate_uncertain_quadlu_mlp).parameters["in_features"].annotation
+        signature(_instantiate_uncertain_quadlu_mlp)
+        .parameters["in_features"]
+        .annotation
         is int
     )
 
 
 def test_instantiate_uncertain_quadlu_mlp_has_out_features_parameter() -> None:
-    assert "out_features" in signature(instantiate_uncertain_quadlu_mlp).parameters
+    assert "out_features" in signature(_instantiate_uncertain_quadlu_mlp).parameters
 
 
 def test_instantiate_uncertain_quadlu_mlp_out_features_parameter_is_int_list() -> None:
     assert (
-        signature(instantiate_uncertain_quadlu_mlp)
+        signature(_instantiate_uncertain_quadlu_mlp)
         .parameters["out_features"]
         .annotation
         == list[int]
@@ -90,7 +75,7 @@ def test_instantiate_uncertain_quadlu_mlp_returns_uncertain_quadlu_mlp(
     in_features: int, out_features: list[int]
 ) -> None:
     assert isinstance(
-        instantiate_uncertain_quadlu_mlp(in_features, out_features), UncertainQuadLUMLP
+        _instantiate_uncertain_quadlu_mlp(in_features, out_features), UncertainQuadLUMLP
     )
 
 
