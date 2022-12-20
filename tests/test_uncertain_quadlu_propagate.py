@@ -1,5 +1,6 @@
 from inspect import signature
 
+import pytest
 from hypothesis import given, settings, strategies as hst
 
 from pytorch_gum_uncertainty_propagation.examples import (
@@ -7,9 +8,9 @@ from pytorch_gum_uncertainty_propagation.examples import (
 )
 from pytorch_gum_uncertainty_propagation.examples.uncertain_quadlu_propagate import (
     _construct_partition,
+    assemble_pipeline,
     instantiate_uncertain_quadlu_mlp,
     prepare_data,
-    assemble_pipeline,
 )
 from pytorch_gum_uncertainty_propagation.modules import UncertainQuadLUMLP
 from pytorch_gum_uncertainty_propagation.uncertainties import (
@@ -179,6 +180,7 @@ def test_construct_partition_returns_correct_large_example() -> None:
     assert _construct_partition(100) == [100, 75, 56, 42, 31]
 
 
+@pytest.mark.webtest
 @given(hst.integers(min_value=1, max_value=10))
 @settings(deadline=None)
 def test_propagate_actually_runs(n_samples: int) -> None:
