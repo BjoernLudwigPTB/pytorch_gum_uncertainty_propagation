@@ -12,10 +12,10 @@ from torch.testing import assert_close  # type: ignore[attr-defined]
 
 from pytorch_gum_uncertainty_propagation import modules
 from pytorch_gum_uncertainty_propagation.modules import (
+    GUMLinear,
     GUMSoftplus,
     GUMSoftplusMLP,
     MLP,
-    GUMLinear,
 )
 from pytorch_gum_uncertainty_propagation.uncertainties import (
     UncertainTensor,
