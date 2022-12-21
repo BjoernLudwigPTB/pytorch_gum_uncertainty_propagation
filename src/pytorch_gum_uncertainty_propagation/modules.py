@@ -305,8 +305,8 @@ class GUMSoftplus(Module):
     .. math::
 
         \mathbf{U}_{x^{(\ell)}} = \prod_{i=0}^{\ell-1} \operatorname{diag}
-        \sigma(\beta z^(\ell - i)) W^{(\ell-i)} \mathbf{U}_{x^{(0)}} \prod_{
-        i=1}^{\ell} {W^{(i)}}^T \operatorname{diag} \sigma(\beta z^(\ell - i))),
+        \sigma(\beta z^{(\ell - i)} W^{(\ell-i)} \mathbf{U}_{x^{(0)}} \prod_{
+        i=1}^{\ell} {W^{(i)}}^T \operatorname{diag} \sigma(\beta z^{(\ell - i))},
 
     Parameters
     ----------
