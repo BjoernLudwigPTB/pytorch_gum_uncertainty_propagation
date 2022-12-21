@@ -73,7 +73,8 @@ def _is_positive_semi_definite(tensor_under_test: Tensor) -> Tensor:
     eigenvalues = torch.linalg.eigvalsh(tensor_under_test)
     return torch.all(
         torch.logical_or(
-            eigenvalues >= 0, torch.isclose(eigenvalues, tensor_under_test.new_zeros(1))
+            eigenvalues >= 0,
+            torch.isclose(eigenvalues, tensor_under_test.new_zeros(1), atol=1e-7),
         )
     )
 
