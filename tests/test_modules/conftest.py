@@ -82,3 +82,8 @@ def values_uncertainties_and_uncertain_linears(
             UncertainLinear(len(values), draw(hst.integers(min_value=1, max_value=10))),
         ),
     )
+
+
+@composite
+def betas_or_thresholds(draw: DrawFn) -> SearchStrategy[int]:
+    return cast(SearchStrategy[int], draw(hst.integers(min_value=1, max_value=20)))
