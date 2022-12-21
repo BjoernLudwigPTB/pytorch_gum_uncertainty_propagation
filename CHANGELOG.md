@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.14.0 (2022-12-21)
+### Feature
+* **zema_dataset:** Introduce local caching of extracted data ([`5614b91`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/5614b915c67091fd7da5877d511b5f0f454b585c))
+
+### Documentation
+* **propagate:** Replace old module uncertain_quadlu_propagate after refactoring by propagate ([`d41ae32`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/d41ae3201f3bb806663ebfa3f1b1e0a1d454cab4))
+
 ## v0.13.0 (2022-12-21)
 ### Feature
 * **GUMSigmoidMLP:** Introduce new mult-layer perceptron exclusively equipped with GUMSigmoid ([`ea7916a`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/ea7916a7993a5dc86fa07b3182be6b49935f94d1))

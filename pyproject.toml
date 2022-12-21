@@ -22,7 +22,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Mathematics",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-version = "0.13.0"
+version = "0.14.0"
 dependencies = [
     "h5py",
     "matplotlib",
