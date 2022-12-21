@@ -1,5 +1,5 @@
 """Test the class QuadLUMLP"""
-from typing import cast, Optional
+from typing import cast
 
 import torch
 from hypothesis import given, strategies as hst
@@ -20,9 +20,9 @@ from ..conftest import tensors
 @composite
 def quadlu_mlps(
     draw: DrawFn,
-    in_dimen: Optional[int] = None,
-    n_hidden_channels: Optional[int] = None,
-    out_channels: Optional[int] = None,
+    in_dimen: int | None = None,
+    n_hidden_channels: int | None = None,
+    out_channels: int | None = None,
 ) -> SearchStrategy[QuadLUMLP]:
     dimen_strategy = hst.integers(min_value=1, max_value=100)
     if in_dimen is None:
