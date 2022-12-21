@@ -1,6 +1,9 @@
 """Contains the custom activation functions based on QuadLU for now"""
 
 __all__ = [
+    "GUMSoftplus",
+    "GUMSoftplusMLP",
+    "MLP",
     "QuadLU",
     "QUADLU_ALPHA_DEFAULT",
     "QuadLUMLP",
@@ -8,6 +11,9 @@ __all__ = [
     "UncertainQuadLU",
     "UncertainQuadLUMLP",
 ]
+
+from inspect import signature
+from typing import Type
 
 import torch
 from torch import Tensor
@@ -201,34 +207,41 @@ class UncertainLinear(Module):
         return self._linear.weight
 
 
-class QuadLUMLP(Sequential):
-    """This implements the multi-layer perceptron (MLP) with QuadLU activation
+class MLP(Sequential):
+    """This implements the multi-layer perceptron (MLP) for any kind of activation
 
-    The implementation is heavily based on the module :class:`~torchvision.ops.MLP`.
-    For each specified output dimension a combination of a :class:`~torch.nn.Linear` and
-    the :class:`~pytorch_gum_uncertainty_propagation.modules.QuadLU`
-    activation function is added.
+    The implementation is inspired by the module :class:`~torchvision.ops.MLP`.
+    For each specified output dimension a combination of a suitable linear layer and
+    the provided activation function, which is expected to be a subclass of
+    :class:`torch.nn.Module`, is added to the network. The linear layers are all either
+    of type :class:`UncertainLinear` or of type:class:`~torch.nn.Linear` based on the
+    type of the expected input parameter for the activation function.
 
     Parameters
     ----------
-    in_channels : int
+    in_features : int
         number of channels of the input
     out_features : list[int]
         the hidden and output layers' dimensions
+    activation_module : Type[Module]
+        the activation function
     """
 
     def __init__(
-        self,
-        in_channels: int,
-        out_features: list[int],
-    ):
-        """An MLP consisting of linear layers and QuadLU activation function"""
+        self, in_features: int, out_features: list[int], activation_module: Type[Module]
+    ) -> None:
+        """An MLP consisting of stacked linear and provided activations"""
+        self.activation_module = activation_module
+        linear_module = (
+            UncertainLinear
+            if signature(activation_module.forward).return_annotation is UncertainTensor
+            else Linear
+        )
         layers = ModuleList()
-        in_dimen = in_channels
         for out_dimen in out_features:
-            layers.append(torch.nn.Linear(in_dimen, out_dimen, dtype=torch.double))
-            layers.append(QuadLU())
-            in_dimen = out_dimen
+            layers.append(linear_module(in_features, out_dimen))
+            layers.append(activation_module())
+            in_features = out_dimen
         super().__init__(*layers)
 
 
