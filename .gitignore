@@ -27,6 +27,8 @@ junit.xml
 ############################
 train/
 test/
+datasets/
+**/examples/*.json
 **/*.txt
 **/*.jpg
 *-checkpoint.ipynb
