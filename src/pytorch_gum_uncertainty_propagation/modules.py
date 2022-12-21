@@ -127,8 +127,9 @@ class UncertainQuadLU(Module):
             )
             return UncertainTensor(
                 self._quadlu(uncertain_values.values),
-                torch.square(first_derivs).unsqueeze(1)
-                * uncertain_values.uncertainties,
+                first_derivs
+                * uncertain_values.uncertainties
+                * first_derivs.unsqueeze(1),
             )
 
     @property
