@@ -42,12 +42,13 @@ def square_tensors(
         non_symmetric = False
         for i_row in range(rows):
             for i_column in range(i_row):
-                if (
-                    not (
-                        isnan(result_tensor[i_row, i_column])
-                        and isnan(result_tensor[i_column, i_row])
-                    )
-                    and result_tensor[i_row, i_column] != result_tensor[i_column, i_row]
+                if not (
+                    isnan(result_tensor[i_row, i_column])
+                    and isnan(result_tensor[i_column, i_row])
+                ) and not torch.isclose(
+                    result_tensor[i_row, i_column],
+                    result_tensor[i_column, i_row],
+                    rtol=1e-7,
                 ):
                     non_symmetric = True
                     break
