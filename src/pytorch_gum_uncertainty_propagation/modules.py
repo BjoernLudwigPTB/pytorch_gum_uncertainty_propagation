@@ -310,9 +310,11 @@ class GUMSoftplus(Module):
 
     Parameters
     ----------
-    beta : float, optional
-        trainable, non-negative parameter of Softplus activation function,
-        defaults to 1
+    beta : int, optional
+        non-negative parameter of Softplus activation function, defaults to 1
+    threshold : int, optional
+        The linearization threshold of the Softplus activation function for numerical
+        stability, defaults to 20, for details see :class:`~torch.nn.Softplus`
     """
 
     def __init__(
