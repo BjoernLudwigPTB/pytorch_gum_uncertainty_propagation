@@ -362,8 +362,19 @@ class GUMSoftplusMLP(MLP):
         input dimension
     out_features : list[int]
         the hidden and output layers' dimensions
+    beta : int, optional
+        non-negative parameter of Softplus activation function, defaults to 1
+    threshold : int, optional
+        The linearization threshold of the Softplus activation function for numerical
+        stability, defaults to 20, for details see :class:`~torch.nn.Softplus`
     """
 
-    def __init__(self, in_features: int, out_features: list[int]) -> None:
+    def __init__(
+        self,
+        in_features: int,
+        out_features: list[int],
+        beta: int = 1,
+        threshold: int = 20,
+    ) -> None:
         """An MLP consisting of UncertainLinear and GUMSoftplus layers"""
-        super().__init__(in_features, out_features, GUMSoftplus)
+        super().__init__(in_features, out_features, GUMSoftplus, beta, threshold)
