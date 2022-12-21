@@ -1,8 +1,9 @@
 """Test the class UncertainQuadLU"""
 from inspect import signature
 
+import pytest
 import torch
-from hypothesis import given
+from hypothesis import given, HealthCheck, settings
 from numpy.testing import assert_equal
 from torch import square, Tensor, tensor
 from torch.nn import Module
@@ -18,9 +19,16 @@ from pytorch_gum_uncertainty_propagation.modules import (
     UncertainQuadLU,
 )
 from pytorch_gum_uncertainty_propagation.uncertainties import (
+    _is_positive_semi_definite,
+    _is_symmetric,
     UncertainTensor,
 )
 from ..conftest import alphas, tensors, uncertain_tensors
+
+
+@pytest.fixture
+def gum_quadlu_instance() -> UncertainQuadLU:
+    return UncertainQuadLU()
 
 
 def test_modules_all_contains_uncertain_quadlu() -> None:
@@ -394,3 +402,25 @@ def test_uncertain_quadlu_forward_uncertainties_for_given_input(
         UncertainQuadLU(alpha).forward(uncertain_tensor).uncertainties,
         tensor([[square(alpha), 0.0, 0.0], [0.0, square(alpha), 0.0], [0.0, 0.0, 0.0]]),
     )
+
+
+@given(uncertain_tensors())
+@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
+def test_gum_quadlu_forward_results_in_positive_semi_definite_uncertainties(
+    gum_quadlu_instance: UncertainQuadLU,
+    uncertain_tensor: UncertainTensor,
+) -> None:
+    result_uncertainties = gum_quadlu_instance.forward(uncertain_tensor).uncertainties
+    assert result_uncertainties is not None
+    assert _is_positive_semi_definite(result_uncertainties)
+
+
+@given(uncertain_tensors())
+@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
+def test_gum_quadlu_forward_results_in_symmetric_uncertainties(
+    gum_quadlu_instance: UncertainQuadLU,
+    uncertain_tensor: UncertainTensor,
+) -> None:
+    result_uncertainties = gum_quadlu_instance.forward(uncertain_tensor).uncertainties
+    assert result_uncertainties is not None
+    assert _is_symmetric(result_uncertainties)
