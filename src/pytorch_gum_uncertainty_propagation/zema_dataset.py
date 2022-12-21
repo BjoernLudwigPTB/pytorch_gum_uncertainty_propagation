@@ -10,9 +10,12 @@ __all__ = [
     "ZEMA_QUANTITIES",
 ]
 
+import os
+import pickle
 from enum import Enum
 from os.path import dirname, exists
 from pathlib import Path
+from typing import cast
 
 import h5py
 import numpy as np
@@ -92,6 +95,8 @@ def provide_zema_samples(n_samples: int = 1) -> UncertainTensor:
     ) -> NDArray[np.double]:
         return np.append(append_to, appendix, axis=1)
 
+    if cached_data := _check_and_load_cache(n_samples):
+        return cached_data
     dataset_full_path = retrieve(
         url=ZEMA_DATASET_URL,
         known_hash=ZEMA_DATASET_HASH,
@@ -141,7 +146,34 @@ def provide_zema_samples(n_samples: int = 1) -> UncertainTensor:
                 elif ExtractionDataType.VALUES.value in _hdf5_part(h5f, dataset).name:
                     values = extracted_data
                     print("    Values extracted")
-    return UncertainTensor(torch.tensor(values), torch.tensor(uncertainties))
+    uncertain_values = UncertainTensor(
+        torch.tensor(values), torch.tensor(uncertainties)
+    )
+    _store_cache(uncertain_values)
+    return uncertain_values
+
+
+def _check_and_load_cache(n_samples: int) -> UncertainTensor | None:
+    """Checks if corresponding file for n_samples exists and loads it with pickle"""
+    if os.path.exists(cache_path := _cache_path(n_samples)):
+        with open(cache_path, "rb") as cache_file:
+            return cast(UncertainTensor, pickle.load(cache_file))
+    return None
+
+
+def _cache_path(n_samples: int) -> Path:
+    """Local file system path for a cache file containing n ZeMA samples
+
+    The result does not guarantee, that the file at the specified location exists,
+    but can be used to check for existence or creation.
+    """
+    return LOCAL_ZEMA_DATASET_PATH.joinpath(f"{str(n_samples)}_samples")
+
+
+def _store_cache(uncertain_values: UncertainTensor) -> None:
+    """Dumps provided uncertain tenor to corresponding pickle file"""
+    with open(_cache_path(len(uncertain_values.values)), "wb") as cache_file:
+        pickle.dump(uncertain_values, cache_file)
 
 
 def convert_zema_std_uncertainties_into_synthetic_full_cov_matrices(
