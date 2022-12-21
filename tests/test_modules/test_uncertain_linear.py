@@ -11,6 +11,7 @@ from pytorch_gum_uncertainty_propagation import modules
 from pytorch_gum_uncertainty_propagation.modules import UncertainLinear
 from pytorch_gum_uncertainty_propagation.uncertainties import (
     _is_positive_semi_definite,
+    _is_symmetric,
     UncertainTensor,
 )
 from .conftest import (
@@ -249,3 +250,15 @@ def test_uncertain_linear_forward_results_in_positive_semi_definite_uncertaintie
     ).uncertainties
     assert result_uncertainties is not None
     assert _is_positive_semi_definite(result_uncertainties)
+
+
+@given(values_uncertainties_and_uncertain_linears())
+def test_uncertain_linear_forward_results_in_symmetric_uncertainties(
+    uncertain_values_and_uncertain_linear: UncertainTensorForLinear,
+) -> None:
+    uncertain_linear = uncertain_values_and_uncertain_linear.uncertain_linear
+    result_uncertainties = uncertain_linear.forward(
+        uncertain_values_and_uncertain_linear.uncertain_values
+    ).uncertainties
+    assert result_uncertainties is not None
+    assert _is_symmetric(result_uncertainties)
