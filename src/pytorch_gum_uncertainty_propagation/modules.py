@@ -18,7 +18,7 @@ from typing import Type
 import torch
 from torch import Tensor
 from torch.autograd import profiler
-from torch.nn import Linear, Module, ModuleList, Sequential
+from torch.nn import Linear, Module, ModuleList, Sequential, Softplus
 from torch.nn.parameter import Parameter
 
 from pytorch_gum_uncertainty_propagation.functionals import (
@@ -275,3 +275,83 @@ class UncertainQuadLUMLP(MLP):
     def __init__(self, in_features: int, out_features: list[int]) -> None:
         """An MLP consisting of UncertainLinear and UncertainQuadLU layers"""
         super().__init__(in_features, out_features, UncertainQuadLU)
+
+
+class GUMSoftplus(Module):
+    r"""Implementation of parametrized Softplus activation with uncertainty propagation
+
+    :math:`\operatorname{Softplus}_\beta \colon \mathbb{R} \to \mathbb{R}` is
+    defined
+    as
+
+    .. math::
+
+        \operatorname{Softplus}_\beta (x) := \frac{1}{\beta} \ln(1-\exp(\beta
+        \cdot x))
+
+    with :math:`\beta \in \mathbb{R}_+`. The uncertainty propagation is performed
+    as stated in the thesis
+
+    .. math::
+
+        \mathbf{U}_{x^{(\ell)}} = \prod_{i=0}^{\ell-1} \operatorname{diag}
+        \sigma(\beta z^(\ell - i)) W^{(\ell-i)} \mathbf{U}_{x^{(0)}} \prod_{
+        i=1}^{\ell} {W^{(i)}}^T \operatorname{diag} \sigma(\beta z^(\ell - i))),
+
+    Parameters
+    ----------
+    beta : float, optional
+        trainable, non-negative parameter of Softplus activation function,
+        defaults to 1
+    """
+
+    def __init__(
+        self,
+        beta: int = 1,
+        threshold: int = 20,
+    ):
+        """Parametrized Softplus activation function and uncertainty propagation"""
+        super().__init__()
+        self._softplus = Softplus(beta, threshold)
+
+    def forward(self, uncertain_values: UncertainTensor) -> UncertainTensor:
+        """Forward pass of GUMSoftplus"""
+        with profiler.record_function("GUMSOFTPLUS PASS"):
+            if uncertain_values.uncertainties is None:
+                return UncertainTensor(
+                    self._softplus(uncertain_values.values),
+                    uncertain_values.uncertainties,
+                )
+            first_derivs = torch.sigmoid(self.beta * uncertain_values.values)
+            return UncertainTensor(
+                self._softplus(uncertain_values.values),
+                first_derivs
+                * uncertain_values.uncertainties
+                * first_derivs.unsqueeze(1),
+            )
+
+    @property
+    def beta(self) -> int:
+        """The parameter beta of the activation function"""
+        return self._softplus.beta
+
+    @property
+    def threshold(self) -> int:
+        """The linearization threshold of the activation function"""
+        return self._softplus.threshold
+
+
+class GUMSoftplusMLP(MLP):
+    """Implements the multi-layer perceptron (MLP) with GUMSoftplus activation
+
+    Parameters
+    ----------
+    in_features : int
+        input dimension
+    out_features : list[int]
+        the hidden and output layers' dimensions
+    """
+
+    def __init__(self, in_features: int, out_features: list[int]) -> None:
+        """An MLP consisting of UncertainLinear and GUMSoftplus layers"""
+        super().__init__(in_features, out_features, GUMSoftplus)
