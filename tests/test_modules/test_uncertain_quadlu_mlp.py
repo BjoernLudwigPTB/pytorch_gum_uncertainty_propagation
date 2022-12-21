@@ -7,11 +7,12 @@ import torch
 from hypothesis import given, strategies as hst
 from hypothesis.strategies import composite, DrawFn, SearchStrategy
 from numpy.testing import assert_equal
-from torch.nn import Module, ModuleList
+from torch.nn import ModuleList
 from torch.testing import assert_close  # type: ignore[attr-defined]
 
 from pytorch_gum_uncertainty_propagation import modules
 from pytorch_gum_uncertainty_propagation.modules import (
+    MLP,
     UncertainLinear,
     UncertainQuadLU,
     UncertainQuadLUMLP,
@@ -56,7 +57,7 @@ def test_modules_all_contains_uncertain_quadlu_mlp() -> None:
 
 
 def test_uncertain_quadlu_mlp_is_subclass_of_nn_module() -> None:
-    assert issubclass(UncertainQuadLUMLP, Module)
+    assert issubclass(UncertainQuadLUMLP, MLP)
 
 
 def test_uncertain_quadlu_mlp_has_docstring() -> None:
