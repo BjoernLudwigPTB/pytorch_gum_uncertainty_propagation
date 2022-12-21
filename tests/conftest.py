@@ -1,5 +1,5 @@
 """Common strategies"""
-from typing import cast, Optional
+from typing import cast
 
 import torch
 from hypothesis import strategies as hst
@@ -42,9 +42,9 @@ def alphas(
 @composite
 def tensors(
     draw: DrawFn,
-    length: Optional[int] = None,
-    elements_min: Optional[float] = None,
-    elements_max: Optional[float] = None,
+    length: int | None = None,
+    elements_min: float | None = None,
+    elements_max: float | None = None,
 ) -> SearchStrategy[Tensor]:
     """A search strategy for PyTorch tensors
 
