@@ -2,6 +2,20 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.0 (2022-12-21)
+### Feature
+* **GUMSoftplusMLP:** Introduce beta and threshold parameters ([`3ee9314`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/3ee9314d6864dc2b162095bfdcfb5377752ef793))
+* **MLP:** Introduce args and kwargs for setting parameters of the activation module ([`530c47d`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/530c47d74a42c8ddfb2917daca878b486bf51688))
+* **modules:** Introduce GUMSoftplus activation and GUMSoftplusMLP ([`0815e66`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/0815e6610ee11cd3e95afdfbe1564099356f350c))
+* **MLP:** Introduce generic MLP class ([`d942935`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/d942935f3e067d5a4c8adc9023459aeb0fbef341))
+
+### Fix
+* **GUMQuadLU:** Fix propagation of uncertainties ([`5909770`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/5909770bc383f4fc0203182babc0eab840c59db1))
+
+### Documentation
+* **GUMSoftplus:** Introduce beta and threshold into docstring ([`2a6d999`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/2a6d9994a51a1e163e80d6ecadeb719f45c000d1))
+* **GUMQuadLU:** Mention alphas default value ([`8492974`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/8492974bb5ec46017e912aa687ca6aec6bbf30cf))
+
 ## v0.11.0 (2022-12-21)
 ### Feature
 * **uncertain_quadlu_propagate:** Introduce profiler into example ([`6659e70`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/6659e7067e4788c2851a06ebed0e4c21004cbe70))
