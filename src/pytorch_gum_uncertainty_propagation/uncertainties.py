@@ -20,14 +20,14 @@ def cov_matrix_from_std_uncertainties(
 ) -> Tensor:
     r"""Set up a covariance matrix from given standard uncertainties
 
-    The matrix has the form :math:`V_{ij} = \sigma_i \sigma_j \rho^{\phi * i^\nu`
+    The matrix has the form :math:`V_{ij} = \sigma_i \sigma_j \rho^{\phi * i^\nu}`.
 
     `V = cov_matrix_from_std_uncertainties(sigma, rho, phi, nu, dimen)`
-    constructs a covariance matrix as specified in Dierl et al., J. Opt. Soc.
-    Am. A 33, 1370 (2016) with the column dimension of :math:'\sigma'. In case
-    the dimension of :math:`\sigma` does not match `dimen`, its elements are either
-    cut off or repeated until the desired length is reached. The main idea is to assume
-    higher correlation of values for closer adjacency.
+    constructs a covariance matrix as specified in [Dierl2016]_ with the column
+    dimension of :math:`\sigma`. In case the dimension of :math:`\sigma` does not
+    match `dimen`, its elements are either cut off or repeated until the desired
+    length is reached. The main idea is to assume higher correlation of values for
+    closer adjacency.
 
     Parameters
     ----------
@@ -82,7 +82,10 @@ def _is_positive_semi_definite(tensor_under_test: Tensor) -> Tensor:
 def _match_dimen_and_std_uncertainty_vec_len(
     std_uncertainty: Tensor, desired_length: int | None = None
 ) -> tuple[Tensor, int]:
-    """Adapt dimension specifier or vector of standard uncertainties"""
+    """Adapt dimension specifier or vector of standard uncertainties
+
+    copyright PTB 2022, B. Ludwig, M. Dierl, D. Oberländer
+    """
     if desired_length is None:
         desired_length = 1 if std_uncertainty.dim() == 0 else len(std_uncertainty)
     else:

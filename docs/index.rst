@@ -42,6 +42,10 @@ Indices and tables
 References
 ==========
 
+.. [Dierl2016] Dierl, M., Eckhard, T., Frei, B., Klammer, M., Eichstädt, S., & Elster,
+                C. (2016). Improved estimation of reflectance spectra by utilizing prior
+                knowledge. Journal of the Optical Society of America A, 33(7), 1370.
+                https://doi.org/10.1364/JOSAA.33.001370
 .. [Dorst2021] Dorst, Tanja, Gruber, Maximilian, & Vedurmudi, Anupam Prasad. (2021).
                 Sensor data set of one electromechanical cylinder at ZeMA testbed (ZeMA
                 DAQ and Smart-Up Unit) [Data set]. Zenodo.
