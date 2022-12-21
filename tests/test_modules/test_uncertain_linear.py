@@ -1,7 +1,7 @@
 """Test the class UncertainLinear"""
 from inspect import signature
 
-from hypothesis import given, strategies as hst
+from hypothesis import given, settings, strategies as hst
 from numpy.testing import assert_equal
 from torch import Tensor
 from torch.nn import Linear, Module
@@ -241,6 +241,7 @@ def test_uncertain_linear_forward_for_random_input(
 
 
 @given(values_uncertainties_and_uncertain_linears())
+@settings(deadline=None)
 def test_uncertain_linear_forward_results_in_positive_semi_definite_uncertainties(
     uncertain_values_and_uncertain_linear: UncertainTensorForLinear,
 ) -> None:
