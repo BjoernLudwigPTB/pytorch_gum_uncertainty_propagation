@@ -90,8 +90,9 @@ class UncertainQuadLU(Module):
 
         Parameters
         ----------
-        alpha : float
-            trainable, non-negative parameter of QuadLU activation function
+        alpha : float, optional
+            trainable, non-negative parameter of QuadLU activation function, defaults to
+            0.25
         """
 
     QUADLU_ALPHA_DEFAULT: Parameter = QUADLU_ALPHA_DEFAULT
