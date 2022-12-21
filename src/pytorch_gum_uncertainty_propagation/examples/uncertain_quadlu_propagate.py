@@ -31,9 +31,7 @@ def assemble_pipeline(
         _construct_partition(uncertain_values.values.shape[1]),
     )
     for uncertain_value in zip(uncertain_values.values, uncertain_values.uncertainties):
-        with profile(
-            with_stack=True, enabled=False
-        ) as profiler:  # type: ignore[no-untyped-call]
+        with profile(with_stack=True) as profiler:  # type: ignore[no-untyped-call]
             propagated = uncertain_quadlu_mlp(UncertainTensor(*uncertain_value))
         print(f"propagated and received: \n" f"{propagated}")
     return profiler
