@@ -63,7 +63,7 @@ def cov_matrix_from_std_uncertainties(
 
 def _is_symmetric(matrix: Tensor) -> Tensor:
     """Returns True if matrix is symmetric"""
-    return torch.all(torch.isnan(matrix[~matrix.eq(matrix.T)]))
+    return torch.all(torch.isnan(matrix[~matrix.isclose(matrix.T)]))
 
 
 def _is_positive_semi_definite(tensor_under_test: Tensor) -> Tensor:
