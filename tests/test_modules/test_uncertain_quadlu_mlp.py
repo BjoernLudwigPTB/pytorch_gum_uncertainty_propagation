@@ -1,7 +1,7 @@
 """Test the class UncertainQuadLUMLP"""
 from inspect import signature
 from itertools import islice
-from typing import cast, Optional
+from typing import cast
 
 import torch
 from hypothesis import given, strategies as hst
@@ -25,9 +25,9 @@ from ..conftest import uncertain_tensors
 @composite
 def uncertain_quadlu_mlps(
     draw: DrawFn,
-    in_dimen: Optional[int] = None,
-    n_hidden_channels: Optional[int] = None,
-    out_channels: Optional[int] = None,
+    in_dimen: int | None = None,
+    n_hidden_channels: int | None = None,
+    out_channels: int | None = None,
 ) -> SearchStrategy[UncertainQuadLUMLP]:
     dimen_strategy = hst.integers(min_value=1, max_value=100)
     if in_dimen is None:
