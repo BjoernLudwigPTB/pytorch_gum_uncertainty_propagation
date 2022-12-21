@@ -64,13 +64,13 @@ def test_uncertain_quadlu_mlp_has_docstring() -> None:
     assert UncertainQuadLUMLP.__doc__ is not None
 
 
-def test_uncertain_quadlu_mlp_expects_in_channels_parameter() -> None:
-    assert "in_channels" in signature(UncertainQuadLUMLP).parameters
+def test_uncertain_quadlu_mlp_expects_in_features_parameter() -> None:
+    assert "in_features" in signature(UncertainQuadLUMLP).parameters
 
 
-def test_uncertain_quadlu_mlp_expects_in_channels_parameter_as_int() -> None:
+def test_uncertain_quadlu_mlp_expects_in_features_parameter_as_int() -> None:
     assert issubclass(
-        signature(UncertainQuadLUMLP).parameters["in_channels"].annotation, int
+        signature(UncertainQuadLUMLP).parameters["in_features"].annotation, int
     )
 
 
