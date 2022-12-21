@@ -16,8 +16,8 @@ from pytorch_gum_uncertainty_propagation.modules import (
     GUMSoftplus,
     MLP,
     QuadLU,
-    UncertainLinear,
-    UncertainQuadLU,
+    GUMLinear,
+    GUMQuadLU,
 )
 from pytorch_gum_uncertainty_propagation.uncertainties import (
     UncertainTensor,
@@ -48,7 +48,7 @@ def mlps(
     else:
         hidden_and_out_dimens.append(out_channels)
     if activation is None:
-        possible_activations = [UncertainQuadLU, GUMSoftplus]
+        possible_activations = [GUMQuadLU, GUMSoftplus]
         if not uncertain_inputs_exclusively:
             possible_activations.extend([QuadLU, Softplus, Sigmoid])
         activation_module = draw(hst.sampled_from(possible_activations))
@@ -193,7 +193,7 @@ def test_init_mlp_each_pair_of_layers_is_linear_or_uncertain_linear_and_fix_acti
 ) -> None:
     layer_iter = mlp.children()
     while first_layer_in_a_pair := next(layer_iter, None):
-        assert isinstance(first_layer_in_a_pair, UncertainLinear) or isinstance(
+        assert isinstance(first_layer_in_a_pair, GUMLinear) or isinstance(
             first_layer_in_a_pair, Linear
         )
         second_layer_in_a_pair = next(layer_iter)
@@ -206,7 +206,7 @@ def test_init_gum_mlp_each_pair_of_layers_is_uncertain_linear_and_uncertain_othe
 ) -> None:
     layer_iter = gum_mlp.children()
     while first_layer_in_a_pair := next(layer_iter, None):
-        assert isinstance(first_layer_in_a_pair, UncertainLinear)
+        assert isinstance(first_layer_in_a_pair, GUMLinear)
         second_layer_in_a_pair = next(layer_iter)
         assert isinstance(second_layer_in_a_pair, gum_mlp.activation_module)
 
@@ -228,7 +228,7 @@ def test_init_gum_mlp_each_pair_of_layers_starts_with_uncertain_linear(
 ) -> None:
     layer_iter = mlp.children()
     while first_layer_in_a_pair := next(layer_iter, None):
-        assert isinstance(first_layer_in_a_pair, UncertainLinear)
+        assert isinstance(first_layer_in_a_pair, GUMLinear)
         next(layer_iter)
 
 
@@ -252,7 +252,7 @@ def test_gum_mlp_outputs_uncertain_tensor_for_gum_activations(
 @given(
     hst.lists(hst.integers(min_value=1, max_value=10), min_size=1, max_size=10),
     uncertain_tensors(),
-    hst.sampled_from((GUMSoftplus, UncertainQuadLU)),
+    hst.sampled_from((GUMSoftplus, GUMQuadLU)),
 )
 def test_mlp_correct_output_dimension_of_values(
     out_dimens: list[int], uncertain_values: UncertainTensor, activation: type[Module]
@@ -272,7 +272,7 @@ def test_mlp_outputs_the_correct_type_for_activations(values: Tensor, mlp: MLP) 
 @given(
     hst.lists(hst.integers(min_value=1, max_value=10), min_size=1, max_size=10),
     uncertain_tensors(),
-    hst.sampled_from((GUMSoftplus, UncertainQuadLU)),
+    hst.sampled_from((GUMSoftplus, GUMQuadLU)),
 )
 def test_gum_mlp_correct_output_dimension_of_uncertainties(
     out_dimens: list[int], uncertain_values: UncertainTensor, activation: type[Module]
@@ -286,7 +286,7 @@ def test_gum_mlp_correct_output_dimension_of_uncertainties(
 
 @given(
     hst.lists(hst.integers(min_value=1, max_value=10), min_size=1, max_size=10),
-    hst.sampled_from((GUMSoftplus, UncertainQuadLU)),
+    hst.sampled_from((GUMSoftplus, GUMQuadLU)),
 )
 def test_mlp_correct_output_dimension_of_all_layers(
     out_dimens: list[int], activation: type[Module]
@@ -307,11 +307,11 @@ def test_mlp_correct_output_dimension_of_all_layers(
         in_dimen=9,
         n_hidden_channels=1,
         out_channels=9,
-        activation=hst.just(UncertainQuadLU),
+        activation=hst.just(GUMQuadLU),
     ),
 )
 def test_gum_mlp_is_correct_for_identity_matrix_product(
-    uncertain_quadlu_instance: UncertainQuadLU,
+    uncertain_quadlu_instance: GUMQuadLU,
     values: Tensor,
     gum_mlp: MLP,
 ) -> None:

@@ -1,4 +1,4 @@
-"""Test the class UncertainQuadLUMLP"""
+"""Test the class GUMQuadLUMLP"""
 from inspect import signature
 from itertools import islice
 from typing import cast
@@ -13,9 +13,9 @@ from torch.testing import assert_close  # type: ignore[attr-defined]
 from pytorch_gum_uncertainty_propagation import modules
 from pytorch_gum_uncertainty_propagation.modules import (
     MLP,
-    UncertainLinear,
-    UncertainQuadLU,
-    UncertainQuadLUMLP,
+    GUMLinear,
+    GUMQuadLU,
+    GUMQuadLUMLP,
 )
 from pytorch_gum_uncertainty_propagation.uncertainties import (
     UncertainTensor,
@@ -29,7 +29,7 @@ def uncertain_quadlu_mlps(
     in_dimen: int | None = None,
     n_hidden_channels: int | None = None,
     out_channels: int | None = None,
-) -> SearchStrategy[UncertainQuadLUMLP]:
+) -> SearchStrategy[GUMQuadLUMLP]:
     dimen_strategy = hst.integers(min_value=1, max_value=100)
     if in_dimen is None:
         in_dimen = draw(dimen_strategy)
@@ -43,104 +43,102 @@ def uncertain_quadlu_mlps(
     else:
         hidden_and_out_dimens.append(out_channels)
     return cast(
-        SearchStrategy[UncertainQuadLUMLP],
-        UncertainQuadLUMLP(in_dimen, hidden_and_out_dimens),
+        SearchStrategy[GUMQuadLUMLP],
+        GUMQuadLUMLP(in_dimen, hidden_and_out_dimens),
     )
 
 
 def test_modules_contains_uncertain_quadlu_mlp() -> None:
-    assert hasattr(modules, "UncertainQuadLUMLP")
+    assert hasattr(modules, "GUMQuadLUMLP")
 
 
 def test_modules_all_contains_uncertain_quadlu_mlp() -> None:
-    assert UncertainQuadLUMLP.__name__ in modules.__all__
+    assert GUMQuadLUMLP.__name__ in modules.__all__
 
 
 def test_uncertain_quadlu_mlp_is_subclass_of_nn_module() -> None:
-    assert issubclass(UncertainQuadLUMLP, MLP)
+    assert issubclass(GUMQuadLUMLP, MLP)
 
 
 def test_uncertain_quadlu_mlp_has_docstring() -> None:
-    assert UncertainQuadLUMLP.__doc__ is not None
+    assert GUMQuadLUMLP.__doc__ is not None
 
 
 def test_uncertain_quadlu_mlp_expects_in_features_parameter() -> None:
-    assert "in_features" in signature(UncertainQuadLUMLP).parameters
+    assert "in_features" in signature(GUMQuadLUMLP).parameters
 
 
 def test_uncertain_quadlu_mlp_expects_in_features_parameter_as_int() -> None:
-    assert issubclass(
-        signature(UncertainQuadLUMLP).parameters["in_features"].annotation, int
-    )
+    assert issubclass(signature(GUMQuadLUMLP).parameters["in_features"].annotation, int)
 
 
 def test_uncertain_quadlu_mlp_expects_out_features_parameter() -> None:
-    assert "out_features" in signature(UncertainQuadLUMLP).parameters
+    assert "out_features" in signature(GUMQuadLUMLP).parameters
 
 
 @given(uncertain_quadlu_mlps())
 def test_uncertain_quadlu_mlp_is_uncertain_quadlu_mlp(
-    uncertain_quadlu_mlp: UncertainQuadLUMLP,
+    uncertain_quadlu_mlp: GUMQuadLUMLP,
 ) -> None:
-    assert isinstance(uncertain_quadlu_mlp, UncertainQuadLUMLP)
+    assert isinstance(uncertain_quadlu_mlp, GUMQuadLUMLP)
 
 
 @given(uncertain_quadlu_mlps())
 def test_uncertain_quadlu_mlp_children_does_not_provide_access_to_module_list(
-    uncertain_quadlu_mlp: UncertainQuadLUMLP,
+    uncertain_quadlu_mlp: GUMQuadLUMLP,
 ) -> None:
     assert type(next(uncertain_quadlu_mlp.children())) is not ModuleList
 
 
 @given(uncertain_quadlu_mlps())
 def test_uncertain_quadlu_mlp_children_provides_access_to_uncertain_linears_and_quadlus(
-    uncertain_quadlu_mlp: UncertainQuadLUMLP,
+    uncertain_quadlu_mlp: GUMQuadLUMLP,
 ) -> None:
     for child in uncertain_quadlu_mlp.children():
-        assert type(child) is UncertainLinear or type(child) is UncertainQuadLU
+        assert type(child) is GUMLinear or type(child) is GUMQuadLU
 
 
 def test_uncertain_quadlu_mlp_children_has_docstring() -> None:
-    assert UncertainQuadLUMLP.children.__doc__ is not None
+    assert GUMQuadLUMLP.children.__doc__ is not None
 
 
 @given(uncertain_quadlu_mlps(in_dimen=5))
 def test_init_uncertain_quadlu_mlp_input_layer_as_specified(
-    uncertain_quadlu_mlp: UncertainQuadLUMLP,
+    uncertain_quadlu_mlp: GUMQuadLUMLP,
 ) -> None:
     assert_equal(next(uncertain_quadlu_mlp.children()).in_features, 5)
 
 
 @given(uncertain_quadlu_mlps(n_hidden_channels=3))
 def test_init_uncertain_quadlu_mlp_input_dimension_as_specified(
-    uncertain_quadlu_mlp: UncertainQuadLUMLP,
+    uncertain_quadlu_mlp: GUMQuadLUMLP,
 ) -> None:
     assert_equal(len(uncertain_quadlu_mlp), 2 * 3)
 
 
 @given(uncertain_quadlu_mlps())
 def test_init_uncertain_quadlu_mlp_each_pair_of_layers_is_linear_and_uncertain_quadlu(
-    uncertain_quadlu_mlp: UncertainQuadLUMLP,
+    uncertain_quadlu_mlp: GUMQuadLUMLP,
 ) -> None:
     layer_iter = uncertain_quadlu_mlp.children()
     while first_layer_in_a_pair := next(layer_iter, None):
-        assert isinstance(first_layer_in_a_pair, UncertainLinear)
+        assert isinstance(first_layer_in_a_pair, GUMLinear)
         second_layer_in_a_pair = next(layer_iter)
-        assert isinstance(second_layer_in_a_pair, UncertainQuadLU)
+        assert isinstance(second_layer_in_a_pair, GUMQuadLU)
 
 
 def test_uncertain_quadlu_mlp_has_attribute_forward() -> None:
-    assert hasattr(UncertainQuadLUMLP, "forward")
+    assert hasattr(GUMQuadLUMLP, "forward")
 
 
 def test_uncertain_quadlu_mlp_forward_expects_two_parameters() -> None:
-    assert_equal(len(signature(UncertainQuadLUMLP.forward).parameters), 2)
+    assert_equal(len(signature(GUMQuadLUMLP.forward).parameters), 2)
 
 
 @given(uncertain_tensors(length=8), uncertain_quadlu_mlps(in_dimen=8))
 def test_uncertain_quadlu_mlp_outputs_tuple_tensor(
     values_and_uncertainties: UncertainTensor,
-    uncertain_quadlu_mlp: UncertainQuadLUMLP,
+    uncertain_quadlu_mlp: GUMQuadLUMLP,
 ) -> None:
     assert isinstance(uncertain_quadlu_mlp(values_and_uncertainties), UncertainTensor)
 
@@ -153,7 +151,7 @@ def test_uncertain_quadlu_mlp_correct_output_dimension_of_values(
     out_dimens: list[int],
     uncertain_values: UncertainTensor,
 ) -> None:
-    uncertain_quadlu_mlp = UncertainQuadLUMLP(len(uncertain_values.values), out_dimens)
+    uncertain_quadlu_mlp = GUMQuadLUMLP(len(uncertain_values.values), out_dimens)
     assert_equal(
         len(uncertain_quadlu_mlp(uncertain_values)[0]),
         out_dimens[-1],
@@ -168,7 +166,7 @@ def test_uncertain_quadlu_mlp_correct_output_dimension_of_uncertainties(
     out_dimens: list[int],
     uncertain_values: UncertainTensor,
 ) -> None:
-    uncertain_quadlu_mlp = UncertainQuadLUMLP(len(uncertain_values.values), out_dimens)
+    uncertain_quadlu_mlp = GUMQuadLUMLP(len(uncertain_values.values), out_dimens)
     assert_equal(
         len(uncertain_quadlu_mlp(uncertain_values)[1]),
         out_dimens[-1],
@@ -179,7 +177,7 @@ def test_uncertain_quadlu_mlp_correct_output_dimension_of_uncertainties(
 def test_uncertain_quadlu_mlp_correct_output_dimension_of_all_layers(
     out_dimens: list[int],
 ) -> None:
-    uncertain_quadlu_mlp = UncertainQuadLUMLP(4, out_dimens)
+    uncertain_quadlu_mlp = GUMQuadLUMLP(4, out_dimens)
     linear_layers_iter = islice(uncertain_quadlu_mlp.children(), None, None, 2)
     out_dimens_iter = iter(out_dimens)
     for linear_layer in linear_layers_iter:
@@ -194,9 +192,9 @@ def test_uncertain_quadlu_mlp_correct_output_dimension_of_all_layers(
     uncertain_quadlu_mlps(in_dimen=9, n_hidden_channels=1, out_channels=9),
 )
 def test_uncertain_quadlu_mlp_is_correct_for_identity_matrix_product(
-    uncertain_quadlu_instance: UncertainQuadLU,
+    uncertain_quadlu_instance: GUMQuadLU,
     uncertain_values: UncertainTensor,
-    uncertain_quadlu_mlp: UncertainQuadLUMLP,
+    uncertain_quadlu_mlp: GUMQuadLUMLP,
 ) -> None:
     uncertain_quadlu_mlp[0].weight.data.zero_()
     uncertain_quadlu_mlp[0].weight.data.fill_diagonal_(1.0)

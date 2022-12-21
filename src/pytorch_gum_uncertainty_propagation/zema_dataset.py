@@ -151,7 +151,7 @@ def convert_zema_std_uncertainties_into_synthetic_full_cov_matrices(
 
     The main task is turning the standard uncertainties in the ZeMA dataset
     synthetically into full covariance matrices only for showcasing
-    :class:`~pytorch_gum_uncertainty_propagation.modules.UncertainQuadLU`'s
+    :class:`~pytorch_gum_uncertainty_propagation.modules.GUMQuadLU`'s
     capabilities.
     """
     uncertain_values = provide_zema_samples(n_samples)

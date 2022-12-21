@@ -16,7 +16,7 @@ from pytorch_gum_uncertainty_propagation.modules import (
     GUMSigmoid,
     GUMSigmoidMLP,
     MLP,
-    UncertainLinear,
+    GUMLinear,
 )
 from pytorch_gum_uncertainty_propagation.uncertainties import (
     UncertainTensor,
@@ -106,7 +106,7 @@ def test_gum_sigmoid_mlp_children_provides_access_to_uncertain_linears_and_quadl
     gum_sigmoid_mlp: GUMSigmoidMLP,
 ) -> None:
     for child in gum_sigmoid_mlp.children():
-        assert type(child) is UncertainLinear or type(child) is GUMSigmoid
+        assert type(child) is GUMLinear or type(child) is GUMSigmoid
 
 
 @given(gum_sigmoid_mlps(in_dimen=5))
@@ -129,7 +129,7 @@ def test_init_gum_sigmoid_mlp_each_pair_of_layers_is_linear_and_gum_sigmoid(
 ) -> None:
     layer_iter = gum_sigmoid_mlp.children()
     while first_layer_in_a_pair := next(layer_iter, None):
-        assert isinstance(first_layer_in_a_pair, UncertainLinear)
+        assert isinstance(first_layer_in_a_pair, GUMLinear)
         second_layer_in_a_pair = next(layer_iter)
         assert isinstance(second_layer_in_a_pair, GUMSigmoid)
 

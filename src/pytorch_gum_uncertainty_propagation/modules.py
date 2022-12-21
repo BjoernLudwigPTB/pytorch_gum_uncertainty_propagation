@@ -9,9 +9,9 @@ __all__ = [
     "QuadLU",
     "QUADLU_ALPHA_DEFAULT",
     "QuadLUMLP",
-    "UncertainLinear",
-    "UncertainQuadLU",
-    "UncertainQuadLUMLP",
+    "GUMLinear",
+    "GUMQuadLU",
+    "GUMQuadLUMLP",
 ]
 
 from inspect import signature
@@ -70,7 +70,7 @@ class QuadLU(Module):
         return quadlu(values, self._alpha, self._inplace)
 
 
-class UncertainQuadLU(Module):
+class GUMQuadLU(Module):
     r"""Implementation of parametrized QuadLU activation with uncertainty propagation
 
         :math:`\operatorname{QuadLU}_\alpha \colon \mathbb{R} \to \mathbb{R}` is defined
@@ -111,7 +111,7 @@ class UncertainQuadLU(Module):
         self._quadlu = QuadLU(alpha)
 
     def forward(self, uncertain_values: UncertainTensor) -> UncertainTensor:
-        """Forward pass of UncertainQuadLU"""
+        """Forward pass of GUMQuadLU"""
         with profiler.record_function("UNCERTAINQUADLU PASS"):
             if uncertain_values.uncertainties is None:
                 return UncertainTensor(
@@ -146,7 +146,7 @@ class UncertainQuadLU(Module):
         return self._quadlu._alpha  # it is still private, pylint: disable=W0212
 
 
-class UncertainLinear(Module):
+class GUMLinear(Module):
     """Applies a linear transformation to the incoming data: :math:`y = xA^T + b`
 
     This module supports TensorFloat32.
@@ -171,7 +171,7 @@ class UncertainLinear(Module):
         self._linear = Linear(in_features, out_features, bias=bias)
 
     def forward(self, uncertain_values: UncertainTensor) -> UncertainTensor:
-        """Forward pass of UncertainLinear"""
+        """Forward pass of GUMLinear"""
         with profiler.record_function("UNCERTAINLINEAR PASS"):
             return UncertainTensor(
                 self._linear.forward(uncertain_values.values),
@@ -216,7 +216,7 @@ class MLP(Sequential):
     For each specified output dimension a combination of a suitable linear layer and
     the provided activation function, which is expected to be a subclass of
     :class:`torch.nn.Module`, is added to the network. The linear layers are all either
-    of type :class:`UncertainLinear` or of type:class:`~torch.nn.Linear` based on the
+    of type :class:`GUMLinear` or of type:class:`~torch.nn.Linear` based on the
     type of the expected input parameter for the activation function.
 
     Parameters
@@ -245,7 +245,7 @@ class MLP(Sequential):
         """An MLP consisting of stacked linear and provided activations"""
         self.activation_module = activation_module
         linear_module = (
-            UncertainLinear
+            GUMLinear
             if signature(activation_module.forward).return_annotation is UncertainTensor
             else Linear
         )
@@ -273,8 +273,8 @@ class QuadLUMLP(MLP):
         super().__init__(in_features, out_features, QuadLU)
 
 
-class UncertainQuadLUMLP(MLP):
-    """This implements the multi-layer perceptron (MLP) with UncertainQuadLU activation
+class GUMQuadLUMLP(MLP):
+    """This implements the multi-layer perceptron (MLP) with GUMQuadLU activation
 
     Parameters
     ----------
@@ -285,8 +285,8 @@ class UncertainQuadLUMLP(MLP):
     """
 
     def __init__(self, in_features: int, out_features: list[int]) -> None:
-        """An MLP consisting of UncertainLinear and UncertainQuadLU layers"""
-        super().__init__(in_features, out_features, UncertainQuadLU)
+        """An MLP consisting of GUMLinear and GUMQuadLU layers"""
+        super().__init__(in_features, out_features, GUMQuadLU)
 
 
 class GUMSoftplus(Module):
@@ -378,7 +378,7 @@ class GUMSoftplusMLP(MLP):
         beta: int = 1,
         threshold: int = 20,
     ) -> None:
-        """An MLP consisting of UncertainLinear and GUMSoftplus layers"""
+        """An MLP consisting of GUMLinear and GUMSoftplus layers"""
         super().__init__(in_features, out_features, GUMSoftplus, beta, threshold)
 
 
@@ -441,5 +441,5 @@ class GUMSigmoidMLP(MLP):
         in_features: int,
         out_features: list[int],
     ):
-        """An MLP consisting of UncertainLinear and GUMSigmoid layers"""
+        """An MLP consisting of GUMLinear and GUMSigmoid layers"""
         super().__init__(in_features, out_features, GUMSigmoid)

@@ -8,8 +8,8 @@ from torch import Tensor
 
 from pytorch_gum_uncertainty_propagation.modules import (
     QuadLU,
-    UncertainLinear,
-    UncertainQuadLU,
+    GUMLinear,
+    GUMQuadLU,
 )
 from pytorch_gum_uncertainty_propagation.uncertainties import (
     cov_matrix_from_std_uncertainties,
@@ -24,8 +24,8 @@ def quadlu_instance() -> QuadLU:
 
 
 @pytest.fixture(scope="session")
-def uncertain_quadlu_instance() -> UncertainQuadLU:
-    return UncertainQuadLU()
+def uncertain_quadlu_instance() -> GUMQuadLU:
+    return GUMQuadLU()
 
 
 @composite
@@ -34,7 +34,7 @@ def uncertain_linears(
     in_features: int | None = None,
     out_features: int | None = None,
     bias: bool = True,
-) -> SearchStrategy[UncertainLinear]:
+) -> SearchStrategy[GUMLinear]:
     in_features = (
         in_features
         if in_features is not None
@@ -46,14 +46,14 @@ def uncertain_linears(
         else draw(hst.integers(min_value=1, max_value=10))
     )
     return cast(
-        SearchStrategy[UncertainLinear],
-        UncertainLinear(in_features, out_features, bias=bias),
+        SearchStrategy[GUMLinear],
+        GUMLinear(in_features, out_features, bias=bias),
     )
 
 
 class UncertainTensorForLinear(NamedTuple):
     uncertain_values: UncertainTensor
-    uncertain_linear: UncertainLinear
+    uncertain_linear: GUMLinear
 
 
 @composite
@@ -79,7 +79,7 @@ def values_uncertainties_and_uncertain_linears(
         SearchStrategy[UncertainTensorForLinear],
         UncertainTensorForLinear(
             UncertainTensor(values, cov_matrix),
-            UncertainLinear(len(values), draw(hst.integers(min_value=1, max_value=10))),
+            GUMLinear(len(values), draw(hst.integers(min_value=1, max_value=10))),
         ),
     )
 

@@ -13,7 +13,7 @@ from pytorch_gum_uncertainty_propagation.examples.uncertain_quadlu_propagate imp
     _instantiate_uncertain_quadlu_mlp,
     assemble_pipeline,
 )
-from pytorch_gum_uncertainty_propagation.modules import UncertainQuadLUMLP
+from pytorch_gum_uncertainty_propagation.modules import GUMQuadLUMLP
 from pytorch_gum_uncertainty_propagation.uncertainties import (
     UncertainTensor,
 )
@@ -77,7 +77,7 @@ def test_instantiate_uncertain_quadlu_mlp_returns_uncertain_quadlu_mlp(
     in_features: int, out_features: list[int]
 ) -> None:
     assert isinstance(
-        _instantiate_uncertain_quadlu_mlp(in_features, out_features), UncertainQuadLUMLP
+        _instantiate_uncertain_quadlu_mlp(in_features, out_features), GUMQuadLUMLP
     )
 
 

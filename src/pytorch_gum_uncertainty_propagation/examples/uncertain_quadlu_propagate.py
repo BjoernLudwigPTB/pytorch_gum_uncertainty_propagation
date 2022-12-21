@@ -7,7 +7,7 @@ from typing import Any
 import torch
 from torch.autograd.profiler import profile
 
-from pytorch_gum_uncertainty_propagation.modules import UncertainQuadLUMLP
+from pytorch_gum_uncertainty_propagation.modules import GUMQuadLUMLP
 from pytorch_gum_uncertainty_propagation.uncertainties import (
     UncertainTensor,
 )
@@ -19,7 +19,7 @@ from pytorch_gum_uncertainty_propagation.zema_dataset import (
 def assemble_pipeline(
     n_samples: int = 1, uncertain_values: UncertainTensor | None = None
 ) -> Any:
-    """Propagate data through an MLP equipped with UncertainQuadLU activation"""
+    """Propagate data through an MLP equipped with GUMQuadLU activation"""
     torch.set_default_dtype(torch.double)  # type: ignore[no-untyped-call]
     if uncertain_values is None:
         uncertain_values = (
@@ -39,9 +39,9 @@ def assemble_pipeline(
 
 def _instantiate_uncertain_quadlu_mlp(
     in_features: int, out_features: list[int]
-) -> UncertainQuadLUMLP:
-    """Create an instance of an MLP equipped with UncertainQuadLU activation"""
-    return UncertainQuadLUMLP(in_features, out_features)
+) -> GUMQuadLUMLP:
+    """Create an instance of an MLP equipped with GUMQuadLU activation"""
+    return GUMQuadLUMLP(in_features, out_features)
 
 
 def _construct_partition(in_features: int) -> list[int]:

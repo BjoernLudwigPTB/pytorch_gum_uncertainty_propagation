@@ -1,4 +1,4 @@
-"""Test the class UncertainLinear"""
+"""Test the class GUMLinear"""
 from inspect import signature
 
 from hypothesis import given, settings, strategies as hst
@@ -8,7 +8,7 @@ from torch.nn import Linear, Module
 from torch.testing import assert_close  # type: ignore[attr-defined]
 
 from pytorch_gum_uncertainty_propagation import modules
-from pytorch_gum_uncertainty_propagation.modules import UncertainLinear
+from pytorch_gum_uncertainty_propagation.modules import GUMLinear
 from pytorch_gum_uncertainty_propagation.uncertainties import (
     _is_positive_semi_definite,
     _is_symmetric,
@@ -23,118 +23,118 @@ from ..conftest import uncertain_tensors
 
 
 def test_modules_actually_contains_uncertain_linear() -> None:
-    assert hasattr(modules, UncertainLinear.__name__)
+    assert hasattr(modules, GUMLinear.__name__)
 
 
 def test_modules_all_contains_uncertain_linear() -> None:
-    assert UncertainLinear.__name__ in modules.__all__
+    assert GUMLinear.__name__ in modules.__all__
 
 
 def test_uncertain_linear_is_subclass_of_nn_module() -> None:
-    assert issubclass(UncertainLinear, Module)
+    assert issubclass(GUMLinear, Module)
 
 
 def test_uncertain_linear_has_docstring() -> None:
-    assert UncertainLinear.__doc__ is not None
+    assert GUMLinear.__doc__ is not None
 
 
 @given(uncertain_linears())
-def test_init_uncertain_linear(uncertain_linear_instance: UncertainLinear) -> None:
+def test_init_uncertain_linear(uncertain_linear_instance: GUMLinear) -> None:
     assert uncertain_linear_instance
 
 
 def test_uncertain_linear_has_parameter_in_features() -> None:
-    assert "in_features" in signature(UncertainLinear).parameters
+    assert "in_features" in signature(GUMLinear).parameters
 
 
 def test_uncertain_linear_has_parameter_out_features() -> None:
-    assert "out_features" in signature(UncertainLinear).parameters
+    assert "out_features" in signature(GUMLinear).parameters
 
 
 def test_uncertain_linear_has_parameter_bias() -> None:
-    assert "bias" in signature(UncertainLinear).parameters
+    assert "bias" in signature(GUMLinear).parameters
 
 
 @given(uncertain_linears())
 def test_init_uncertain_linear_creates_attribute_in_features(
-    uncertain_linear_instance: UncertainLinear,
+    uncertain_linear_instance: GUMLinear,
 ) -> None:
     assert hasattr(uncertain_linear_instance, "in_features")
 
 
 def test_uncertain_quadlu_in_features_has_docstring() -> None:
-    assert UncertainLinear.in_features.__doc__ is not None
+    assert GUMLinear.in_features.__doc__ is not None
 
 
 @given(uncertain_linears())
 def test_init_uncertain_linear_creates_attribute_out_features(
-    uncertain_linear_instance: UncertainLinear,
+    uncertain_linear_instance: GUMLinear,
 ) -> None:
     assert hasattr(uncertain_linear_instance, "out_features")
 
 
 def test_uncertain_quadlu_out_features_has_docstring() -> None:
-    assert UncertainLinear.out_features.__doc__ is not None
+    assert GUMLinear.out_features.__doc__ is not None
 
 
 @given(uncertain_linears())
 def test_init_uncertain_linear_creates_attribute_bias(
-    uncertain_linear_instance: UncertainLinear,
+    uncertain_linear_instance: GUMLinear,
 ) -> None:
     assert hasattr(uncertain_linear_instance, "bias")
 
 
 def test_uncertain_quadlu_bias_has_docstring() -> None:
-    assert UncertainLinear.bias.__doc__ is not None
+    assert GUMLinear.bias.__doc__ is not None
 
 
 @given(uncertain_linears())
 def test_init_uncertain_linear_creates_attribute_weight(
-    uncertain_linear_instance: UncertainLinear,
+    uncertain_linear_instance: GUMLinear,
 ) -> None:
     assert hasattr(uncertain_linear_instance, "weight")
 
 
 def test_uncertain_quadlu_weight_has_docstring() -> None:
-    assert UncertainLinear.weight.__doc__ is not None
+    assert GUMLinear.weight.__doc__ is not None
 
 
 @given(uncertain_linears(in_features=5))
 def test_init_uncertain_linear_creates_attribute_in_features_correctly(
-    uncertain_linear_instance: UncertainLinear,
+    uncertain_linear_instance: GUMLinear,
 ) -> None:
     assert_equal(uncertain_linear_instance.in_features, 5)
 
 
 @given(uncertain_linears())
 def test_init_uncertain_linear_creates_default_attribute_bias_true(
-    uncertain_linear_instance: UncertainLinear,
+    uncertain_linear_instance: GUMLinear,
 ) -> None:
     assert isinstance(uncertain_linear_instance.bias, Tensor)
 
 
 @given(uncertain_linears(bias=False))
 def test_init_uncertain_linear_creates_attribute_bias_false(
-    uncertain_linear_instance: UncertainLinear,
+    uncertain_linear_instance: GUMLinear,
 ) -> None:
     assert uncertain_linear_instance.bias is None
 
 
 def test_uncertain_linear_contains_callable_forward() -> None:
-    assert callable(UncertainLinear.forward)
+    assert callable(GUMLinear.forward)
 
 
 def test_uncertain_linear_forward_accepts_one_parameters() -> None:
-    assert_equal(len(signature(UncertainLinear.forward).parameters), 2)
+    assert_equal(len(signature(GUMLinear.forward).parameters), 2)
 
 
 def test_uncertain_linear_forward_accepts_uncertain_values_parameter() -> None:
-    assert "uncertain_values" in signature(UncertainLinear.forward).parameters
+    assert "uncertain_values" in signature(GUMLinear.forward).parameters
 
 
 def test_uncertain_linear_forward_expects_uncertain_tensor_parameter() -> None:
     assert issubclass(
-        signature(UncertainLinear.forward).parameters["uncertain_values"].annotation,
+        signature(GUMLinear.forward).parameters["uncertain_values"].annotation,
         UncertainTensor,
     )
 
@@ -144,7 +144,7 @@ def test_uncertain_linear_forward_returns_uncertain_tensor(
     values_and_uncertainties: UncertainTensor, out_features: int
 ) -> None:
     assert isinstance(
-        UncertainLinear(len(values_and_uncertainties.values), out_features).forward(
+        GUMLinear(len(values_and_uncertainties.values), out_features).forward(
             values_and_uncertainties,
         ),
         UncertainTensor,
