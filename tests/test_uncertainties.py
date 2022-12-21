@@ -26,7 +26,7 @@ from .conftest import tensors, uncertain_tensors
 
 @composite
 def square_tensors(
-    draw: DrawFn, dimen: int | None = None, symmetric: bool | None = False
+    draw: DrawFn, dimen: int | None = None, symmetric: bool = False
 ) -> SearchStrategy[Tensor]:
     rows: int = (
         draw(hst.integers(min_value=2, max_value=10)) if dimen is None else dimen
