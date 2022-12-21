@@ -404,7 +404,7 @@ class GUMSigmoid(Module):
         i)}) \big),
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Sigmoid activation function with uncertainty propagation"""
         super().__init__()
         self._sigmoid = Sigmoid()
