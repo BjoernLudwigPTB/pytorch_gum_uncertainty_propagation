@@ -225,10 +225,20 @@ class MLP(Sequential):
         the hidden and output layers' dimensions
     activation_module : Type[Module]
         the activation function
+    *args : int | float
+        positional parameters to be forwarded to the constructor of the activation
+        module
+    **kwargs : int | float
+        keyword parameters to be forwarded to the constructor of the activation module
     """
 
     def __init__(
-        self, in_features: int, out_features: list[int], activation_module: Type[Module]
+        self,
+        in_features: int,
+        out_features: list[int],
+        activation_module: Type[Module],
+        *args: int | float,
+        **kwargs: int | float,
     ) -> None:
         """An MLP consisting of stacked linear and provided activations"""
         self.activation_module = activation_module
@@ -240,7 +250,7 @@ class MLP(Sequential):
         layers = ModuleList()
         for out_dimen in out_features:
             layers.append(linear_module(in_features, out_dimen))
-            layers.append(activation_module())
+            layers.append(activation_module(*args, **kwargs))
             in_features = out_dimen
         super().__init__(*layers)
 
