@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v0.11.0 (2022-12-21)
+### Feature
+* **uncertain_quadlu_propagate:** Introduce profiler into example ([`6659e70`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/6659e7067e4788c2851a06ebed0e4c21004cbe70))
+* **uncertain_quadlu:** Introduce profiler into forward ([`7406b67`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/7406b67dd61d1a24e6e5883dcc78eab4bd44dddc))
+* **uncertain_linear:** Introduce profiler into forward ([`a502cde`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/a502cdec874afe45800a0e46ab155022eb77dc5f))
+
+### Fix
+* **assemble_pipeline:** Enable profiler that has been deactivated accidentally ([`40ae9ed`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/40ae9ed9b756affde4d6d35f0c8fca7ab9caca44))
+
 ## v0.10.0 (2022-12-20)
 ### Feature
 * **uncertain_quadlu_propagate:** Introduce actual propagation for QuadLUMLP ([`d72d9bd`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/d72d9bdbddd4e9b6595ab586a3a8ed09b6576be8))
