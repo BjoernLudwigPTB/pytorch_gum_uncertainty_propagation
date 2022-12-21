@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v0.13.0 (2022-12-21)
+### Feature
+* **GUMSigmoidMLP:** Introduce new mult-layer perceptron exclusively equipped with GUMSigmoid ([`ea7916a`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/ea7916a7993a5dc86fa07b3182be6b49935f94d1))
+* **GUMSigmoid:** Introduce GUMSigmoid activation function ([`5ebd198`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/5ebd1982bee6e5d3bd6e2e8dc4a72ad2a8428742))
+
+### Documentation
+* **cov_matrix_from_std_uncertainties:** Fix docstrings and insert reference ([`fdae1e3`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/fdae1e3969f63c0cd6252fb9213af758c780a0ac))
+* **GUMSoftplus:** Fix some formulae ([`e897a5f`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/e897a5f1db4a36d8f4ae12b31f5db042d3180ee1))
+
 ## v0.12.0 (2022-12-21)
 ### Feature
 * **GUMSoftplusMLP:** Introduce beta and threshold parameters ([`3ee9314`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/3ee9314d6864dc2b162095bfdcfb5377752ef793))
