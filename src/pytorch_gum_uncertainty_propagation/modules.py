@@ -2,6 +2,7 @@
 
 __all__ = [
     "GUMSigmoid",
+    "GUMSigmoidMLP",
     "GUMSoftplus",
     "GUMSoftplusMLP",
     "MLP",
@@ -422,3 +423,23 @@ class GUMSigmoid(Module):
                 * uncertain_values.uncertainties
                 * first_derivs.unsqueeze(1),
             )
+
+
+class GUMSigmoidMLP(MLP):
+    """Implements the multi-layer perceptron (MLP) with GUMSigmoid activation
+
+    Parameters
+    ----------
+    in_features : int
+        input dimension
+    out_features : list[int]
+        the hidden and output layers' dimensions
+    """
+
+    def __init__(
+        self,
+        in_features: int,
+        out_features: list[int],
+    ):
+        """An MLP consisting of UncertainLinear and GUMSigmoid layers"""
+        super().__init__(in_features, out_features, GUMSigmoid)
