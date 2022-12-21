@@ -6,9 +6,9 @@ from hypothesis import given, settings, strategies as hst
 from torch.autograd.profiler import profile
 
 from pytorch_gum_uncertainty_propagation.examples import (
-    uncertain_quadlu_propagate,
+    gum_quadlu_propagate,
 )
-from pytorch_gum_uncertainty_propagation.examples.uncertain_quadlu_propagate import (
+from pytorch_gum_uncertainty_propagation.examples.gum_quadlu_propagate import (
     _construct_partition,
     _instantiate_uncertain_quadlu_mlp,
     assemble_pipeline,
@@ -19,20 +19,20 @@ from pytorch_gum_uncertainty_propagation.uncertainties import (
 )
 
 
-def test_uncertain_quadlu_propagate_has_docstring() -> None:
-    assert uncertain_quadlu_propagate.__doc__ is not None
+def test_gum_quadlu_propagate_has_docstring() -> None:
+    assert gum_quadlu_propagate.__doc__ is not None
 
 
-def test_uncertain_quadlu_propagate_has_function_assemble_pipeline() -> None:
-    assert hasattr(uncertain_quadlu_propagate, "assemble_pipeline")
+def test_gum_quadlu_propagate_has_function_assemble_pipeline() -> None:
+    assert hasattr(gum_quadlu_propagate, "assemble_pipeline")
 
 
-def test_uncertain_quadlu_propagate_all_contains_assemble_pipeline() -> None:
-    assert assemble_pipeline.__name__ in uncertain_quadlu_propagate.__all__
+def test_gum_quadlu_propagate_all_contains_assemble_pipeline() -> None:
+    assert assemble_pipeline.__name__ in gum_quadlu_propagate.__all__
 
 
-def test_uncertain_quadlu_propagate_has_instantiate_uncertain_quadlu_mlp() -> None:
-    assert hasattr(uncertain_quadlu_propagate, "_instantiate_uncertain_quadlu_mlp")
+def test_gum_quadlu_propagate_has_instantiate_uncertain_quadlu_mlp() -> None:
+    assert hasattr(gum_quadlu_propagate, "_instantiate_uncertain_quadlu_mlp")
 
 
 def test_assemble_pipeline_has_docstring() -> None:
@@ -97,7 +97,7 @@ def test_assemble_pipeline_expects_uncertain_values_default_is_None() -> None:
 
 
 def test_construct_partition_exists() -> None:
-    assert hasattr(uncertain_quadlu_propagate, "_construct_partition")
+    assert hasattr(gum_quadlu_propagate, "_construct_partition")
 
 
 def test_construct_partition_has_docstring() -> None:

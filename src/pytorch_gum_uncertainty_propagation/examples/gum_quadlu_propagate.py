@@ -1,4 +1,4 @@
-"""Does the actual propagation to be profiled for MLPs equipped with QuadLU"""
+"""Does the actual propagation to be profiled for MLPs equipped with GUMQuadLU"""
 
 __all__ = ["assemble_pipeline"]
 
