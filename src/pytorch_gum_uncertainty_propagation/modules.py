@@ -245,28 +245,33 @@ class MLP(Sequential):
         super().__init__(*layers)
 
 
-class UncertainQuadLUMLP(Sequential):
-    """This implements the multi-layer perceptron (MLP) with UncertainQuadLU activation
-
-    The implementation is heavily based on the module :class:`~torchvision.ops.MLP`.
-    For each specified output dimension a combination of a
-    :class:`UncertainLinear` and the :class:`UncertainQuadLU` activation function is
-    added.
+class QuadLUMLP(MLP):
+    """This implements the multi-layer perceptron (MLP) with QuadLU activation
 
     Parameters
     ----------
-    in_channels : int
-        number of channels of the input
+    in_features : int
+        input dimension
     out_features : list[int]
         the hidden and output layers' dimensions
     """
 
-    def __init__(self, in_channels: int, out_features: list[int]) -> None:
-        """An MLP consisting of UncertainLinear QuadLU layers"""
-        super().__init__()
-        layers = ModuleList()
-        for out_dimen in out_features:
-            layers.append(UncertainLinear(in_channels, out_dimen))
-            layers.append(UncertainQuadLU())
-            in_channels = out_dimen
-        super().__init__(*layers)
+    def __init__(self, in_features: int, out_features: list[int]):
+        """An MLP consisting of linear layers and QuadLU activation function"""
+        super().__init__(in_features, out_features, QuadLU)
+
+
+class UncertainQuadLUMLP(MLP):
+    """This implements the multi-layer perceptron (MLP) with UncertainQuadLU activation
+
+    Parameters
+    ----------
+    in_features : int
+        input dimension
+    out_features : list[int]
+        the hidden and output layers' dimensions
+    """
+
+    def __init__(self, in_features: int, out_features: list[int]) -> None:
+        """An MLP consisting of UncertainLinear and UncertainQuadLU layers"""
+        super().__init__(in_features, out_features, UncertainQuadLU)
