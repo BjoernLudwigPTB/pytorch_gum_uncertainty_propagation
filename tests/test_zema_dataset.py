@@ -1,3 +1,4 @@
+import os
 from inspect import signature
 from pathlib import Path
 
@@ -11,15 +12,19 @@ from pytorch_gum_uncertainty_propagation.uncertainties import (
     UncertainTensor,
 )
 from pytorch_gum_uncertainty_propagation.zema_dataset import (
+    _cache_path,
+    _check_and_load_cache,
+    _store_cache,
+    convert_zema_std_uncertainties_into_synthetic_full_cov_matrices,
     ExtractionDataType,
     LOCAL_ZEMA_DATASET_PATH,
-    convert_zema_std_uncertainties_into_synthetic_full_cov_matrices,
     provide_zema_samples,
     ZEMA_DATASET_HASH,
     ZEMA_DATASET_URL,
     ZEMA_DATATYPES,
     ZEMA_QUANTITIES,
 )
+from .conftest import uncertain_tensors
 
 
 def test_zema_dataset_has_docstring() -> None:
@@ -162,6 +167,102 @@ def test_zema_dataset_all_contains_extract_samples() -> None:
 
 def test_extract_samples_has_docstring() -> None:
     assert provide_zema_samples.__doc__ is not None
+
+
+def test_zema_dataset_has_attribute_check_and_load_cache() -> None:
+    assert hasattr(zema_dataset, "_check_and_load_cache")
+
+
+def test_zema_dataset_check_and_load_cache_is_callable() -> None:
+    assert callable(_check_and_load_cache)
+
+
+def test_check_and_load_cache_has_docstring() -> None:
+    assert _check_and_load_cache.__doc__ is not None
+
+
+def test_check_and_load_cache_expects_parameter_n_samples() -> None:
+    assert "n_samples" in signature(_check_and_load_cache).parameters
+
+
+def test_check_and_load_cache_expects_parameter_n_samples_as_int() -> None:
+    assert signature(_check_and_load_cache).parameters["n_samples"].annotation is int
+
+
+def test_zema_dataset_has_attribute_cache_path() -> None:
+    assert hasattr(zema_dataset, "_cache_path")
+
+
+def test_zema_dataset_cache_path_is_callable() -> None:
+    assert callable(_cache_path)
+
+
+def test_cache_path_has_docstring() -> None:
+    assert _cache_path.__doc__ is not None
+
+
+def test_cache_path_expects_parameter_n_samples() -> None:
+    assert "n_samples" in signature(_cache_path).parameters
+
+
+def test_cache_path_expects_parameter_n_samples_as_int() -> None:
+    assert signature(_cache_path).parameters["n_samples"].annotation is int
+
+
+@given(hst.integers())
+def test_cache_path_actually_returns_path(integer: int) -> None:
+    assert isinstance(_cache_path(integer), Path)
+
+
+def test_zema_dataset_has_attribute_store_cache() -> None:
+    assert hasattr(zema_dataset, "_store_cache")
+
+
+def test_zema_dataset_store_cache_is_callable() -> None:
+    assert callable(_store_cache)
+
+
+def test_store_cache_has_docstring() -> None:
+    assert _store_cache.__doc__ is not None
+
+
+def test_store_cache_expects_parameter_uncertain_values() -> None:
+    assert "uncertain_values" in signature(_store_cache).parameters
+
+
+@given(uncertain_tensors(length=11))
+def test_store_cache_runs_for_random_uncertain_values(
+    uncertain_tensor: UncertainTensor,
+) -> None:
+    _store_cache(uncertain_tensor)
+    assert os.path.exists(_cache_path(11))
+
+
+@given(hst.integers())
+def test_check_and_load_cache_runs_for_random_uncertain_values_and_returns(
+    integer: int,
+) -> None:
+    result = _check_and_load_cache(integer)
+    assert result is None or isinstance(result, UncertainTensor)
+
+
+@given(uncertain_tensors(length=12))
+def test_check_and_load_cache_returns_something_for_existing_file(
+    uncertain_tensor: UncertainTensor,
+) -> None:
+    _store_cache(uncertain_tensor)
+    assert _check_and_load_cache(12) is not None
+
+
+def test_store_cache_expects_parameter_uncertain_values_as_uncertain_tensor() -> None:
+    assert (
+        signature(_store_cache).parameters["uncertain_values"].annotation
+        is UncertainTensor
+    )
+
+
+def test_cache_path_expects_stats_to_return_path() -> None:
+    assert signature(_cache_path).return_annotation is Path
 
 
 def test_zema_dataset_extract_samples_expects_parameter_n_samples() -> None:
