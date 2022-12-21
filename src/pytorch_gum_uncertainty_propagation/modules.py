@@ -1,6 +1,7 @@
 """Contains the custom activation functions based on QuadLU for now"""
 
 __all__ = [
+    "GUMSigmoid",
     "GUMSoftplus",
     "GUMSoftplusMLP",
     "MLP",
@@ -18,7 +19,7 @@ from typing import Type
 import torch
 from torch import Tensor
 from torch.autograd import profiler
-from torch.nn import Linear, Module, ModuleList, Sequential, Softplus
+from torch.nn import Linear, Module, ModuleList, Sequential, Sigmoid, Softplus
 from torch.nn.parameter import Parameter
 
 from pytorch_gum_uncertainty_propagation.functionals import (
@@ -378,3 +379,46 @@ class GUMSoftplusMLP(MLP):
     ) -> None:
         """An MLP consisting of UncertainLinear and GUMSoftplus layers"""
         super().__init__(in_features, out_features, GUMSoftplus, beta, threshold)
+
+
+class GUMSigmoid(Module):
+    r"""Implementation of Sigmoid activation with uncertainty propagation
+
+    :math:`\sigma \colon \mathbb{R} \to \mathbb{R}` is
+    defined
+    as
+
+    .. math::
+
+        \sigma (x) := \frac{1}{1 + \exp(-x)}.
+
+    The uncertainty propagation is performed as stated in the thesis
+
+    .. math::
+
+        \mathbf{U}_{x^{(\ell)}} = \prod_{i=0}^{\ell-1} \operatorname{diag}
+        \sigma(z^{(\ell - i)}) \operatorname{diag} \big( \mathbf{1} - \sigma(z^{(\ell -
+        i)}) \big) W^{(\ell-i)} \mathbf{U}_{x^{(0)}} \prod_{
+        i=1}^{\ell} {W^{(i)}}^T \operatorname{diag}
+        \sigma(z^{(\ell - i)} \operatorname{diag} \big( \mathbf{1} - \sigma(z^{(\ell -
+        i)}) \big),
+    """
+
+    def __init__(self):
+        """Sigmoid activation function with uncertainty propagation"""
+        super().__init__()
+        self._sigmoid = Sigmoid()
+
+    def forward(self, uncertain_values: UncertainTensor) -> UncertainTensor:
+        """Forward pass of GUMSigmoid"""
+        with profiler.record_function("GUMSIGMOID PASS"):
+            if uncertain_values.uncertainties is None:
+                return UncertainTensor(self._sigmoid(uncertain_values.values), None)
+            sigmoid_of_x = torch.sigmoid(uncertain_values.values)
+            first_derivs = sigmoid_of_x * (1 - sigmoid_of_x)
+            return UncertainTensor(
+                self._sigmoid(uncertain_values.values),
+                first_derivs
+                * uncertain_values.uncertainties
+                * first_derivs.unsqueeze(1),
+            )
