@@ -335,14 +335,16 @@ def test_uncertain_quadlu_forward_uncertainties_for_large_input(
 def test_default_uncertain_quadlu_forward_uncertainties_for_medium_input(
     values_and_uncertainties: UncertainTensor,
 ) -> None:
+    first_derivs = 2 * values_and_uncertainties.values + 0.5
     assert_close(
         UncertainQuadLU()
         .forward(
             values_and_uncertainties,
         )
         .uncertainties,
-        square(2 * values_and_uncertainties.values + 0.5).unsqueeze(1)
-        * values_and_uncertainties.uncertainties,
+        first_derivs
+        * values_and_uncertainties.uncertainties
+        * first_derivs.unsqueeze(1),
     )
 
 
@@ -353,80 +355,16 @@ def test_default_uncertain_quadlu_forward_uncertainties_for_medium_input(
 def test_uncertain_quadlu_forward_uncertainties_for_medium_input(
     values_and_uncertainties: UncertainTensor, alpha: Parameter
 ) -> None:
+    first_derivs = 2 * (values_and_uncertainties.values + alpha)
     assert_close(
         UncertainQuadLU(alpha)
         .forward(
             values_and_uncertainties,
         )
         .uncertainties,
-        square(2 * (values_and_uncertainties.values + alpha)).unsqueeze(1)
-        * values_and_uncertainties.uncertainties,
-    )
-
-
-@given(uncertain_tensors())
-def test_default_uncertain_quadlu_forward_uncertainties_for_random_input(
-    values_and_uncertainties: UncertainTensor,
-) -> None:
-    assert values_and_uncertainties.uncertainties is not None
-    less_or_equal_mask = values_and_uncertainties.values <= -QUADLU_ALPHA_DEFAULT
-    greater_or_equal_mask = values_and_uncertainties.values >= QUADLU_ALPHA_DEFAULT
-    in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
-    result_uncertainties = (
-        UncertainQuadLU()
-        .forward(
-            values_and_uncertainties,
-        )
-        .uncertainties
-    )
-    assert result_uncertainties is not None
-    assert_equal(result_uncertainties[less_or_equal_mask].data.numpy(), 0.0)
-    if torch.any(in_between_mask):
-        assert_close(
-            result_uncertainties[in_between_mask],
-            square(
-                2
-                * (
-                    values_and_uncertainties.values[in_between_mask]
-                    + QUADLU_ALPHA_DEFAULT
-                )
-            ).unsqueeze(1)
-            * values_and_uncertainties.uncertainties[in_between_mask],
-            equal_nan=True,
-        )
-    assert_close(
-        result_uncertainties[greater_or_equal_mask],
-        values_and_uncertainties.uncertainties[greater_or_equal_mask],
-    )
-
-
-@given(uncertain_tensors(), alphas())
-def test_uncertain_quadlu_forward_uncertainties_for_random_input(
-    values_and_uncertainties: UncertainTensor, alpha: Parameter
-) -> None:
-    assert values_and_uncertainties.uncertainties is not None
-    less_or_equal_mask = values_and_uncertainties.values <= -alpha
-    greater_or_equal_mask = values_and_uncertainties.values >= alpha
-    in_between_mask = ~(less_or_equal_mask | greater_or_equal_mask)
-    result_uncertainties = (
-        UncertainQuadLU(alpha).forward(values_and_uncertainties).uncertainties
-    )
-    assert result_uncertainties is not None
-    assert_equal(result_uncertainties[less_or_equal_mask].data.numpy(), 0.0)
-    if torch.any(in_between_mask):
-        assert_close(
-            result_uncertainties[in_between_mask],
-            square(
-                2 * (values_and_uncertainties.values[in_between_mask] + alpha)
-            ).unsqueeze(1)
-            * values_and_uncertainties.uncertainties[in_between_mask],
-            equal_nan=True,
-        )
-    assert_close(
-        result_uncertainties[greater_or_equal_mask],
-        values_and_uncertainties.uncertainties[greater_or_equal_mask]
-        * 16
-        * square(alpha),
+        first_derivs
+        * values_and_uncertainties.uncertainties
+        * first_derivs.unsqueeze(1),
     )
 
 
