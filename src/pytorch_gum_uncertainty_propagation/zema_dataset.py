@@ -167,7 +167,7 @@ def _cache_path(n_samples: int) -> Path:
     The result does not guarantee, that the file at the specified location exists,
     but can be used to check for existence or creation.
     """
-    return LOCAL_ZEMA_DATASET_PATH.joinpath(f"{str(n_samples)}_samples")
+    return LOCAL_ZEMA_DATASET_PATH.joinpath(f"{str(n_samples)}_samples.pickle")
 
 
 def _store_cache(uncertain_values: UncertainTensor) -> None:
