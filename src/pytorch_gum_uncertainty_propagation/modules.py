@@ -86,7 +86,7 @@ class GUMQuadLU(Module):
             \end{cases}
 
         with :math:`\alpha \in \mathbb{R}_+`. The uncertainty propagation is performed
-        as stated in the thesis
+        as stated in the thesis [Ludwig2023]_
 
         .. math::
 
@@ -302,7 +302,7 @@ class GUMSoftplus(Module):
         \cdot x))
 
     with :math:`\beta \in \mathbb{R}_+`. The uncertainty propagation is performed
-    as stated in the thesis
+    as stated in the thesis [Ludwig2023]_
 
     .. math::
 
@@ -393,7 +393,7 @@ class GUMSigmoid(Module):
 
         \sigma (x) := \frac{1}{1 + \exp(-x)}.
 
-    The uncertainty propagation is performed as stated in the thesis
+    The uncertainty propagation is performed as stated in the thesis [Ludwig2023]_
 
     .. math::
 

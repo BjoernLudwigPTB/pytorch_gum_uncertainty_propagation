@@ -50,3 +50,5 @@ References
                 Sensor data set of one electromechanical cylinder at ZeMA testbed (ZeMA
                 DAQ and Smart-Up Unit) [Data set]. Zenodo.
                 https://doi.org/10.5281/zenodo.5185953
+.. [Ludwig2023] Ludwig, Björn. (2023). GUM-compliant neural network robustness
+                verification. Master's thesis
