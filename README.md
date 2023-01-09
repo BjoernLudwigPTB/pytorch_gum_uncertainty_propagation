@@ -36,5 +36,6 @@ _docs/\_build/index.html_ in any browser.
 
 ## Roadmap
 
-- implement classes `UncertainLinear` and `Uncertain<ActivationFunction>` for 
-  _Sigmoid_, _SoftPlus_ and _QuadLU_
+- host documentation on ReadTheDocs, now that we are on GitHub
+- introduce binder for ease of access to the notebooks
+- replace ZeMA module by the external package and remove it here
