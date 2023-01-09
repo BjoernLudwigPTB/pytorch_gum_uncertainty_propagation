@@ -38,7 +38,7 @@ quick-test:
   script:
     - *install-dev-deps
     - pytest -m "not webtest" --verbose --cov=pytorch_gum_uncertainty_propagation
-          --junitxml=junit.xml
+          --junitxml=junit.xml --cov-branch
     - coverage xml
   coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
   artifacts:
