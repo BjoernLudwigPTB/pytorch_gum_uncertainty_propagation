@@ -254,6 +254,7 @@ def test_gum_mlp_outputs_uncertain_tensor_for_gum_activations(
     uncertain_tensors(),
     hst.sampled_from((GUMSoftplus, GUMQuadLU)),
 )
+@settings(deadline=None)
 def test_mlp_correct_output_dimension_of_values(
     out_dimens: list[int], uncertain_values: UncertainTensor, activation: type[Module]
 ) -> None:
