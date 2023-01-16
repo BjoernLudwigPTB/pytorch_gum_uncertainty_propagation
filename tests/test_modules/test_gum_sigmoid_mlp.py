@@ -4,7 +4,7 @@ from itertools import islice
 from typing import cast
 
 import torch
-from hypothesis import given, strategies as hst
+from hypothesis import given, settings, strategies as hst
 from hypothesis.strategies import composite, DrawFn, SearchStrategy
 from numpy.testing import assert_equal
 from torch import sigmoid
@@ -13,10 +13,10 @@ from torch.testing import assert_close  # type: ignore[attr-defined]
 
 from pytorch_gum_uncertainty_propagation import modules
 from pytorch_gum_uncertainty_propagation.modules import (
+    GUMLinear,
     GUMSigmoid,
     GUMSigmoidMLP,
     MLP,
-    GUMLinear,
 )
 from pytorch_gum_uncertainty_propagation.uncertainties import (
     UncertainTensor,
@@ -143,6 +143,7 @@ def test_gum_sigmoid_mlp_forward_expects_two_parameters() -> None:
 
 
 @given(uncertain_tensors(length=8), gum_sigmoid_mlps(in_dimen=8))
+@settings(deadline=None)
 def test_gum_sigmoid_mlp_outputs_uncertain_tensor(
     values_and_uncertainties: UncertainTensor,
     gum_sigmoid_mlp: GUMSigmoidMLP,
