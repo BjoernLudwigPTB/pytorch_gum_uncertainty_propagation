@@ -24,14 +24,8 @@ classifiers = [
 ]
 version = "0.14.0"
 dependencies = [
-    "h5py",
-    "matplotlib",
-    "pillow",
-    "pooch",
+    "numpy",
     "torch",
-    "torchvision",
-    "torchaudio",
-    "tqdm",
 ]
 [license]
 text = "MIT"
@@ -40,8 +34,12 @@ file = "LICENSE"
 [project.optional-dependencies]
 examples = [
     "ipywidgets",
+    "h5py",
     "jupyter_nbextensions_configurator",
+    "matplotlib",
     "notebook",
+    "pillow",
+    "torchvision",
     "zema_emc_annotated",
 ]
 dev = [
@@ -54,6 +52,7 @@ dev = [
     "pytest",
     "pytest-cov",
     "pytest-custom-exit-code",
+    "zema_emc_annotated",
 ]
 docs = [
     "ipython",
@@ -61,6 +60,7 @@ docs = [
     "myst-parser",
     "sphinx",
     "sphinx-rtd-theme",
+    "zema_emc_annotated",
 ]
 release = [
     "python-semantic-release",
