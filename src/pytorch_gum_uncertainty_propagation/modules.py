@@ -112,7 +112,7 @@ class GUMQuadLU(Module):
 
     def forward(self, uncertain_values: UncertainTensor) -> UncertainTensor:
         """Forward pass of GUMQuadLU"""
-        with profiler.record_function("UNCERTAINQUADLU PASS"):
+        with profiler.record_function("GUMQUADLU PASS"):
             if uncertain_values.uncertainties is None:
                 return UncertainTensor(
                     self._quadlu(uncertain_values.values),
@@ -172,7 +172,7 @@ class GUMLinear(Module):
 
     def forward(self, uncertain_values: UncertainTensor) -> UncertainTensor:
         """Forward pass of GUMLinear"""
-        with profiler.record_function("UNCERTAINLINEAR PASS"):
+        with profiler.record_function("GUMLINEAR PASS"):
             return UncertainTensor(
                 self._linear.forward(uncertain_values.values),
                 self.weight @ uncertain_values.uncertainties @ self.weight.T
