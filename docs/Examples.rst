@@ -19,4 +19,3 @@ Afterwards you can browser through the following list:
 
    examples/imagenet_example
    examples/mnist_example
-   examples/read_dataset

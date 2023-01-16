@@ -29,8 +29,8 @@ GUM-compliant uncertainty propagation
    pytorch_gum_uncertainty_propagation.modules
    pytorch_gum_uncertainty_propagation.functionals
    pytorch_gum_uncertainty_propagation.uncertainties
-   pytorch_gum_uncertainty_propagation.zema_dataset
    pytorch_gum_uncertainty_propagation.examples.uncertain_quadlu_propagate
+   pytorch_gum_uncertainty_propagation.examples.zema_dataset
 
 Indices and tables
 ==================
