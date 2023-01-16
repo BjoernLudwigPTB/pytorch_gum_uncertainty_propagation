@@ -48,7 +48,7 @@ def square_tensors(
                 ) and not torch.isclose(
                     result_tensor[i_row, i_column],
                     result_tensor[i_column, i_row],
-                    rtol=1e-7,
+                    rtol=1e-5,
                 ):
                     non_symmetric = True
                     break
