@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v0.15.0 (2023-01-17)
+### Feature
+* **propagate:** Introduce current version of zema_emc_annotated and thus more flexibility ([`adcc4ec`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/adcc4ec388424ac386758b4cfb4a22cacb81d193))
+
+### Documentation
+* **examples:** Adapt to new location of zema_dataset ([`e160b7c`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/e160b7c85d558c22d6914a4074add1b401a7144e))
+* **README:** Update roadmap ([`7b8606e`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/7b8606ee70e1373b33ba320ac82da45763206797))
+* **modules:** Introduce reference to Master's thesis into docstrings and docs ([`7ab7ad4`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/7ab7ad473bfff6cf6aef94163eb06826a9490f5c))
+
 ## v0.14.0 (2022-12-21)
 ### Feature
 * **zema_dataset:** Introduce local caching of extracted data ([`5614b91`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/5614b915c67091fd7da5877d511b5f0f454b585c))
