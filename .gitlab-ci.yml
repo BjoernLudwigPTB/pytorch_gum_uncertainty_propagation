@@ -87,7 +87,7 @@ pylint:
       changes:
         - "**/*.py"
   script:
-    - *install-deps
+    - *install-dev-deps
     - pip install --upgrade pylint
     - pylint src/pytorch_gum_uncertainty_propagation
 
