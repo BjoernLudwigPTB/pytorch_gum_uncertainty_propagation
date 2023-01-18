@@ -15,10 +15,7 @@ from pytorch_gum_uncertainty_propagation.examples.zema_dataset import (
     convert_zema_std_uncertainties_into_synthetic_full_cov_matrices,
 )
 from pytorch_gum_uncertainty_propagation.modules import (
-    GUMQuadLUMLP,
-    GUMSigmoidMLP,
     GUMSoftplusMLP,
-    QuadLUMLP,
 )
 from pytorch_gum_uncertainty_propagation.uncertainties import (
     UncertainTensor,
@@ -85,15 +82,15 @@ def _construct_out_features_counts(
 
 
 if __name__ == "__main__":
-    for mlp_module in (GUMSoftplusMLP, GUMSigmoidMLP, GUMQuadLUMLP, QuadLUMLP):
-        profiles = assemble_pipeline(GUMSoftplusMLP, 10)
-        print(
-            profiles.key_averages(group_by_stack_n=2).table(
-                sort_by="self_cpu_time_total", row_limit=15
-            )
+    MLPModule = GUMSoftplusMLP
+    profiles = assemble_pipeline(MLPModule, 1000, out_features=100, depth=8)
+    print(
+        profiles.key_averages(group_by_stack_n=2).table(
+            sort_by="cpu_time_total", row_limit=15
         )
-        profiles.export_chrome_trace(
-            path=f""
-            f"{datetime.datetime.now().isoformat('_','hours')}_"
-            f"{mlp_module.__name__}_trace.json"
-        )
+    )
+    profiles.export_chrome_trace(
+        path=f""
+        f"{datetime.datetime.now().isoformat('_','hours')}_"
+        f"{MLPModule.__name__}_trace.json"
+    )
