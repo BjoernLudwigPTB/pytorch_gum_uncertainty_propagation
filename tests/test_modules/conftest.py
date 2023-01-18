@@ -74,7 +74,7 @@ def values_uncertainties_and_uncertain_linears(
             )
         ),
     )
-    cov_matrix = cov_matrix_from_std_uncertainties(std_uncertainties, 0.5, 0.5, 0.5)
+    cov_matrix = cov_matrix_from_std_uncertainties(std_uncertainties)
     return cast(
         SearchStrategy[UncertainTensorForLinear],
         UncertainTensorForLinear(
