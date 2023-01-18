@@ -15,7 +15,6 @@ from pytorch_gum_uncertainty_propagation.modules import (
     GUMQuadLUMLP,
     GUMSigmoidMLP,
     GUMSoftplusMLP,
-    QuadLUMLP,
 )
 
 
@@ -179,25 +178,20 @@ def test_construct_out_features_counts_returns_correct_large_example() -> None:
 @pytest.mark.webtest
 @given(
     hst.sampled_from((GUMQuadLUMLP, GUMSoftplusMLP, GUMSigmoidMLP)),
+    hst.integers(min_value=1, max_value=3),
     hst.integers(min_value=1, max_value=10),
+    hst.integers(min_value=1, max_value=3),
+    hst.booleans(),
 )
 @settings(deadline=None)
 def test_assemble_pipeline_actually_runs_for_gum_modules(
-    mlp_module: Type[Module], n_samples: int
+    mlp_module: Type[Module],
+    size_scaler: int,
+    idx_start: int,
+    depth: int,
+    uncertainties_to_none: bool,
 ) -> None:
-    assemble_pipeline(mlp_module, n_samples)
-
-
-@pytest.mark.webtest
-@given(
-    hst.just(QuadLUMLP),
-    hst.integers(min_value=1, max_value=10),
-)
-@settings(deadline=None)
-def test_assemble_pipeline_actually_runs_for_quadlu_mlp(
-    mlp_module: Type[Module], n_samples: int
-) -> None:
-    assemble_pipeline(mlp_module, n_samples)
+    assemble_pipeline(mlp_module, size_scaler, idx_start, depth, uncertainties_to_none)
 
 
 def test_assemble_pipeline_expects_parameter_size_scaler() -> None:
@@ -224,16 +218,22 @@ def test_assemble_pipeline_parameter_idx_start_default_is_zero() -> None:
     assert signature(assemble_pipeline).parameters["idx_start"].default == 0
 
 
-def test_assemble_pipeline_expects_parameter_out_features() -> None:
-    assert "out_features" in signature(assemble_pipeline).parameters
+def test_assemble_pipeline_expects_parameter_set_uncertainties_to_none() -> None:
+    assert "set_uncertainties_to_none" in signature(assemble_pipeline).parameters
 
 
-def test_assemble_pipeline_parameter_out_features_is_of_type_int() -> None:
-    assert signature(assemble_pipeline).parameters["out_features"].annotation is int
+def test_assemble_pipeline_parameter_set_uncertainties_to_none_is_type_bool() -> None:
+    assert (
+        signature(assemble_pipeline).parameters["set_uncertainties_to_none"].annotation
+        is bool
+    )
 
 
-def test_assemble_pipeline_parameter_out_features_default_is_two() -> None:
-    assert signature(assemble_pipeline).parameters["out_features"].default == 2
+def test_assemble_pipeline_parameter_set_uncertainties_to_none_default_false() -> None:
+    assert (
+        signature(assemble_pipeline).parameters["set_uncertainties_to_none"].default
+        is False
+    )
 
 
 def test_assemble_pipeline_expects_parameter_depth() -> None:
