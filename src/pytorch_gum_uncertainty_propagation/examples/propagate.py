@@ -15,6 +15,8 @@ from pytorch_gum_uncertainty_propagation.examples.zema_dataset import (
     convert_zema_std_uncertainties_into_synthetic_full_cov_matrices,
 )
 from pytorch_gum_uncertainty_propagation.modules import (
+    GUMQuadLUMLP,
+    GUMSigmoidMLP,
     GUMSoftplusMLP,
 )
 from pytorch_gum_uncertainty_propagation.uncertainties import (
@@ -82,15 +84,39 @@ def _construct_out_features_counts(
 
 
 if __name__ == "__main__":
-    MLPModule = GUMSoftplusMLP
-    profiles = assemble_pipeline(MLPModule, 1000, out_features=100, depth=8)
-    print(
-        profiles.key_averages(group_by_stack_n=2).table(
-            sort_by="cpu_time_total", row_limit=15
-        )
-    )
-    profiles.export_chrome_trace(
-        path=f""
-        f"{datetime.datetime.now().isoformat('_','hours')}_"
-        f"{MLPModule.__name__}_trace.json"
-    )
+    for MLPModule in (GUMSoftplusMLP, GUMQuadLUMLP, GUMSigmoidMLP):
+        for layers_additional_to_input in (1, 3, 5, 8):
+            for samples_per_sensor in (1, 10, 100, 1000, 2000):
+                with open("timings.txt", "a", encoding="utf-8") as timings_file:
+                    timings_file.write(
+                        f"\n========================================================="
+                        f"==================================================\n"
+                        f"Timing {MLPModule.__name__} for {samples_per_sensor * 11} "
+                        f"inputs and "
+                        f"{layers_additional_to_input} "
+                        f"{'layers' if layers_additional_to_input > 1 else 'layer'}"
+                        f"\n========================================================="
+                        f"==================================================\n"
+                    )
+                profiles = assemble_pipeline(
+                    MLPModule,
+                    samples_per_sensor,
+                    out_features=(
+                        11 - layers_additional_to_input
+                        if samples_per_sensor == 1
+                        else 100
+                    ),
+                    depth=layers_additional_to_input,
+                )
+                with open("timings.txt", "a", encoding="utf-8") as timings_file:
+                    timings_file.write(
+                        profiles.key_averages(group_by_stack_n=2).table(
+                            sort_by="cpu_time_total", row_limit=15
+                        )
+                    )
+                profiles.export_chrome_trace(
+                    path=f""
+                    f"{datetime.datetime.now().isoformat('_','hours')}_"
+                    f"{MLPModule.__name__}_{samples_per_sensor * 11}_inputs_"
+                    f"{layers_additional_to_input}_layers_trace.json"
+                )
