@@ -39,6 +39,6 @@ def convert_zema_std_uncertainties_into_synthetic_full_cov_matrices(
     )
     for sample_idx, sample in enumerate(uncertain_values.uncertainties):
         result_uncertainties[sample_idx, ...] = cov_matrix_from_std_uncertainties(
-            sample, 0.5, 0.5, 0.5
+            sample
         )
     return UncertainTensor(uncertain_values.values, result_uncertainties)
