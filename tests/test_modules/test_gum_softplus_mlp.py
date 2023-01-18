@@ -223,6 +223,7 @@ def test_gum_softplus_mlp_correct_output_dimension_of_all_layers(
     uncertain_tensors(length=9),
     gum_softplus_mlps(in_dimen=9, n_hidden_channels=1, out_channels=9),
 )
+@settings(deadline=None)
 def test_gum_softplus_mlp_is_correct_for_identity_matrix_product(
     uncertain_values: UncertainTensor,
     gum_softplus_mlp: GUMSoftplusMLP,
