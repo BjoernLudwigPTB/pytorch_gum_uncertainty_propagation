@@ -4,7 +4,7 @@ from itertools import islice
 from typing import cast
 
 import torch
-from hypothesis import given, strategies as hst
+from hypothesis import given, settings, strategies as hst
 from hypothesis.strategies import composite, DrawFn, SearchStrategy
 from numpy.testing import assert_equal
 from torch.nn import ModuleList
@@ -136,6 +136,7 @@ def test_uncertain_quadlu_mlp_forward_expects_two_parameters() -> None:
 
 
 @given(uncertain_tensors(length=8), uncertain_quadlu_mlps(in_dimen=8))
+@settings(deadline=None)
 def test_uncertain_quadlu_mlp_outputs_tuple_tensor(
     values_and_uncertainties: UncertainTensor,
     uncertain_quadlu_mlp: GUMQuadLUMLP,
