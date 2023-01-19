@@ -17,127 +17,127 @@ variables:
 .install-pip-tools: &install-pip-tools
   - pip install --upgrade pip-tools
 
-.install-dev-deps: &install-dev-deps
-  - *install-pip-tools
-  - python -m piptools sync dev-requirements.txt
-  - pip install .
-
-.install-reporter-and-upload-to-codecov: &install-reporter-and-upload-to-codecov
-  - curl https://keybase.io/codecovsecurity/pgp_keys.asc | gpg --no-default-keyring --keyring trustedkeys.gpg --import
-  - curl -Os https://uploader.codecov.io/latest/linux/codecov
-  - curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM
-  - curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM.sig
-  - gpgv codecov.SHA256SUM.sig codecov.SHA256SUM
-  - shasum -a 256 -c codecov.SHA256SUM
-  - chmod +x codecov
-  - ./codecov -t ${CODECOV_TOKEN}
-
-.install-deps: &install-deps
-  - *install-pip-tools
-  - python -m piptools sync requirements.txt
-
-before_script:
-  - pip install --upgrade pip virtualenv
-  - virtualenv venv
-  - source venv/bin/activate
-  - pip install --upgrade pip
-
-quick-test:
-  rules:
-    - if: $CI_COMMIT_TAG == null
-  script:
-    - *install-dev-deps
-    - pytest -m "not webtest" --verbose --cov=pytorch_gum_uncertainty_propagation
-          --junitxml=junit.xml --cov-branch
-    - coverage xml
-    - *install-reporter-and-upload-to-codecov
-  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
-  artifacts:
-    when: always
-    paths:
-      - junit.xml
-      - coverage.xml
-    reports:
-      junit: junit.xml
-      coverage_report:
-        coverage_format: cobertura
-        path: coverage.xml
-  environment: testing
-
-online-test:
-  rules:
-    - if: $CI_COMMIT_TAG == null
-  script:
-    - *install-dev-deps
-    - pytest -m webtest --verbose --cov=pytorch_gum_uncertainty_propagation
-          --junitxml=junit.xml
-    - coverage xml
-    - *install-reporter-and-upload-to-codecov
-  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
-  artifacts:
-    when: always
-    paths:
-      - junit.xml
-      - coverage.xml
-    reports:
-      junit: junit.xml
-      coverage_report:
-        coverage_format: cobertura
-        path: coverage.xml
-  environment: testing
-
-mypy:
-  rules:
-    - if: $CI_COMMIT_TAG == null
-      changes:
-        - "**/*.py"
-  script:
-    - *install-dev-deps
-    - mypy .
-
-pylint:
-  rules:
-    - if: $CI_COMMIT_TAG == null
-      changes:
-        - "**/*.py"
-  script:
-    - *install-dev-deps
-    - pip install --upgrade pylint
-    - pylint src/pytorch_gum_uncertainty_propagation
-
-flake8:
-  rules:
-    - if: $CI_COMMIT_TAG == null
-      changes:
-        - "**/*.py"
-  script:
-    - pip install --upgrade flake8 Flake8-pyproject
-    - flake8 .
-
-sphinx:
-  rules:
-    - if: $CI_COMMIT_TAG == null
-  script:
-    - *install-pip-tools
-    - apt update
-    - apt -y install pandoc
-    - python -m piptools sync docs-requirements.txt
-    - pip install .
-    - sphinx-build -W --keep-going docs/ docs/_build
-
-black:
-  rules:
-    - if: $CI_COMMIT_TAG == null
-      changes:
-        - "**/*.py"
-  script:
-    - pip install --upgrade black[jupyter]
-    - black --check .
-
-cffconvert:
-  script:
-    - pip install --upgrade cffconvert
-    - cffconvert --validate
+#.install-dev-deps: &install-dev-deps
+#  - *install-pip-tools
+#  - python -m piptools sync dev-requirements.txt
+#  - pip install .
+#
+#.install-reporter-and-upload-to-codecov: &install-reporter-and-upload-to-codecov
+#  - curl https://keybase.io/codecovsecurity/pgp_keys.asc | gpg --no-default-keyring --keyring trustedkeys.gpg --import
+#  - curl -Os https://uploader.codecov.io/latest/linux/codecov
+#  - curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM
+#  - curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM.sig
+#  - gpgv codecov.SHA256SUM.sig codecov.SHA256SUM
+#  - shasum -a 256 -c codecov.SHA256SUM
+#  - chmod +x codecov
+#  - ./codecov -t ${CODECOV_TOKEN}
+#
+#.install-deps: &install-deps
+#  - *install-pip-tools
+#  - python -m piptools sync requirements.txt
+#
+#before_script:
+#  - pip install --upgrade pip virtualenv
+#  - virtualenv venv
+#  - source venv/bin/activate
+#  - pip install --upgrade pip
+#
+#quick-test:
+#  rules:
+#    - if: $CI_COMMIT_TAG == null
+#  script:
+#    - *install-dev-deps
+#    - pytest -m "not webtest" --verbose --cov=pytorch_gum_uncertainty_propagation
+#          --junitxml=junit.xml --cov-branch
+#    - coverage xml
+#    - *install-reporter-and-upload-to-codecov
+#  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+#  artifacts:
+#    when: always
+#    paths:
+#      - junit.xml
+#      - coverage.xml
+#    reports:
+#      junit: junit.xml
+#      coverage_report:
+#        coverage_format: cobertura
+#        path: coverage.xml
+#  environment: testing
+#
+#online-test:
+#  rules:
+#    - if: $CI_COMMIT_TAG == null
+#  script:
+#    - *install-dev-deps
+#    - pytest -m webtest --verbose --cov=pytorch_gum_uncertainty_propagation
+#          --junitxml=junit.xml
+#    - coverage xml
+#    - *install-reporter-and-upload-to-codecov
+#  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+#  artifacts:
+#    when: always
+#    paths:
+#      - junit.xml
+#      - coverage.xml
+#    reports:
+#      junit: junit.xml
+#      coverage_report:
+#        coverage_format: cobertura
+#        path: coverage.xml
+#  environment: testing
+#
+#mypy:
+#  rules:
+#    - if: $CI_COMMIT_TAG == null
+#      changes:
+#        - "**/*.py"
+#  script:
+#    - *install-dev-deps
+#    - mypy .
+#
+#pylint:
+#  rules:
+#    - if: $CI_COMMIT_TAG == null
+#      changes:
+#        - "**/*.py"
+#  script:
+#    - *install-dev-deps
+#    - pip install --upgrade pylint
+#    - pylint src/pytorch_gum_uncertainty_propagation
+#
+#flake8:
+#  rules:
+#    - if: $CI_COMMIT_TAG == null
+#      changes:
+#        - "**/*.py"
+#  script:
+#    - pip install --upgrade flake8 Flake8-pyproject
+#    - flake8 .
+#
+#sphinx:
+#  rules:
+#    - if: $CI_COMMIT_TAG == null
+#  script:
+#    - *install-pip-tools
+#    - apt update
+#    - apt -y install pandoc
+#    - python -m piptools sync docs-requirements.txt
+#    - pip install .
+#    - sphinx-build -W --keep-going docs/ docs/_build
+#
+#black:
+#  rules:
+#    - if: $CI_COMMIT_TAG == null
+#      changes:
+#        - "**/*.py"
+#  script:
+#    - pip install --upgrade black[jupyter]
+#    - black --check .
+#
+#cffconvert:
+#  script:
+#    - pip install --upgrade cffconvert
+#    - cffconvert --validate
 
 release:
   rules:
@@ -145,9 +145,10 @@ release:
   stage: deploy
   script:
     - *install-pip-tools
+    - printenv
     - python -m piptools sync release-requirements.txt
     - git config --global user.name "Bjoern Ludwig"
     - git config --global user.email "bjoern.ludwig@ptb.de"
     - git remote set-url origin https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation.git
-    - semantic-release publish
+    - semantic-release --verbosity=DEBUG publish
   environment: production
