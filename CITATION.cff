@@ -22,7 +22,8 @@ abstract: >-
   for interested researchers or practitioners to extend or
   apply the uncertainty propagation portion of the author's
   Master's thesis " GUM-compliant neural-network robustness
-  verification".
+  verification". It provides an implementation using
+  pytorch for Python 3.10.
 keywords:
   - measurement uncertainties
   - uncertainty propagation
