@@ -16,7 +16,9 @@ subject to constant change.
 
 ## Getting started
 
-The [INSTALL guide](INSTALL.md) assists in installing the required packages.
+The [INSTALL guide](INSTALL.md) assists in installing the required packages. After 
+that take a look at our
+[examples](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/tree/main/src/pytorch_gum_uncertainty_propagation/examples).
 
 ## Documentation
 
