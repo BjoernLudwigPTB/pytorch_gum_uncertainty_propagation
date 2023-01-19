@@ -4,7 +4,7 @@ Examples
 Proof-of-Concept examples
 -------------------------
 
-For certain proof of concepts, we provide Jupyter notebooks, which require
+For certain proof of concepts, we provide examples scripts, which require
 additional dependencies to be installed. This can be achieved by appending
 :code:`[examples]` to the install command, e.g.
 
@@ -17,6 +17,4 @@ Afterwards you can browser through the following list:
 .. toctree::
    :maxdepth: 1
 
-   examples/imagenet_example
-   examples/mnist_example
    propagation
