@@ -1,0 +1,34 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: pytorch_gum_uncertainty_propagation
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Björn
+    family-names: Ludwig
+    email: bjoern.ludwig@ptb.de
+    affiliation: Physikalisch-Technische Bundesanstalt
+    orcid: 'https://orcid.org/0000-0002-5910-9137'
+repository-code: >-
+  https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation
+repository: >-
+  https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation
+abstract: >-
+  This code base is intended to serve as a starting point
+  for interested researchers or practitioners to extend or
+  apply the uncertainty propagation portion of the author's
+  Master's thesis " GUM-compliant neural-network robustness
+  verification".
+keywords:
+  - measurement uncertainties
+  - uncertainty propagation
+  - GUM
+  - neural networks
+  - pytorch
+license: MIT
+version: 0.15.0
+date-released: '2023-01-17'
