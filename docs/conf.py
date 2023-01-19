@@ -122,7 +122,7 @@ for path_dict in path_dicts:
         for dr in dirs:
             os.mkdir(os.path.join(root.replace(source_folder, dest_folder), dr))
         for fil in files:
-            if os.path.splitext(fil)[1] in [".ipynb", ".md", ".rst"]:
+            if os.path.splitext(fil)[1] in [".ipynb", ".md", ".py", ".rst"]:
                 source_filename = os.path.join(root, fil)
                 dest_filename = source_filename.replace(source_folder, dest_folder)
                 shutil.copyfile(source_filename, dest_filename)

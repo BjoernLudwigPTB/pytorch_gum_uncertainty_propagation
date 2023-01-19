@@ -20,7 +20,7 @@ GUM-compliant uncertainty propagation
    :maxdepth: 2
    :caption: Examples:
 
-   Examples
+   examples
 
 .. toctree::
    :maxdepth: 1
