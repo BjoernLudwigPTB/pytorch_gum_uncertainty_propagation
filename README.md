@@ -17,28 +17,8 @@ The [INSTALL guide](INSTALL.md) assists in installing the required packages.
 
 ## Documentation
 
-To locally build the HTML or pdf documentation first the required dependencies need 
-to be installed into your virtual environment (check the [INSTALL guide](INSTALL.md) 
-first and upon completion execute the following):
-
-```shell
-(venv) $ python -m piptools sync docs-requirements.txt
-(venv) $ sphinx-build docs/ docs/_build
-sphinx-build docs/ docs/_build
-Running Sphinx v5.3.0
-loading pickled environment... done
-[...]
-The HTML pages are in docs/_build.
-```
-
-After that the documentation can be viewed by opening the file
-_docs/\_build/index.html_ in any browser.
-
-## Roadmap
-
-- host documentation on ReadTheDocs, now that we are on GitHub
-- introduce binder for ease of access to the notebooks
-- replace ZeMA module by the external package and remove it here
+The documentation can be found on
+[ReadTheDocs](https://pytorch-gum-uncertainty-propagation.readthedocs.io/en/latest/).
 
 ## Disclaimer
 
