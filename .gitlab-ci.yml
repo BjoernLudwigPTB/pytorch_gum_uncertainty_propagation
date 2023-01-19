@@ -134,5 +134,6 @@ release:
     - python -m piptools sync release-requirements.txt
     - git config --global user.name "Bjoern Ludwig"
     - git config --global user.email "bjoern.ludwig@ptb.de"
-    - semantic-release --verbosity=DEBUG publish
+    - git remote set-url origin https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation.git
+    - semantic-release publish
   environment: production
