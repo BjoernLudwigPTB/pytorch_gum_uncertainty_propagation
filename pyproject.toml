@@ -92,6 +92,7 @@ ignore_missing_imports = true
 branch = "main"
 version_toml = "pyproject.toml:project.version"
 version_variable = "docs/conf.py:version"
+version_pattern = "CITATION.cff:version: {version}"
 major_on_zero = false
 changelog_sections = "feature,fix,breaking,documentation,performance"
 changelog_components = "semantic_release.changelog.changelog_headers,semantic_release.changelog.compare_url"
