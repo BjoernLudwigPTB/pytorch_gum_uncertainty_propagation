@@ -120,6 +120,11 @@ black:
     - pip install --upgrade black[jupyter]
     - black --check .
 
+cffconvert:
+  script:
+    - pip install --upgrade cffconvert
+    - cffconvert --validate
+
 release:
   rules:
     - if: $CI_COMMIT_TAG == null
