@@ -145,7 +145,7 @@ root_doc = "index"
 
 # General information about the project.
 project = "pytorch_gum_uncertainty_propagation"
-copyright = "2022, B. Ludwig (PTB)"
+copyright = "2023, B. Ludwig (PTB)"
 author = "B. Ludwig"
 
 # The version info for the project you're documenting, acts as replacement for
