@@ -65,8 +65,8 @@ a folder of your choice.
 
 ```shell
 PS C:> cd C:\LOCAL\PATH\TO\ENVS
-PS C:\LOCAL\PATH\TO\ENVS> py -3 -m venv gum_compliant_nn_unc_prop_venv
-PS C:\LOCAL\PATH\TO\ENVS> gum_compliant_nn_unc_prop_venv\Scripts\activate
+PS C:\LOCAL\PATH\TO\ENVS> py -3 -m venv pytorch_gum_unc_prop_env
+PS C:\LOCAL\PATH\TO\ENVS> pytorch_gum_unc_prop_env\Scripts\activate
 ```
 
 Proceed to [the next step
@@ -79,8 +79,8 @@ of your choice.
 
 ```shell
 $ cd /LOCAL/PATH/TO/ENVS
-$ python3 -m venv gum_compliant_nn_unc_prop_venv
-$ source gum_compliant_nn_unc_prop_venv/bin/activate
+$ python3 -m venv pytorch_gum_unc_prop_env
+$ source pytorch_gum_unc_prop_env/bin/activate
 ```
 
 Proceed to [the next step
@@ -112,7 +112,7 @@ pytorch_gum_uncertainty_propagation in the above installation command,
 e.g.
 
 ```shell
-(gum_compliant_nn_unc_prop_venv) $ pip install .[examples]
+(pytorch_gum_unc_prop_env) $ pip install .[examples]
 ```
 
 ### Install known to work dependencies' versions
@@ -124,18 +124,15 @@ our requirements file. This is done with the following sequence of commands afte
 activating:
 
 ```shell
-(gum_compliant_nn_unc_prop_venv) $ pip install --upgrade pip-tools
+(pytorch_gum_unc_prop_env) $ pip install --upgrade pip-tools
 Collecting pip-tools
 [...]
 Successfully installed pip-tools-6.11.0
-(gum_compliant_nn_unc_prop_venv) $ python --version
-Python 3.10.7
-(gum_compliant_nn_unc_prop_venv) $ python -m piptools sync requirements.txt 
-requirements.txt
+(pytorch_gum_unc_prop_env) $ python -m piptools sync
 Collecting [...]
 [...]
 Successfully installed [...]
-(gum_compliant_nn_unc_prop_venv) $
+(pytorch_gum_unc_prop_env) $
 ```
 
 ### Optional dependencies
