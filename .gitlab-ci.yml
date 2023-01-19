@@ -22,6 +22,16 @@ variables:
   - python -m piptools sync dev-requirements.txt
   - pip install .
 
+.install-reporter-and-upload-to-codecov: &install-reporter-and-upload-to-codecov
+  - curl https://keybase.io/codecovsecurity/pgp_keys.asc | gpg --no-default-keyring --keyring trustedkeys.gpg --import
+  - curl -Os https://uploader.codecov.io/latest/linux/codecov
+  - curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM
+  - curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM.sig
+  - gpgv codecov.SHA256SUM.sig codecov.SHA256SUM
+  - shasum -a 256 -c codecov.SHA256SUM
+  - chmod +x codecov
+  - ./codecov -t ${CODECOV_TOKEN}
+
 .install-deps: &install-deps
   - *install-pip-tools
   - python -m piptools sync requirements.txt
@@ -40,6 +50,7 @@ quick-test:
     - pytest -m "not webtest" --verbose --cov=pytorch_gum_uncertainty_propagation
           --junitxml=junit.xml --cov-branch
     - coverage xml
+    - *install-reporter-and-upload-to-codecov
   coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
   artifacts:
     when: always
@@ -51,6 +62,7 @@ quick-test:
       coverage_report:
         coverage_format: cobertura
         path: coverage.xml
+  environment: testing
 
 online-test:
   rules:
@@ -60,6 +72,7 @@ online-test:
     - pytest -m webtest --verbose --cov=pytorch_gum_uncertainty_propagation
           --junitxml=junit.xml
     - coverage xml
+    - *install-reporter-and-upload-to-codecov
   coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
   artifacts:
     when: always
@@ -71,6 +84,7 @@ online-test:
       coverage_report:
         coverage_format: cobertura
         path: coverage.xml
+  environment: testing
 
 mypy:
   rules:
