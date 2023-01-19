@@ -137,3 +137,24 @@ Collecting [...]
 Successfully installed [...]
 (gum_compliant_nn_unc_prop_venv) $
 ```
+
+### Optional dependencies
+
+For the different stages of using or developing pytorch_gum_uncertainty_propagation we 
+have provided several requirements files with pinned versions. You can append any of 
+the following file names to the above `piptools sync` command depending on your task,
+e.g. `$ python -m piptools sync all-requirements.txt`. Below you find a description 
+of the files purposes, despite their self-explanatory names:
+
+- [`all-requirements.txt`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/blob/main/all-requirements.txt):
+  if you want to cover all cases and simply install all optional dependencies in a
+  known to work configuration
+- [`examples-requirements.txt`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/blob/main/examples-requirements.txt): 
+  for experimenting with the [provided
+  examples](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/tree/main/src/pytorch_gum_uncertainty_propagation/examples)
+- [`dev-requirements.txt`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/blob/main/dev-requirements.txt):
+  for starting to work on the code. Please contact
+  [us](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/graphs/contributors),
+  if you have any questions.
+- [`docs-requirements.txt`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/blob/main/docs-requirements.txt):
+  if you want to build the documentation locally
