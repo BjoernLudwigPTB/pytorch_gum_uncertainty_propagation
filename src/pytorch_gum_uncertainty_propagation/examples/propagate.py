@@ -63,10 +63,10 @@ def assemble_pipeline(
 
 def _construct_out_features_counts(
     in_features: int, out_features: int = 2, depth: int = 1
-) -> list[int]:
-    """Construct network architecture with desired depth for parameter generation"""
+) -> tuple[int, ...]:
+    """Construct network architecture with desired depth and output neurons"""
     if depth == 1:
-        return [out_features]
+        return (out_features,)
     assert in_features > out_features
     assert (in_features - out_features) / depth >= 1.0
     partition = {out_features}
@@ -75,7 +75,7 @@ def _construct_out_features_counts(
         partition.add(in_features := ceil(in_features - step))
     assert len(partition) == depth
     assert min(partition) == out_features
-    return list(sorted(partition, reverse=True))
+    return tuple(sorted(partition, reverse=True))
 
 
 def iterate_over_activations_and_architectures(
