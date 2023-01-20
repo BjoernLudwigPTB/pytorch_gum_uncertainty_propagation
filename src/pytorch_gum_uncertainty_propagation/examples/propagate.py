@@ -1,6 +1,6 @@
 """Does the actual propagation to be profiled for MLPs equipped with GUMQuadLU"""
 
-__all__ = ["assemble_pipeline"]
+__all__ = ["assemble_pipeline", "iterate_over_activations_and_architectures"]
 
 import datetime
 from itertools import repeat
