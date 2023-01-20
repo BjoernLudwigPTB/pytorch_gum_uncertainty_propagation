@@ -75,7 +75,7 @@ license-files = ["LICENSE"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
-addopts = "--strict-markers --suppress-no-test-exit-code --color=yes"
+addopts = "--strict-markers --suppress-no-test-exit-code --color=yes --cov-branch -v"
 filterwarnings = "error"
 markers = "webtest: mark a test as requiring internet connecttion"
 

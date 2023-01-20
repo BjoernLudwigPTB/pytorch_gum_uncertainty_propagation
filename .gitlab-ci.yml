@@ -47,8 +47,8 @@ quick-test:
     - if: $CI_COMMIT_TAG == null
   script:
     - *install-dev-deps
-    - pytest -m "not webtest" --verbose --cov=pytorch_gum_uncertainty_propagation
-          --junitxml=junit.xml --cov-branch
+    - pytest -m "not webtest" --cov=pytorch_gum_uncertainty_propagation
+          --junitxml=junit.xml
     - coverage xml
     - *install-reporter-and-upload-to-codecov
   coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
@@ -69,7 +69,7 @@ online-test:
     - if: $CI_COMMIT_TAG == null
   script:
     - *install-dev-deps
-    - pytest -m webtest --verbose --cov=pytorch_gum_uncertainty_propagation
+    - pytest -m webtest --cov=pytorch_gum_uncertainty_propagation
           --junitxml=junit.xml
     - coverage xml
     - *install-reporter-and-upload-to-codecov
