@@ -2,7 +2,7 @@
 
 [![pipeline status](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/badges/main/pipeline.svg)](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commits/main)
 [![Documentation Status](https://readthedocs.org/projects/pytorch-gum-uncertainty-propagation/badge/?version=latest)](https://pytorch-gum-uncertainty-propagation.readthedocs.io/en/latest/?badge=latest)
-[![codecov](https://codecov.io/gh/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/branch/main/graph/badge.svg?token=140ATVOTKC)](https://codecov.io/gh/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation)
+[![codecov](https://codecov.io/gh/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/branch/main/graph/badge.svg?token=140ATVOTKC)](https://app.codecov.io/gh/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation?search=&trend=7%20days&displayType=list)
 [![Latest Release](https://img.shields.io/github/v/release/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation?label=Latest%20release)](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/releases/latest)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7552896.svg)](https://doi.org/10.5281/zenodo.7552896)
 
