@@ -15,8 +15,8 @@ from pytorch_gum_uncertainty_propagation.modules import (
     GUMSigmoid,
 )
 from pytorch_gum_uncertainty_propagation.uncertainties import (
-    _is_positive_semi_definite,
-    _is_symmetric,
+    is_positive_semi_definite,
+    is_symmetric,
     UncertainTensor,
 )
 from ..conftest import tensors, uncertain_tensors
@@ -212,7 +212,7 @@ def test_gum_sigmoid_forward_results_in_positive_semi_definite_uncertainties(
 ) -> None:
     result_uncertainties = gum_sigmoid_instance.forward(uncertain_tensor).uncertainties
     assert result_uncertainties is not None
-    assert _is_positive_semi_definite(result_uncertainties)
+    assert is_positive_semi_definite(result_uncertainties)
 
 
 @given(uncertain_tensors())
@@ -223,4 +223,4 @@ def test_gum_sigmoid_forward_results_in_symmetric_uncertainties(
 ) -> None:
     result_uncertainties = gum_sigmoid_instance.forward(uncertain_tensor).uncertainties
     assert result_uncertainties is not None
-    assert _is_symmetric(result_uncertainties)
+    assert is_symmetric(result_uncertainties)

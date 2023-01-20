@@ -5,7 +5,7 @@ from pytorch_gum_uncertainty_propagation.examples.zema_dataset import (
     convert_zema_std_uncertainties_into_synthetic_full_cov_matrices,
 )
 from pytorch_gum_uncertainty_propagation.uncertainties import (
-    _is_positive_semi_definite,
+    is_positive_semi_definite,
     UncertainTensor,
 )
 
@@ -173,4 +173,4 @@ def test_prepare_data_returns_positive_semi_definite_covariance() -> None:
     )
     assert uncertainties is not None
     for cov_matrix in uncertainties:
-        assert _is_positive_semi_definite(cov_matrix)
+        assert is_positive_semi_definite(cov_matrix)

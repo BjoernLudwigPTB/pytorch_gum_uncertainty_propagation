@@ -10,8 +10,8 @@ from torch.testing import assert_close  # type: ignore[attr-defined]
 from pytorch_gum_uncertainty_propagation import modules
 from pytorch_gum_uncertainty_propagation.modules import GUMLinear
 from pytorch_gum_uncertainty_propagation.uncertainties import (
-    _is_positive_semi_definite,
-    _is_symmetric,
+    is_positive_semi_definite,
+    is_symmetric,
     UncertainTensor,
 )
 from .conftest import (
@@ -250,7 +250,7 @@ def test_uncertain_linear_forward_results_in_positive_semi_definite_uncertaintie
         uncertain_values_and_uncertain_linear.uncertain_values
     ).uncertainties
     assert result_uncertainties is not None
-    assert _is_positive_semi_definite(result_uncertainties)
+    assert is_positive_semi_definite(result_uncertainties)
 
 
 @given(values_uncertainties_and_uncertain_linears())
@@ -262,4 +262,4 @@ def test_uncertain_linear_forward_results_in_symmetric_uncertainties(
         uncertain_values_and_uncertain_linear.uncertain_values
     ).uncertainties
     assert result_uncertainties is not None
-    assert _is_symmetric(result_uncertainties)
+    assert is_symmetric(result_uncertainties)
