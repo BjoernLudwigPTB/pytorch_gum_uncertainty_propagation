@@ -3,8 +3,7 @@
 [![pipeline status](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/badges/main/pipeline.svg)](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commits/main)
 [![coverage report](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/badges/main/coverage.svg)](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commits/main)
 [![Latest Release](https://img.shields.io/github/v/release/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation?label=Latest%20release)](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/releases/latest)
-[![Documentation Status](https://readthedocs.org/projects/pytorch-gum-uncertainty-propagation/badge/?version=latest)](https://pytorch-gum-uncertainty-propagation.readthedocs.io/en/latest/?badge=latest)
-
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7552896.svg)](https://doi.org/10.5281/zenodo.7552896)
 
 This is the code written in conjunction with the first part of my Master's thesis on 
 GUM-compliant neural network robustness verification. The code was written for 
