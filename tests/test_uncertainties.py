@@ -2,8 +2,9 @@ from inspect import signature
 from typing import cast
 
 import numpy as np
+import pytest
 import torch
-from hypothesis import assume, given, strategies as hst
+from hypothesis import assume, given, HealthCheck, settings, strategies as hst
 from hypothesis.extra import numpy as hnp
 from hypothesis.strategies import composite, DrawFn, SearchStrategy
 from numpy import array
@@ -13,9 +14,9 @@ from torch.testing import assert_close  # type: ignore[attr-defined]
 
 from pytorch_gum_uncertainty_propagation import uncertainties
 from pytorch_gum_uncertainty_propagation.uncertainties import (
-    _is_positive_semi_definite,
-    _is_symmetric,
     cov_matrix_from_std_uncertainties,
+    is_positive_semi_definite,
+    is_symmetric,
     UncertainTensor,
 )
 from .conftest import tensors, uncertain_tensors
@@ -23,19 +24,29 @@ from .conftest import tensors, uncertain_tensors
 
 @composite
 def square_tensors(
-    draw: DrawFn, dimen: int | None = None, symmetric: bool = False
+    draw: DrawFn,
+    dimen: int | None = None,
+    symmetric: bool = False,
+    without_nan_or_inf: bool = False,
 ) -> SearchStrategy[Tensor]:
+    elements = hst.floats(
+        allow_nan=not without_nan_or_inf, allow_infinity=not without_nan_or_inf
+    )
     rows: int = (
         draw(hst.integers(min_value=2, max_value=10)) if dimen is None else dimen
     )
     if symmetric:
-        result_tensor = diag(tensor(draw(hnp.arrays(float, rows))))
+        result_tensor = diag(tensor(draw(hnp.arrays(float, rows, elements=elements))))
         for i_diag in range(1, rows):
-            diagonal_values = tensor(draw(hnp.arrays(float, rows - i_diag)))
+            diagonal_values = tensor(
+                draw(hnp.arrays(float, rows - i_diag, elements=elements))
+            )
             result_tensor += torch.diag(diagonal_values, i_diag)
             result_tensor += torch.diag(diagonal_values, -i_diag)
     else:
-        result_tensor = tensor(draw(hnp.arrays(float, (rows, rows), unique=True)))
+        result_tensor = tensor(
+            draw(hnp.arrays(float, (rows, rows), unique=True, elements=elements))
+        )
         non_symmetric = False
         for i_row in range(rows):
             for i_column in range(i_row):
@@ -52,6 +63,19 @@ def square_tensors(
             if non_symmetric:
                 break
         assume(non_symmetric)
+    return cast(SearchStrategy[Tensor], result_tensor)
+
+
+@composite
+def nonsquare_tensors(
+    draw: DrawFn, size: tuple[int, ...] | None = None
+) -> SearchStrategy[Tensor]:
+    if size is None:
+        size = draw(hnp.array_shapes(min_dims=2, max_dims=2, min_side=1, max_side=10))
+    else:
+        assert size[0] == size[1], f"size[0] must not be equal to size[1] but is {size}"
+    assume(size[0] != size[1])
+    result_tensor = tensor(draw(hnp.arrays(float, size)))
     return cast(SearchStrategy[Tensor], result_tensor)
 
 
@@ -89,11 +113,50 @@ def test_cov_matrix_from_std_uncertainties_present_in_all() -> None:
 
 
 def test_uncertainties_has_attribute_is_positive_semi_definite() -> None:
-    assert hasattr(uncertainties, "_is_positive_semi_definite")
+    assert hasattr(uncertainties, "is_positive_semi_definite")
 
 
 def test_uncertainties_has_attribute_is_symmetric() -> None:
-    assert hasattr(uncertainties, "_is_symmetric")
+    assert hasattr(uncertainties, "is_symmetric")
+
+
+def test_is_positive_semi_definite_present_in_all() -> None:
+    assert is_positive_semi_definite.__name__ in uncertainties.__all__
+
+
+def test_is_positive_semi_definite_expects_parameter_matrix() -> None:
+    assert "matrix" in signature(is_positive_semi_definite).parameters
+
+
+def test_is_positive_semi_definite_expects_parameter_matrix_as_tensor() -> None:
+    assert (
+        signature(is_positive_semi_definite).parameters["matrix"].annotation is Tensor
+    )
+
+
+def test_is_positive_semi_definite_states_to_return_tensor() -> None:
+    assert signature(is_positive_semi_definite).return_annotation is Tensor
+
+
+@given(square_tensors(without_nan_or_inf=True))
+def test_is_positive_semi_definite_actually_returns_tensor_for_valid_input(
+    square_tensor: Tensor,
+) -> None:
+    assert isinstance(is_positive_semi_definite(square_tensor), Tensor)
+
+
+@given(square_tensors(without_nan_or_inf=True))
+def test_is_positive_semi_definite_returns_zero_dimensional_tensor_for_valid_input(
+    square_tensor: Tensor,
+) -> None:
+    assert is_positive_semi_definite(square_tensor).shape == torch.Size([])
+
+
+@given(square_tensors(without_nan_or_inf=True))
+def test_is_positive_semi_definite_returns_bool_for_valid_input(
+    square_tensor: Tensor,
+) -> None:
+    assert isinstance(is_positive_semi_definite(square_tensor).item(), bool)
 
 
 @given(uncertain_tensors())
@@ -102,23 +165,44 @@ def test_is_positive_semi_definite_usual_call(
 ) -> None:
     assert uncertain_tensor.uncertainties is not None
     assert isinstance(
-        _is_positive_semi_definite(uncertain_tensor.uncertainties).item(), bool
+        is_positive_semi_definite(uncertain_tensor.uncertainties).item(), bool
     )
 
 
 @given(hst.integers(min_value=1, max_value=10))
 def test_is_positive_semi_definite_against_zero(length: int) -> None:
-    assert _is_positive_semi_definite(tensor(np.zeros((length, length))))
+    assert is_positive_semi_definite(tensor(np.zeros((length, length))))
 
 
 def test_is_positive_semi_definite_for_single_instance_true() -> None:
     A = tensor([[5.0, 2.0, 1.0], [2.0, 4.0, 2.0], [1.0, 2.0, 3.0]])
-    assert _is_positive_semi_definite(A) == tensor(True)
+    assert is_positive_semi_definite(A) == tensor(True)
 
 
 def test_is_positive_semi_definite_for_single_instance_false() -> None:
     A = tensor(array([[1.0, 2.0, 1.0], [2.0, 2.0, 2.0], [1.0, 2.0, 3.0]]))
-    assert _is_positive_semi_definite(A) == tensor(False)
+    assert is_positive_semi_definite(A) == tensor(False)
+
+
+@given(square_tensors(without_nan_or_inf=True))
+@settings(suppress_health_check=[HealthCheck.too_slow])
+def test_is_positive_semi_definite_runs_for_square_matrices(
+    square_tensor: Tensor,
+) -> None:
+    is_positive_semi_definite(square_tensor)
+
+
+@given(nonsquare_tensors())
+@settings(deadline=None)
+def test_is_positive_semi_definite_runtime_error_for_non_square(
+    nonsquare_tensor: Tensor,
+) -> None:
+    with pytest.raises(
+        RuntimeError,
+        match=r"linalg.eigh: A must be batches of square matrices, but they are "
+        r"[0-9]+ by [0-9]+ matrices",
+    ):
+        is_positive_semi_definite(nonsquare_tensor)
 
 
 @given(sigmas())
@@ -133,14 +217,60 @@ def test_cov_matrix_from_std_uncertainties_returns_correct_shape(sigma: Tensor) 
     )
 
 
+def test_is_symmetric_present_in_all() -> None:
+    assert is_symmetric.__name__ in uncertainties.__all__
+
+
+def test_is_symmetric_expects_parameter_matrix() -> None:
+    assert "matrix" in signature(is_symmetric).parameters
+
+
+def test_is_symmetric_expects_parameter_matrix_as_tensor() -> None:
+    assert signature(is_symmetric).parameters["matrix"].annotation is Tensor
+
+
+def test_is_symmetric_states_to_return_tensor() -> None:
+    assert signature(is_symmetric).return_annotation is Tensor
+
+
+@given(square_tensors())
+def test_is_symmetric_actually_returns_tensor_for_valid_input(
+    square_tensor: Tensor,
+) -> None:
+    assert isinstance(is_symmetric(square_tensor), Tensor)
+
+
+@given(square_tensors())
+def test_is_symmetric_actually_returns_zero_dimensional_tensor_for_valid_input(
+    square_tensor: Tensor,
+) -> None:
+    assert is_symmetric(square_tensor).shape == torch.Size([])
+
+
+@given(square_tensors())
+def test_is_symmetric_actually_returns_zero_dimensional_tensor_of_bool_for_valid_input(
+    square_tensor: Tensor,
+) -> None:
+    assert isinstance(is_symmetric(square_tensor).item(), bool)
+
+
 @given(square_tensors(symmetric=True))
 def test_is_symmetric_true(symmetric_tensor: Tensor) -> None:
-    assert _is_symmetric(symmetric_tensor)
+    assert is_symmetric(symmetric_tensor)
 
 
 @given(square_tensors(symmetric=False))
 def test_is_symmetric_false(non_symmetric_tensor: Tensor) -> None:
-    assert not _is_symmetric(non_symmetric_tensor)
+    assert not is_symmetric(non_symmetric_tensor)
+
+
+def test_is_symmetric_runtime_error_for_non_square() -> None:
+    with pytest.raises(
+        RuntimeError,
+        match=r"The size of tensor a \([0-9]+\) must match the size of tensor "
+        r"b \([0-9]+\) at non-singleton dimension [0-9]+",
+    ):
+        is_symmetric(tensor([[1.0, 2.0, 3.0], [2.0, 1.0, 3.0]]))
 
 
 def test_uncertain_tensor_has_two_parameters() -> None:
