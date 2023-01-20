@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v0.17.0 (2023-01-20)
+### Feature
+* **coverage:** Introduce CodeCov coverage report ([`12bdaab`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/12bdaabae7e4161674737b1254ebb852bde49999))
+* **DOI:** Introduce DOI into CITATION and README ([`879da99`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/879da9907295d19257bb3245a158ebbff0b8534c))
+* **uncertainties:** Turn is_symmetric and is_positive_semi_definite into public functions ([`00afcda`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/00afcda53a769c834f6067cce01beebfb96b5211))
+
+**[See all commits in this version](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/compare/v0.16.0...v0.17.0)**
+
 ## v0.16.0 (2023-01-20)
 ### Feature
 * **coverage:** Introduce coverage report upload into CI pipeline ([`84e9c97`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/84e9c9775eb2a542bdd340ca51011f5e2a0113c7))
