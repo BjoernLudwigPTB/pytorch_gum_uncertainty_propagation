@@ -148,7 +148,7 @@ release:
     - python -m piptools sync release-requirements.txt
     - git config --global user.name "Bjoern Ludwig"
     - git config --global user.email "bjoern.ludwig@ptb.de"
-    - export CI_PROJECT_NAMESPACE BjoernLudwigPTB
-    - export CI_PROJECT_NAME pytorch_gum_uncertainty_propagation
+    - export CI_PROJECT_NAMESPACE=BjoernLudwigPTB
+    - export CI_PROJECT_NAME=pytorch_gum_uncertainty_propagation
     - semantic-release publish
   environment: production
