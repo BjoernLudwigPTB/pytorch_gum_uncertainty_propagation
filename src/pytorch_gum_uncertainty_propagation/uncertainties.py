@@ -1,6 +1,11 @@
 """Contains utilities to process measurement uncertainties"""
 
-__all__ = ["cov_matrix_from_std_uncertainties", "UncertainTensor"]
+__all__ = [
+    "cov_matrix_from_std_uncertainties",
+    "is_positive_semi_definite",
+    "is_symmetric",
+    "UncertainTensor",
+]
 
 from typing import NamedTuple
 
@@ -31,24 +36,61 @@ def cov_matrix_from_std_uncertainties(sigma: Tensor) -> Tensor:
         covariance matrix
     """
     cov_tensor = sigma * sigma.unsqueeze(1)
-    assert _is_symmetric(cov_tensor)
-    assert _is_positive_semi_definite(cov_tensor)
+    assert is_symmetric(cov_tensor)
+    assert is_positive_semi_definite(cov_tensor)
     return cov_tensor
 
 
-def _is_symmetric(matrix: Tensor) -> Tensor:
-    """Returns True if matrix is symmetric"""
+def is_symmetric(matrix: Tensor) -> Tensor:
+    """Returns True if matrix is symmetric while NaNs are considered equal
+
+    Parameters
+    ----------
+    matrix : Tensor
+        the matrix under test
+
+    Returns
+    -------
+    Tensor[bool]
+        True, if matrix is symmetric considering NaNs as equal, False otherwise
+
+    Raises
+    ------
+    RuntimeError
+        if matrix is not square
+    """
     return torch.all(torch.isnan(matrix[~matrix.isclose(matrix.T)]))
 
 
-def _is_positive_semi_definite(tensor_under_test: Tensor) -> Tensor:
-    """Returns True if tensor is positive semi-definite"""
-    if len(tensor_under_test) == 1:
-        return tensor_under_test >= 0
-    eigenvalues = torch.linalg.eigvalsh(tensor_under_test)
+def is_positive_semi_definite(matrix: Tensor) -> Tensor:
+    """Returns True if tensor is positive semi-definite
+
+    If there are :class:`torch.nan` or :class:`torch.inf` present in the matrix,
+    unexpected behaviour can occur.
+
+    Parameters
+    ----------
+    matrix : Tensor
+        the matrix under test
+
+    Returns
+    -------
+    Tensor[bool]
+        True, if matrix is positive_semi_definite, False otherwise
+
+    Raises
+    ------
+    RuntimeError
+        if matrix is not square
+    """
+    if len(matrix) == 1:
+        if matrix.shape[1] != 1:
+            torch.linalg.eigvalsh(matrix)
+        return matrix >= 0
+    eigenvalues = torch.linalg.eigvalsh(matrix)
     return torch.all(
         torch.logical_or(
             eigenvalues >= 0,
-            torch.isclose(eigenvalues, tensor_under_test.new_zeros(1), atol=1e-6),
+            torch.isclose(eigenvalues, matrix.new_zeros(1), atol=1e-6),
         )
     )
