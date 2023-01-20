@@ -1,4 +1,4 @@
-"""Does the actual propagation to be profiled for MLPs equipped with GUMQuadLU"""
+"""Profile propagation for :doc:`pytorch_gum_uncertainty_propagation.modules`' MLPs"""
 
 __all__ = ["assemble_pipeline", "iterate_over_activations_and_architectures"]
 
@@ -32,7 +32,7 @@ def assemble_pipeline(
     depth: int = 1,
     set_uncertainties_to_none: bool = False,
 ) -> Any:
-    """Propagate data through an MLP equipped with GUMQuadLU activation"""
+    """Propagate data through an MLP exclusively equipped with a specific activation"""
     torch.set_default_dtype(torch.double)  # type: ignore[no-untyped-call]
     input_values = convert_zema_std_uncertainties_into_synthetic_full_cov_matrices(
         n_samples=1, size_scaler=size_scaler, normalize=True, idx_start=idx_start

@@ -20,9 +20,8 @@ def convert_zema_std_uncertainties_into_synthetic_full_cov_matrices(
     """Prepare the ZeMA data for forward propagations in any PyTorch GUM-enabled network
 
     The main task is turning the standard uncertainties in the ZeMA dataset [Dorst2021]_
-    synthetically into full covariance matrices only for showcasing
-    :class:`~pytorch_gum_uncertainty_propagation.modules.GUMQuadLU`'s
-    capabilities.
+    synthetically into full covariance matrices only for showcasing the capabilities
+    of the GUM-enabled :doc:`pytorch_gum_uncertainty_propagation.modules`.
     """
     uncertain_array = ZeMASamples(n_samples, size_scaler, normalize, idx_start)
     uncertain_values = UncertainTensor(
