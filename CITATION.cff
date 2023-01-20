@@ -30,5 +30,5 @@ keywords:
   - neural networks
   - pytorch
 license: MIT
-version: 0.15.0
+version: 0.16.0
 date-released: '2023-01-17'

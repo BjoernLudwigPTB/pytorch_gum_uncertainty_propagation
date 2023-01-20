@@ -2,6 +2,21 @@
 
 <!--next-version-placeholder-->
 
+## v0.16.0 (2023-01-20)
+### Feature
+* **coverage:** Introduce coverage report upload into CI pipeline ([`84e9c97`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/84e9c9775eb2a542bdd340ca51011f5e2a0113c7))
+* **ReadTheDocs:** Introduce settings and everything else to enable ReadTheDocs ([`a987651`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/a987651a3a41c8a1a1e97029dc974877936c7c05))
+* **CITATION.cff:** Introduce Citation File Format-file and corresponding settings ([`fba4a38`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/fba4a38a305a97e52293e3f128d2164425907d97))
+
+### Documentation
+* **README:** Introduce link to ReadTheDocs and badge about documentation status ([`c884c76`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/c884c763305f06e5d0b857c9620ed930372c72ea))
+* **README:** Introduce link to ReadTheDocs ([`70614d3`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/70614d3dede0f8ee3ec85c9aa3fe0f3f9265453c))
+* **examples:** Introduce examples into docs ([`3f84e86`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/3f84e86a846b2be651cef0e87ba25c97569e798d))
+* **INSTALL:** Introduce optional dependencies section ([`36b5327`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/36b53272f804812bfb6a899a4b739b19aa3ffa13))
+* **README:** Introduce Disclaimer and License sections ([`ffe1111`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/ffe1111510a992157080c915ba9f2908efd40403))
+
+**[See all commits in this version](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/compare/v0.15.0...v0.16.0)**
+
 ## v0.15.0 (2023-01-17)
 ### Feature
 * **propagate:** Introduce current version of zema_emc_annotated and thus more flexibility ([`adcc4ec`](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation/-/commit/adcc4ec388424ac386758b4cfb4a22cacb81d193))
