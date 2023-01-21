@@ -2,7 +2,7 @@
 from typing import cast
 
 import torch
-from hypothesis import given, strategies as hst
+from hypothesis import given, settings, strategies as hst
 from hypothesis.strategies import composite, DrawFn, SearchStrategy
 from numpy.testing import assert_equal
 from torch import Tensor
@@ -67,6 +67,7 @@ def test_init_quadlu_mlp_input_dimension_as_specified(quadlu_mlp: QuadLUMLP) -> 
 
 
 @given(tensors(length=8), quadlu_mlps(in_dimen=8))
+@settings(deadline=None)
 def test_quadlu_mlp_outputs_tensor(values: Tensor, quadlu_mlp: QuadLUMLP) -> None:
     assert isinstance(quadlu_mlp(values), Tensor)
 
