@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v0.17.1 (2023-01-21)
+### Fix
+* **zema_dataset:** Adapt to most recent zema_emc_annotated version v0.7.0 ([`7a7df38`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/7a7df3813908de4ccd9c4f8a7599d37480d9d61d))
+
+### Documentation
+* **examples:** Improve examples docstrings ([`e3331a2`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/e3331a2ccf5a15da067541ca6d0195198885848b))
+
+**[See all commits in this version](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/compare/v0.17.0...v0.17.1)**
+
 ## v0.17.0 (2023-01-20)
 ### Feature
 * **coverage:** Introduce CodeCov coverage report ([`12bdaab`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/12bdaabae7e4161674737b1254ebb852bde49999))

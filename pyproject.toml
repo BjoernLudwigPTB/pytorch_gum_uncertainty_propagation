@@ -24,7 +24,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Mathematics",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-version = "0.17.0"
+version = "0.17.1"
 dependencies = [
     "numpy",
     "torch",
