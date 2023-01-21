@@ -80,7 +80,7 @@ filterwarnings = "error"
 markers = "webtest: mark a test as requiring internet connection"
 
 [tool.mypy]
-exclude = ["^build/", "^venv/"]
+exclude = ["^build/", "^venv/", "^docs/"]
 scripts_are_modules = true
 warn_unused_ignores = true
 show_error_codes = true
