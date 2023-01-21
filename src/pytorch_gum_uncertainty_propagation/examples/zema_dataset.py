@@ -3,7 +3,7 @@
 __all__ = ["convert_zema_std_uncertainties_into_synthetic_full_cov_matrices"]
 
 import torch
-from zema_emc_annotated.data_types import SampleSize
+from zema_emc_annotated.data_types import SampleSize  # type: ignore[import]
 from zema_emc_annotated.dataset import ZeMASamples  # type: ignore[import]
 
 from pytorch_gum_uncertainty_propagation.uncertainties import (
