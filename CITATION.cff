@@ -3,19 +3,6 @@
 
 cff-version: 1.2.0
 title: pytorch_gum_uncertainty_propagation
-message: >-
-  If you use this software, please cite it using the provided metadata.
-type: software
-authors:
-  - given-names: Björn
-    family-names: Ludwig
-    email: bjoern.ludwig@ptb.de
-    affiliation: Physikalisch-Technische Bundesanstalt
-    orcid: 'https://orcid.org/0000-0002-5910-9137'
-repository-code: >-
-  https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation
-repository: >-
-  https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation
 abstract: >-
   This code base is intended to serve as a starting point
   for interested researchers or practitioners to extend or
@@ -23,6 +10,17 @@ abstract: >-
   Master's thesis " GUM-compliant neural-network robustness
   verification". It provides an implementation using
   pytorch for Python 3.10.
+message: If you use this software, please cite it using the provided metadata.
+type: software
+authors:
+  - given-names: Björn
+    family-names: Ludwig
+    email: bjoern.ludwig@ptb.de
+    affiliation: Physikalisch-Technische Bundesanstalt
+    orcid: 'https://orcid.org/0000-0002-5910-9137'
+repository-code: https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation
+repository: >-
+  https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural-network_uncertainty-propagation
 keywords:
   - measurement uncertainties
   - uncertainty propagation
@@ -31,11 +29,9 @@ keywords:
   - pytorch
 license: MIT
 version: 0.17.0
-date-released: '2023-01-17'
 identifiers:
   - description: >-
       This is the general DOI to cite all versions of the software. To cite a specific
       version, please check the README or the Zenodo webpage.
     type: doi
     value: "10.5281/zenodo.7552895"
-
