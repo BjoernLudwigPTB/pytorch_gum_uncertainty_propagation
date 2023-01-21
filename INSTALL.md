@@ -148,7 +148,7 @@ of the files purposes, despite their self-explanatory names:
   known to work configuration
 - [`examples-requirements.txt`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/blob/main/examples-requirements.txt): 
   for experimenting with the [provided
-  examples](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/tree/main/src/pytorch_gum_uncertainty_propagation/examples)
+  examples](https://pytorch-gum-uncertainty-propagation.readthedocs.io/en/latest/examples.html)
 - [`dev-requirements.txt`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/blob/main/dev-requirements.txt):
   for starting to work on the code. Please contact
   [us](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/graphs/contributors),
