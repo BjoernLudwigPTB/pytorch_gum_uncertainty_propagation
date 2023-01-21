@@ -3,6 +3,7 @@
 __all__ = ["convert_zema_std_uncertainties_into_synthetic_full_cov_matrices"]
 
 import torch
+from zema_emc_annotated.data_types import SampleSize
 from zema_emc_annotated.dataset import ZeMASamples  # type: ignore[import]
 
 from pytorch_gum_uncertainty_propagation.uncertainties import (
@@ -23,7 +24,9 @@ def convert_zema_std_uncertainties_into_synthetic_full_cov_matrices(
     synthetically into full covariance matrices only for showcasing the capabilities
     of the GUM-enabled :doc:`pytorch_gum_uncertainty_propagation.modules`.
     """
-    uncertain_array = ZeMASamples(n_samples, size_scaler, normalize, idx_start)
+    uncertain_array = ZeMASamples(
+        SampleSize(idx_start, n_samples, size_scaler), normalize, True
+    )
     uncertain_values = UncertainTensor(
         values=torch.from_numpy(uncertain_array.values),
         uncertainties=torch.from_numpy(uncertain_array.uncertainties),
