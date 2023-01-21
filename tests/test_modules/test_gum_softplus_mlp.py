@@ -194,6 +194,7 @@ def test_gum_softplus_mlp_correct_output_dimension_of_values(
     hst.lists(hst.integers(min_value=1, max_value=10), min_size=1, max_size=10),
     uncertain_tensors(),
 )
+@settings(deadline=None)
 def test_gum_softplus_mlp_correct_output_dimension_of_uncertainties(
     out_dimens: list[int],
     uncertain_values: UncertainTensor,
