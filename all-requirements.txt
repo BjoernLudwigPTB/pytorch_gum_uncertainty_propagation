@@ -206,6 +206,8 @@ jupyterlab-pygments==0.2.2
     # via nbconvert
 jupyterlab-widgets==3.0.5
     # via ipywidgets
+kaleido==0.2.1
+    # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 keyring==23.13.1
     # via twine
 kiwisolver==1.4.4
@@ -320,6 +322,8 @@ platformdirs==2.6.2
     #   black
     #   jupyter-core
     #   pylint
+plotly==5.12.0
+    # via pytorch-gum-uncertainty-propagation (pyproject.toml)
 pluggy==1.0.0
     # via pytest
 pooch==1.6.0
@@ -469,6 +473,8 @@ sphinxcontrib-serializinghtml==1.1.5
     # via sphinx
 stack-data==0.6.2
     # via ipython
+tenacity==8.1.0
+    # via plotly
 terminado==0.17.1
     # via
     #   jupyter-server
