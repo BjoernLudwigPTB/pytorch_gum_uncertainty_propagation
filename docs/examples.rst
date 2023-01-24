@@ -5,12 +5,9 @@ Proof-of-Concept examples
 -------------------------
 
 For certain proof of concepts, we provide examples scripts, which require
-additional dependencies to be installed. This can be achieved by appending
-:code:`[examples]` to the install command, e.g.
-
-.. code-block:: shell
-
-    pip install .[examples]
+additional dependencies to be installed. The installation is described in a
+`designated section of our installation guide
+<https://pytorch-gum-uncertainty-propagation.readthedocs.io/en/latest/INSTALL.html#optional-jupyter-notebook-dependencies>`_.
 
 Afterwards you can browser through the following list:
 
@@ -18,3 +15,4 @@ Afterwards you can browser through the following list:
    :maxdepth: 1
 
    propagation
+   examples/plots

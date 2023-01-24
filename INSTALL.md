@@ -112,7 +112,7 @@ pytorch_gum_uncertainty_propagation in the above installation command,
 e.g.
 
 ```shell
-(pytorch_gum_unc_prop_env) $ pip install .[examples]
+(pytorch_gum_unc_prop_env) $ python -m piptools sync [examples-requirements.txt](examples-requirements.txt)
 ```
 
 ### Install known to work dependencies' versions
