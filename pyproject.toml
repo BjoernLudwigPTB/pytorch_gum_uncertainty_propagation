@@ -38,9 +38,11 @@ examples = [
     "ipywidgets",
     "h5py",
     "jupyter_nbextensions_configurator",
+    "kaleido",
     "matplotlib",
     "notebook",
     "pillow",
+    "plotly",
     "torchvision",
     "zema_emc_annotated",
 ]
