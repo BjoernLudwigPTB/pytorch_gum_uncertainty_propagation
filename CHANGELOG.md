@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v0.18.0 (2023-01-24)
+### Feature
+* **plotting notebook:** Introduce notebook containing plots of the activation function ([`87876aa`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/87876aa1df50461f4527d371d001eb977a2fbe45))
+
+### Documentation
+* **INSTALL:** Improve install command for examples' dependencies ([`c39b141`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/c39b141868b1c381e3f008b26e1e29b76d082aef))
+
+**[See all commits in this version](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/compare/v0.17.1...v0.18.0)**
+
 ## v0.17.1 (2023-01-21)
 ### Fix
 * **zema_dataset:** Adapt to most recent zema_emc_annotated version v0.7.0 ([`7a7df38`](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/commit/7a7df3813908de4ccd9c4f8a7599d37480d9d61d))

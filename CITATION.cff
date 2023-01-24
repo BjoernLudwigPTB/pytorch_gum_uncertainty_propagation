@@ -28,7 +28,7 @@ keywords:
   - neural networks
   - pytorch
 license: MIT
-version: 0.17.1
+version: 0.18.0
 identifiers:
   - description: >-
       This is the general DOI to cite all versions of the software. To cite a specific
