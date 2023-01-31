@@ -6,12 +6,12 @@
 [![Latest Release](https://img.shields.io/github/v/release/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation?label=Latest%20release)](https://github.com/BjoernLudwigPTB/pytorch_gum_uncertainty_propagation/releases/latest)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7552896.svg)](https://doi.org/10.5281/zenodo.7552896)
 
-This is the code written in conjunction with the first part of my Master's thesis on 
-GUM-compliant neural network robustness verification. The code was written for 
-_Python 3.10_.
+This is the code written in conjunction with the first part of [the author's Master's 
+thesis on GUM-compliant neural network robustness
+verification](https://gitlab1.ptb.de/ludwig10_masters_thesis/gum-compliant_neural_network_robustness_verification).
+The code was written for _Python 3.10_.
 
-The final submission date is 23. January 2023. Until then, this code base will be 
-subject to constant change.
+The final submission date was 23. January 2023.
 
 ## Getting started
 
